@@ -37,3 +37,20 @@ export async function getAccessTokenAPI(authCode) {
 
   return data;
 }
+
+export async function getUserInfoAPI(accessToken) {
+  const userInfo = await fetch(
+    `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/user-info`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  const { data } = await userInfo.json();
+
+  return data;
+}
