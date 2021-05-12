@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const Loading = () => {
+const LoadingScreen = () => {
   return (
     <View>
       <Text>loading..</Text>
@@ -9,4 +9,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default LoadingScreen;

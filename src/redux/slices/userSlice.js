@@ -52,7 +52,7 @@ const initialState = {
   loading: false,
 };
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: "user",
   initialState,
   // reducers: { // persist?
@@ -106,5 +106,3 @@ const userSlice = createSlice({
 });
 
 // const { clearUser } = userSlice.actions;
-
-export default userSlice;
