@@ -1,11 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginAPI } from "../../api/index";
+import { getAuthCodeAPI, getAccessTokenAPI } from "../../api/index";
+import * as SecureStore from "expo-secure-store";
 
-export const loginUser = createAsyncThunk("user/loginUser", async () => {
+export const loginUser = createAsyncThunk("USER/LOGIN_USER", async () => {
   try {
-    const result = await loginAPI();
+    const authCode = await getAuthCodeAPI();
+    const { accessToken } = await getAccessTokenAPI(authCode);
 
-    return result;
+    await SecureStore.setItemAsync("accessToken", accessToken);
+
+    return accessToken;
   } catch (err) {
     console.error(err);
   }
@@ -25,16 +29,17 @@ const userSlice = createSlice({
   initialState,
   extraReducers: {
     [loginUser.fulfilled]: (state, action) => {
-      state.accessToken = action.payload.accessToken;
-      state.email = action.payload.email;
-      state.userName = action.payload.userName;
+      state.accessToken = action.payload;
+      // TODO: create userData
+      // state.email = action.payload.email;
+      // state.userName = action.payload.userName;
       state.loading = false;
       state.error = false;
     },
     [loginUser.pending]: (state) => {
       state.loading = true;
     },
-    [loginUser.rejected]: (state, action) => {
+    [loginUser.reject]: (state, action) => {
       state.laoding = false;
       state.error = action.payload;
     },
