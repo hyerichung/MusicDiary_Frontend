@@ -5,6 +5,7 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { Text } from "react-native";
 
 import MainBottomTabNavigator from "./MainBottomTabNavigator";
+import PrivateDiaryListScreen from "../screens/PrivateDiaryListScreen";
 import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createStackNavigator();
@@ -35,6 +36,7 @@ const AppStackNavigator = () => {
               header: (props) => getHeader(route, props),
             })}
           />
+          <Stack.Screen name="DiaryList" component={PrivateDiaryListScreen} />
         </>
       ) : (
         <>
