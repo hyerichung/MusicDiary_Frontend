@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Button } from "react-native";
 
-const PrivateDiaryListScreen = () => {
+const PrivateDiaryListScreen = ({ route }) => {
   return (
     <View>
       <Button title="PrivateDiaryListScreen" />

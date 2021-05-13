@@ -3,7 +3,7 @@ import { View, Button } from "react-native";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/slices/userSlice";
 
-const LoginScreen = () => {
+const LoginScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
 
   const handlePressLogin = async () => {
