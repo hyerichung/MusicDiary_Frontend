@@ -7,7 +7,7 @@ import styles from "./styles";
 
 const UserInfoScreen = () => {
   const dispatch = useDispatch();
-  const { userName, email } = useSelector((state) => state.userInfo);
+  const { userName, email } = useSelector((state) => state.user.userInfo);
 
   const handleLogoutClick = async () => {
     try {

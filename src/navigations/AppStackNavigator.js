@@ -12,7 +12,7 @@ import ExtraScreenNavigator from "../navigations/ExtraScreenNavigator";
 const Stack = createStackNavigator();
 
 const AppStackNavigator = () => {
-  const isLoggedIn = useSelector((state) => Boolean(state.accessToken));
+  const isLoggedIn = useSelector((state) => Boolean(state.user.accessToken));
 
   function getHeader(route, props) {
     const routeName = getFocusedRouteNameFromRoute(route) ?? "Home";

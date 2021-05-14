@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Button,
@@ -10,15 +11,29 @@ import {
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
+import { addNewDiary } from "../redux/slices/diarySlice";
 import PrivateDiaryTopTabNavigator from "./PrivateDiaryTopTabNavigator";
 
 const DiaryStack = createStackNavigator();
 
 const PrivateDiaryListScreenNavigator = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch(dispatch);
+  const userId = useSelector((state) => state.user.userInfo.id);
+
   const [modalOpen, setModalOpen] = useState(false);
 
-  function handlePressAddNewDiaryBtn() {
+  const [diaryTitleInfo, setDiaryTitleInfo] = useState({
+    hashTag: "",
+    location: "",
+  });
+
+  const handleChangeText = (key, val) => {
+    setDiaryTitleInfo({ ...diaryTitleInfo, [key]: val });
+  };
+
+  async function handlePressAddNewDiaryBtn() {
+    await dispatch(addNewDiary({ diaryTitleInfo, userId }));
     setModalOpen(false);
 
     // with mock data
@@ -52,11 +67,30 @@ const PrivateDiaryListScreenNavigator = () => {
           <Button title="closeModal" onPress={() => setModalOpen(false)} />
           <View style={styles.locationContainer}>
             <Text>#</Text>
-            <TextInput style={styles.input} />
+            <TextInput
+              style={styles.input}
+              placeholder="hash..."
+              blurOnSubmit
+              autoCorrect={false}
+              maxLength={30}
+              placeholderTextColor="#777"
+              value={diaryTitleInfo.hashTag}
+              onChangeText={(text) => handleChangeText("hashTag", text)}
+            />
 
             <Text>your location</Text>
             {/* {with location mock data} */}
-            <TextInput style={styles.input} />
+            <TextInput
+              style={styles.input}
+              placeholder="location....."
+              blurOnSubmit
+              autoCorrect={false}
+              maxLength={30}
+              autoCapitalized="words"
+              placeholderTextColor="#777"
+              value={diaryTitleInfo.location}
+              onChangeText={(text) => handleChangeText("location", text)}
+            />
 
             <View style={styles.searchList}>
               <Text>asdfasdfadsfadsfasfasdf</Text>
