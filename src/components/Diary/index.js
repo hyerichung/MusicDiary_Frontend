@@ -1,50 +1,59 @@
 import React from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
 
-const Diary = ({ data, onPress }) => {
+const Diary = ({ data }) => {
   return (
-    <View style={styles.cardContainer}>
-      <View style={styles.cardContainer}>
+    <View stlye={styles.diaryContainer}>
+      <View style={styles.titleContainer}>
         <Text>{data.id}</Text>
         <Text>{data.title}</Text>
         <Text>{data.hashTag}</Text>
         <Text>{data.location}</Text>
-        <View style={styles.card}>
-          <FlatList
-            data={data}
-            keyExtractor={(playList) => playList.id}
-            renderItem={({ playList, idx }) => {
-              return (
-                <View>
-                  <Text>playlist {playList.id}</Text>
-                  <Text>playlist {playList.title}</Text>
-                  <Text>playlist {playList.artist}</Text>
-                </View>
-              );
-            }}
-          />
-        </View>
+      </View>
+
+      <View style={styles.playListContainer}>
+        <FlatList
+          numRows={data.playList.length}
+          style={styles.playListContainer}
+          data={data.playList}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, idx }) => {
+            return (
+              <View style={styles.trackContainer}>
+                <Text>Playlist</Text>
+                <Text>{item.id}</Text>
+                <Text>{item.title}</Text>
+                <Text>{item.artist}</Text>
+              </View>
+            );
+          }}
+        />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  cardContainer: {
+  diaryContainer: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-between",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "pink",
   },
-  text: {
-    alignSelf: "center",
-    marginTop: 10,
-    padding: 20,
-    height: 80,
+  titleContainer: {
+    height: "15%",
+    backgroundColor: "purple",
   },
-  divider: {
-    alignSelf: "center",
-    width: "80%",
-    height: 1,
+  playListContainer: {
+    height: "80%",
+    borderWidth: 1,
+    backgroundColor: "yellow",
+  },
+  trackContainer: {
+    borderWidth: 1,
+    margin: 2,
+    backgroundColor: "orange",
   },
 });
 

@@ -25,11 +25,13 @@ const PrivateDiaryListScreenNavigator = () => {
     navigation.navigate("Extra", {
       screen: "Diary",
       params: {
-        id: "1",
-        title: "one",
-        location: "korea",
-        hashTag: "#cafe",
-        playList: [],
+        data: {
+          id: "1",
+          title: "one",
+          location: "korea",
+          hashTag: "#cafe",
+          playList: [],
+        },
       },
     });
   }

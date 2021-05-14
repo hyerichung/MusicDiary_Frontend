@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View, StyleSheet, FlatList } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+} from "react-native";
 import Diary from "../Diary";
 
 const DiaryList = ({ onPressDiary }) => {
@@ -38,9 +44,9 @@ const DiaryList = ({ onPressDiary }) => {
         { id: "zzz", title: "why", artist: "artist1" },
         { id: "aaaaaaa", title: "22212", artist: "artist2" },
         { id: "bbbbb", title: "33333", artist: "artist3" },
-        { id: "cccccc", title: "4444", artist: "artist4" }
+        { id: "cccccc", title: "4444", artist: "artist4" },
       ],
-    }
+    },
   ]);
 
   return (
@@ -55,7 +61,11 @@ const DiaryList = ({ onPressDiary }) => {
                 key={item.id}
                 onPress={() => onPressDiary(item)}
               >
-                <Diary data={item} />
+                <View>
+                  <Text>{item.title}</Text>
+                  <Text>{item.location}</Text>
+                  <Text>{item.hashTag}</Text>
+                </View>
               </TouchableOpacity>
             );
           }}
@@ -65,8 +75,6 @@ const DiaryList = ({ onPressDiary }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
 
 export default DiaryList;
