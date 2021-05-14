@@ -4,9 +4,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { Text } from "react-native";
 
-import MainBottomTabNavigator from "./MainBottomTabNavigator";
-import PrivateDiaryListScreen from "../screens/PrivateDiaryListScreen";
 import LoginScreen from "../screens/LoginScreen";
+import MainBottomTabNavigator from "./MainBottomTabNavigator";
+import PrivateDiaryListScreenNavigator from "./PrivateDiaryListScreenNavigator";
+import ExtraScreenNavigator from "../navigations/ExtraScreenNavigator";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ const AppStackNavigator = () => {
       case "My":
         return <Text {...props}>{routeName}</Text>;
       case "Home":
+      case "Extra":
         return null;
     }
   }
@@ -36,7 +38,18 @@ const AppStackNavigator = () => {
               header: (props) => getHeader(route, props),
             })}
           />
-          <Stack.Screen name="DiaryList" component={PrivateDiaryListScreen} />
+          <Stack.Screen
+            name="PrivateDiaryList"
+            component={PrivateDiaryListScreenNavigator}
+          />
+
+          <Stack.Screen
+            name="Extra"
+            component={ExtraScreenNavigator}
+            options={({ route }) => ({
+              header: (props) => getHeader(route, props),
+            })}
+          />
         </>
       ) : (
         <>
