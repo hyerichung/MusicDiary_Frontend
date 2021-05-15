@@ -70,5 +70,22 @@ export async function addNewDiaryAPI({ accessToken, diaryTitleInfo, userId }) {
 
   const { data } = await addedDiaryInfo.json();
 
-  return data;
+  return data.newDiary;
+}
+
+export async function fetchDiaryByDateAPI({ accessToken, userId }) {
+  const fetchedDiaryByDateInfo = await fetch(
+    `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/by-date`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  const { data } = await fetchedDiaryByDateInfo.json();
+
+  return data.diaryByDate;
 }

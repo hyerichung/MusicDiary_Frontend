@@ -8,7 +8,7 @@ import { diarySlice } from "./slices/diarySlice";
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,
-  diarySlice: diarySlice.reducer,
+  diary: diarySlice.reducer,
 });
 
 const middleware = [thunk, logger];

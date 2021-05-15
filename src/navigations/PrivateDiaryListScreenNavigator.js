@@ -19,10 +19,10 @@ const DiaryStack = createStackNavigator();
 const PrivateDiaryListScreenNavigator = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch(dispatch);
+
   const userId = useSelector((state) => state.user.userInfo.id);
 
   const [modalOpen, setModalOpen] = useState(false);
-
   const [diaryTitleInfo, setDiaryTitleInfo] = useState({
     hashTag: "",
     location: "",
@@ -33,20 +33,15 @@ const PrivateDiaryListScreenNavigator = () => {
   };
 
   async function handlePressAddNewDiaryBtn() {
-    await dispatch(addNewDiary({ diaryTitleInfo, userId }));
+    const { payload } = await dispatch(addNewDiary({ diaryTitleInfo, userId }));
+
+    setDiaryTitleInfo({});
     setModalOpen(false);
 
-    // with mock data
     navigation.navigate("Extra", {
       screen: "Diary",
       params: {
-        data: {
-          id: "1",
-          title: "one",
-          location: "korea",
-          hashTag: "#cafe",
-          playList: [],
-        },
+        data: { newDiaryId: payload._id },
       },
     });
   }

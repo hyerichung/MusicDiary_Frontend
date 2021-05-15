@@ -1,14 +1,14 @@
 import React from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
+import { format, parseISO } from "date-fns";
 
 const Diary = ({ data }) => {
   return (
     <View stlye={styles.diaryContainer}>
       <View style={styles.titleContainer}>
-        <Text>{data.id}</Text>
-        <Text>{data.title}</Text>
-        <Text>{data.hashTag}</Text>
         <Text>{data.location}</Text>
+        <Text># {data.hashTag}</Text>
+        <Text>{data.date}</Text>
       </View>
 
       <View style={styles.playListContainer}>

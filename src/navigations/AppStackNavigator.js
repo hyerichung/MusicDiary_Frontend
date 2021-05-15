@@ -6,7 +6,6 @@ import { Text } from "react-native";
 
 import LoginScreen from "../screens/LoginScreen";
 import MainBottomTabNavigator from "./MainBottomTabNavigator";
-import PrivateDiaryListScreenNavigator from "./PrivateDiaryListScreenNavigator";
 import ExtraScreenNavigator from "../navigations/ExtraScreenNavigator";
 
 const Stack = createStackNavigator();
@@ -38,11 +37,6 @@ const AppStackNavigator = () => {
               header: (props) => getHeader(route, props),
             })}
           />
-          <Stack.Screen
-            name="PrivateDiaryList"
-            component={PrivateDiaryListScreenNavigator}
-          />
-
           <Stack.Screen
             name="Extra"
             component={ExtraScreenNavigator}
