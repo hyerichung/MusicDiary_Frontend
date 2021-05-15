@@ -1,18 +1,20 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { getFocusedRouteNameFromRoute, Text } from "@react-navigation/native";
-
+import {
+  createStackNavigator,
+  HeaderBackButton,
+} from "@react-navigation/stack";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import DiaryScreen from "../screens/DiaryScreen";
 
 const ExtraStack = createStackNavigator();
 
-const ExtraScreenNavigator = ({ route }) => {
+const ExtraScreenNavigator = ({ navigation }) => {
   function getHeader(route, props) {
     const routeName = getFocusedRouteNameFromRoute(route);
 
     switch (routeName) {
       case "Diary":
-        return <Text {...props}>{routeName}</Text>;
+        return null;
     }
   }
 
@@ -23,7 +25,14 @@ const ExtraScreenNavigator = ({ route }) => {
           name="Diary"
           component={DiaryScreen}
           options={({ route }) => ({
-            headerTitle: "diary, needs to fix left main text",
+            headerTitle: (props) => getHeader(route, props),
+            headerLeft: (props) => (
+              <HeaderBackButton
+                tintColor="pink"
+                label=""
+                onPress={() => navigation.popToTop()}
+              />
+            ),
           })}
         />
       </ExtraStack.Navigator>

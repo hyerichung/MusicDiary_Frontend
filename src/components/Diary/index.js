@@ -16,12 +16,12 @@ const Diary = ({ data }) => {
           numRows={data.playList.length}
           style={styles.playListContainer}
           data={data.playList}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           renderItem={({ item, idx }) => {
             return (
               <View style={styles.trackContainer}>
                 <Text>Playlist</Text>
-                <Text>{item.id}</Text>
+                <Text>{item._id}</Text>
                 <Text>{item.title}</Text>
                 <Text>{item.artist}</Text>
               </View>

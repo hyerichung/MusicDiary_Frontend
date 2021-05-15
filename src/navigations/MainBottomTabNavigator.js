@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
-import PrivateDiaryListScreenNavigator from "./PrivateDiaryListScreenNavigator";
+import PrivateDiaryListNavigator from "./PrivateDiaryListNavigator";
 import UserInfoScreen from "../screens/UserInfoScreen";
 
 const MainBottomTab = createBottomTabNavigator();
@@ -13,7 +13,7 @@ const MainBottomTabNavigator = () => {
       <MainBottomTab.Screen name="Home" component={HomeScreen} />
       <MainBottomTab.Screen
         name="PrivateDiary"
-        component={PrivateDiaryListScreenNavigator}
+        component={PrivateDiaryListNavigator}
       />
       <MainBottomTab.Screen name="My" component={UserInfoScreen} />
     </MainBottomTab.Navigator>

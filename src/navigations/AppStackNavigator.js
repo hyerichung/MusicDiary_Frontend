@@ -7,6 +7,7 @@ import { Text } from "react-native";
 import LoginScreen from "../screens/LoginScreen";
 import MainBottomTabNavigator from "./MainBottomTabNavigator";
 import ExtraScreenNavigator from "../navigations/ExtraScreenNavigator";
+import ModalScreenNavigator from "../navigations/ModalScreenNavigator";
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,11 @@ const AppStackNavigator = () => {
             options={({ route }) => ({
               header: (props) => getHeader(route, props),
             })}
+          />
+          <Stack.Screen
+            name="Modal"
+            component={ModalScreenNavigator}
+            options={{ headerShown: false }}
           />
         </>
       ) : (

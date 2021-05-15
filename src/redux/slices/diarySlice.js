@@ -58,13 +58,13 @@ export const diarySlice = createSlice({
   extraReducers: {
     [addNewDiary.fulfilled]: (state, action) => {
       state.byIds = {
-        ...state.byIds,
         [action.payload._id]: {
           ...action.payload,
           date: format(parseISO(action.payload.date), "yyyy-MM-dd"),
         },
+        ...state.byIds,
       };
-      state.allIds = state.allIds.concat([action.payload._id]);
+      state.allIds = [action.payload._id].concat(state.allIds);
       state.loading = false;
       state.error = false;
     },
@@ -80,7 +80,6 @@ export const diarySlice = createSlice({
       const ids = action.payload.map((diary) => diary._id);
 
       state.byIds = {
-        ...state.byIds,
         ...action.payload.reduce((initialObj, diaryById) => {
           initialObj[diaryById._id] = {
             ...diaryById,
@@ -89,7 +88,7 @@ export const diarySlice = createSlice({
           return initialObj;
         }, {}),
       };
-      state.allIds = state.allIds.concat(ids);
+      state.allIds = [...ids];
       state.loading = false;
       state.error = false;
     },

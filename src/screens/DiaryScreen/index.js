@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { View, Button } from "react-native";
+import { useSelector } from "react-redux";
+import { View } from "react-native";
 import Diary from "../../components/Diary";
 
 const DiaryScreen = ({ route, navigation }) => {
