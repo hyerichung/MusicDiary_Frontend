@@ -30,14 +30,17 @@ const NewDiaryAddingModalScreen = ({ route, navigation }) => {
   async function handlePressAddNewDiaryBtn() {
     const { payload } = await dispatch(addNewDiary({ diaryTitleInfo, userId }));
 
-    navigation.navigate("Extra", {
-      screen: "Diary",
-      params: { data: { newDiaryId: payload._id } },
+    navigation.navigate("Main", {
+      screen: "PrivateDiary",
+      params: {
+        screen: "Diary",
+        params: { data: { newDiaryId: payload._id } },
+      },
     });
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       <Button onPress={closeModal} title="Close" />
       <Button title="Submit" onPress={handlePressAddNewDiaryBtn} />
       <TextInput

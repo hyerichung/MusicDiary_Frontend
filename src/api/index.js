@@ -89,3 +89,27 @@ export async function fetchDiaryByDateAPI({ accessToken, userId }) {
 
   return data.diaryByDate;
 }
+
+export async function searchTrackAPI({
+  accessToken,
+  userId,
+  diaryId,
+  searchInput,
+}) {
+  console.log("hi", accessToken, userId, diaryId, searchInput, "???");
+
+  const saerchedTrackResult = await fetch(
+    `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/${diaryId}/track/search?keyword="${searchInput}"`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  const { data } = await saerchedTrackResult.json();
+
+  console.log(data, "first....");
+}

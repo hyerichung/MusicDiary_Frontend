@@ -5,10 +5,12 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { userSlice } from "./slices/userSlice";
 import { diarySlice } from "./slices/diarySlice";
+import { musicSlice } from "./slices/musicSlice";
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,
   diary: diarySlice.reducer,
+  music: musicSlice.reducer,
 });
 
 const middleware = [thunk, logger];

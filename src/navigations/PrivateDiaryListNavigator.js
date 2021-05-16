@@ -1,35 +1,52 @@
 import React from "react";
-import { View, Button, Text, StyleSheet, StatusBar } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { StyleSheet, StatusBar } from "react-native";
+import {
+  createStackNavigator,
+  HeaderBackButton,
+} from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 import PrivateDiaryTopTabNavigator from "./PrivateDiaryTopTabNavigator";
+import DiaryScreen from "../screens/DiaryScreen";
 
 const DiaryStack = createStackNavigator();
 
 const PrivateDiaryListScreenNavigator = () => {
   const navigation = useNavigation();
 
-  function handleOpenAddNewDiaryModal() {
-    navigation.navigate("Modal", {
-      screen: "addNewDiaryModal",
-    });
+  function getHeader(route, props) {
+    const routeName = getFocusedRouteNameFromRoute(route);
+
+    switch (routeName) {
+      case "Diary":
+        return null;
+    }
   }
 
   return (
     <>
-      <View style={styles.container}>
-        <Text>search bar</Text>
-      </View>
-
       <DiaryStack.Navigator>
         <DiaryStack.Screen
           name="DiaryTopTap"
           component={PrivateDiaryTopTabNavigator}
           options={{ headerShown: false }}
         />
+        <DiaryStack.Screen
+          name="Diary"
+          component={DiaryScreen}
+          options={({ route }) => ({
+            headerTitle: (props) => getHeader(route, props),
+            headerLeft: (props) => (
+              <HeaderBackButton
+                tintColor="pink"
+                label=""
+                onPress={() => navigation.popToTop()}
+              />
+            ),
+          })}
+        />
       </DiaryStack.Navigator>
-      <Button title="AddNewDiary" onPress={handleOpenAddNewDiaryModal} />
     </>
   );
 };

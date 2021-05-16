@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addNewDiaryAPI, fetchDiaryByDateAPI } from "../../api";
+import { addNewDiaryAPI, fetchDiaryByDateAPI, searchTrackAPI } from "../../api";
 import * as SecureStore from "expo-secure-store";
 import { parseISO, format } from "date-fns";
 
@@ -36,6 +36,26 @@ export const fetchDiaryByDate = createAsyncThunk(
       return fetchedDiaryByDateInfo;
     } catch (err) {
       console.error("failed to fetch diary by date");
+    }
+  }
+);
+
+export const searchTrack = createAsyncThunk(
+  "TRACK/FETCH_SEARCH_TRACK",
+  async ({ userId, diaryId, searchInput }) => {
+    try {
+      const accessToken = await SecureStore.getItemAsync("accessToken");
+
+      const searchedTrackResult = await searchTrackAPI({
+        accessToken,
+        userId,
+        diaryId,
+        searchInput,
+      });
+
+      // return searchedTrackResult;
+    } catch (err) {
+      console.error("failed to fetch searched track");
     }
   }
 );

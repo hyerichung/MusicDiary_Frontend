@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
-import { format, parseISO } from "date-fns";
+import { Audio, Video } from "expo-av";
 
 const Diary = ({ data }) => {
   return (
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: "purple",
   },
   playListContainer: {
-    height: "80%",
+    height: "40%",
     borderWidth: 1,
     backgroundColor: "yellow",
   },
