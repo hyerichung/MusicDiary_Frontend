@@ -46,14 +46,16 @@ export const searchTrack = createAsyncThunk(
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
-      const searchedTrackResult = await searchTrackAPI({
+      const tempSearchTracksResult = await searchTrackAPI({
         accessToken,
         userId,
         diaryId,
         searchInput,
       });
 
-      // return searchedTrackResult;
+      console.log(tempSearchTracksResult, "??????????");
+
+      return tempSearchTracksResult;
     } catch (err) {
       console.error("failed to fetch searched track");
     }

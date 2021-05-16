@@ -14,14 +14,9 @@ const AppNavigation = () => {
   useEffect(() => {
     const loadAccessToken = async () => {
       try {
-        const resultAction = await dispatch(getAccessToken());
-        const accessToken = unwrapResult(resultAction);
-
-        if (!accessToken) {
-          console.warn("No token from secure store");
-        }
+        await dispatch(getAccessToken());
+        // const accessToken = unwrapResult(resultAction);
       } catch (err) {
-        console.error("failed to load accessToken from secure store", err);
       } finally {
         setIsLoading(false);
       }

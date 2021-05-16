@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, TextInput, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  TextInput,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import debounce from "lodash.debounce";
 import { useSelector, useDispatch } from "react-redux";
+import { listenMusic, setPlayList } from "../../redux/slices/musicSlice";
 
 const NewTrackAddingModalScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+
   const userId = user.userInfo.id;
   const token = user.accessToken;
   const { data } = route.params;
@@ -15,19 +25,23 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
     navigation.goBack();
   }
 
-  const [isFetching, setIsFetching] = useState(false);
-
   const [searchInput, setSearchInput] = useState("");
   const [searchList, setSearchList] = useState([]);
+  const [offset, setOffset] = useState(1);
 
   useEffect(() => {
-    fetchTracks(userId, diaryId, searchInput);
+    fetchTracks(searchInput);
   }, [searchInput]);
 
-  const fetchTracks = debounce(async (userId, diaryId, searchInput) => {
+  async function handleSelectSong(item, index) {
+    await dispatch(listenMusic({ item, index }));
+    await dispatch(setPlayList(searchList));
+  }
+
+  const fetchTracks = debounce(async (searchInput) => {
     try {
       const tempSearchResult = await fetch(
-        `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=8&offset=8`,
+        `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=15&${offset}`,
         {
           method: "GET",
           headers: {
@@ -38,24 +52,25 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
         }
       );
 
-      const { tracks } = await tempSearchResult.json();
+      const resultList = await tempSearchResult.json();
 
-      const searchTrackList = tracks?.items?.map((item, idx) => ({
-        songTitle: item.name,
-        songId: item.id,
-        previewUrl: item.preview_url,
-        artistName: item.artists[0].name,
-        artistId: item.artists[0].id,
-        songJacket: item.album.images[2],
+      const searchTrackList = resultList?.tracks?.items.map((track, idx) => ({
+        title: track.name,
+        id: track.id,
+        uri: track.uri,
+        preview:
+          track.preview_url ??
+          "https://p.scdn.co/mp3-preview/bc5f3e28ba28c76b36f409d3c3f697e597b6ff6f?cid=41014a1f3ad143a8be14a47f025c209d",
+        duration: track.duration_ms,
+        artist: track.artists[0].name,
+        albumImg: track.album.images[2],
       }));
 
       setSearchList(searchTrackList);
-
-      console.log(searchList, "??");
     } catch (err) {
       console.warn(err);
     }
-  }, 300);
+  }, 800);
 
   const handleChangeText = (text) => {
     setSearchInput(text);
@@ -76,22 +91,24 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
       />
       <FlatList
         data={searchList}
-        keyExtractor={(item, idx) => idx}
-        renderItem={({ item, idx }) => {
+        keyExtractor={(item, index) => String(index)}
+        renderItem={({ item, index }) => {
           return (
-            <View>
-              <Text>track</Text>
-              <Text>{item.songTitle}</Text>
-              <Text>{item.artistName}</Text>
-              <Image
-                source={{ uri: item.songJacket.url }}
-                style={{
-                  width: item.songJacket.width,
-                  height: item.songJacket.height,
-                }}
-              />
-              <Button title="play" />
-            </View>
+            <>
+              <TouchableOpacity onPress={() => handleSelectSong(item, index)}>
+                <Text>track</Text>
+                <Text>{item.title}</Text>
+                <Text>{item.artist}</Text>
+                <Image
+                  source={{ uri: item?.albumImg.url }}
+                  style={{
+                    width: item.albumImg.width,
+                    height: item.albumImg.height,
+                  }}
+                />
+                <Button title="add to playlist" />
+              </TouchableOpacity>
+            </>
           );
         }}
       />

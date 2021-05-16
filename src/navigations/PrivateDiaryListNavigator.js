@@ -9,6 +9,7 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 import PrivateDiaryTopTabNavigator from "./PrivateDiaryTopTabNavigator";
 import DiaryScreen from "../screens/DiaryScreen";
+import NewTrackAddingModalScreen from "../screens/NewTrackAddingModalScreen";
 
 const DiaryStack = createStackNavigator();
 
@@ -45,6 +46,11 @@ const PrivateDiaryListScreenNavigator = () => {
               />
             ),
           })}
+        />
+        <DiaryStack.Screen
+          name="addNewTrackModal"
+          component={NewTrackAddingModalScreen}
+          options={{ headerShown: false }}
         />
       </DiaryStack.Navigator>
     </>

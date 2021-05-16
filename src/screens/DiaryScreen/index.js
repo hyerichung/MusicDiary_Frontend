@@ -11,10 +11,7 @@ const DiaryScreen = ({ route, navigation }) => {
   const diaryId = data.newDiaryId ? newDiaryInfo._id : data._id;
 
   function openNewTrackAddingModal() {
-    navigation.navigate("Modal", {
-      screen: "addNewTrackModal",
-      params: { data: diaryId },
-    });
+    navigation.navigate("addNewTrackModal", { data: diaryId });
   }
 
   function openDiaryEditingModal() {

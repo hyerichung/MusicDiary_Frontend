@@ -96,8 +96,6 @@ export async function searchTrackAPI({
   diaryId,
   searchInput,
 }) {
-  console.log("hi", accessToken, userId, diaryId, searchInput, "???");
-
   const saerchedTrackResult = await fetch(
     `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/${diaryId}/track/search?keyword="${searchInput}"`,
     {
@@ -111,5 +109,5 @@ export async function searchTrackAPI({
 
   const { data } = await saerchedTrackResult.json();
 
-  console.log(data, "first....");
+  return data;
 }

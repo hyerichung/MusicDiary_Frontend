@@ -3,30 +3,50 @@ import * as SecureStore from "expo-secure-store";
 
 const initialState = {
   playList: [],
-  currentTrackInfo: {},
-  currentTrackIdx: null,
-  isTrackPlaying: false,
-  trackControlBtnStatus: false,
+  currentIdx: null,
+  isPlaying: false,
+  musicControlBtn: false,
 };
 
 export const musicSlice = createSlice({
   name: "music",
   initialState,
   reducers: {
-    setIsTrackPlaying: (state, action) => {
-      state.isTrackPlaying = action.payload;
+    setIsPlaying: (state, action) => {
+      state.isPlaying = action.payload;
+    },
+    clearPlayerStatus: (state, action) => {
+      let currentState = state;
+      currentState = initialState;
+      return currentState;
+    },
+    setPlayList: (state, action) => {
+      state.playList = action.payload;
+    },
+    listenMusic: (state, action) => {
+      state.currentIdx = action.payload.index;
     },
     goToNextTrack: (state, action) => {
-      state.currentTrackIdx = state.currentTrackIdx++;
-      state.currentTrackInfo = state.playList[state.currentTrackIdx++];
+      state.currentIdx = state.currentIdx + 1;
     },
     goToPrevTrack: (state, action) => {
-      state.currentTrackIdx = state.currentTrackIdx--;
-      state.currentTrackInfo = state.playList[state.currentTrackIdx--];
+      state.currentIdx = state.currentIdx - 1;
     },
   },
 });
 
-const { setIsTrackPlaying, goToNextTrack, goToPrevTrack } = musicSlice.actions;
+const {
+  listenMusic,
+  setPlayList,
+  setIsPlaying,
+  goToNextTrack,
+  clearPlayerStatus,
+} = musicSlice.actions;
 
-export { setIsTrackPlaying, goToNextTrack, goToPrevTrack };
+export {
+  listenMusic,
+  setPlayList,
+  setIsPlaying,
+  goToNextTrack,
+  clearPlayerStatus,
+};

@@ -31,7 +31,7 @@ export const clearAccessToken = createAsyncThunk(
   "USER/CLEAR_ACCESSTOKEN",
   async () => {
     try {
-      return await SecureStore.deleteItemAsync("accessToken");
+      await SecureStore.deleteItemAsync("accessToken");
     } catch (err) {
       console.error("failed to get accessToken from the secure store ", err);
     }

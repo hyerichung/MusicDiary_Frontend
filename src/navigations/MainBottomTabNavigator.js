@@ -1,50 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Audio } from "expo-av";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 import HomeScreen from "../screens/HomeScreen";
 import PrivateDiaryListNavigator from "./PrivateDiaryListNavigator";
 import UserInfoScreen from "../screens/UserInfoScreen";
-import { setIsTrackPlaying, goToNextTrack } from "../redux/slices/musicSlice";
+import { setIsPlaying, goToNextTrack } from "../redux/slices/musicSlice";
+import { BOTTOM_TAB_ICON, PLAY_BUTTON_ICON } from "../constants";
 
 const MainBottomTab = createBottomTabNavigator();
 
-const PLAY_BUTTON_ICON = {
-  false: "control-play",
-  true: "control-pause",
-};
-
-const BOTTOM_TAB_ICON = {
-  Home: "home",
-  PrivateDiary: "notebook",
-  My: "user",
-};
-
 const MusicTabBar = ({ state, descriptors, navigation }) => {
   const dispatch = useDispatch();
-  const { isTrackPlaying, playList, currentTrackIndex } = useSelector(
+  const { isPlaying, playList, currentIdx } = useSelector(
     (state) => state.music
   );
-  const currentTrack = playList[currentTrackIndex];
+
+  const currentTrack = playList[currentIdx];
   const [sound, setSound] = useState(null);
 
+  useEffect(() => {
+    if (sound) {
+      sound.unloadAsync();
+    }
+
+    createSound();
+  }, [currentIdx]);
+
+  const controlMusicPlaying = async () => {
+    if (isPlaying) {
+      return await sound.pauseAsync();
+    }
+
+    await sound.playAsync();
+  };
+
   const createSound = async () => {
-    const { sound, playbackStatus } = await Audio.Sound.createAsync(
-      { uri: currentTrack?.track?.preview_url },
+    const { sound, status } = await Audio.Sound.createAsync(
+      { uri: currentTrack?.preview },
       { shouldPlay: true },
-      (playbackStatus) => {
-        if (!playbackStatus.isLoaded && playbackStatus.error) {
-          console.warn(`${playbackStatus.error}`);
-        }
+      async status => {
+        if (!status.isLoaded) {
+          if (status.error) {
+            console.error(`av error ${status.error}`);
+          }
+        } else {
+          if (status.didJustFinish) {
+            dispatch(goToNextTrack());
+            return;
+          }
 
-        if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
-          dispatch(goToNextTrack());
+          dispatch(setIsPlaying(status.isPlaying));
         }
-
-        dispatch(setIsTrackPlaying(playbackStatus.isTrackPlaying));
       }
     );
     setSound(sound);
@@ -56,25 +66,12 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
       <View style={styles.trackPlayerContainer}>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity>
-            {currentTrack?.track ? (
-              <Image
-                style={{ width: 76, height: 76 }}
-                source={{
-                  uri: currentTrack?.track
-                    ? currentTrack.track.album.images[2].url
-                    : null,
-                }}
-              />
-            ) : (
-              <>
-                <SimpleLineIcons
-                  name="music-tone"
-                  size={23}
-                  color="black"
-                  style={{ position: "absolute", left: 20, top: 8 }}
-                />
-              </>
-            )}
+            <SimpleLineIcons
+              name="music-tone"
+              size={23}
+              color="black"
+              style={{ position: "absolute", left: 20, top: 8 }}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -88,19 +85,21 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
               numberOfLines={1}
               style={{ color: "black", fontSize: 16, paddingBottom: 4 }}
             >
-              {currentTrack?.track ? currentTrack.track.name : "track name..."}
+              track name
             </Text>
             <Text numberOfLines={1} style={{ color: "black", fontSize: 13 }}>
-              {currentTrack?.track
-                ? currentTrack.track.artists[0].name
-                : "artist name....."}
+  
+              <Text>artist name</Text>
             </Text>
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <TouchableOpacity style={{ paddingLeft: 20 }}>
+          <TouchableOpacity
+            style={{ paddingLeft: 20 }}
+            onPress={controlMusicPlaying}
+          >
             <SimpleLineIcons
-              name={PLAY_BUTTON_ICON[isTrackPlaying]}
+              name={PLAY_BUTTON_ICON[isPlaying]}
               size={20}
               color="black"
             />
