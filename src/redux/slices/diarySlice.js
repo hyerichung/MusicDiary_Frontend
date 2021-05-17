@@ -53,9 +53,29 @@ export const searchTrack = createAsyncThunk(
         searchInput,
       });
 
-      console.log(tempSearchTracksResult, "??????????");
-
       return tempSearchTracksResult;
+    } catch (err) {
+      console.error("failed to fetch searched track");
+    }
+  }
+);
+
+export const addTrackToDiary = createAsyncThunk(
+  "DIARY/ADD_TRACK_TO_DIARY",
+  async ({ userId, diaryId, searchInput }) => {
+    try {
+      const accessToken = await SecureStore.getItemAsync("accessToken");
+
+      const diaryPlaylist = await addTrackToDiaryAPI({
+        accessToken,
+        userId,
+        diaryId,
+        trackId,
+      });
+
+      console.log(diaryPlaylist, "??????????");
+
+      // return diaryPlaylist;
     } catch (err) {
       console.error("failed to fetch searched track");
     }
@@ -77,6 +97,13 @@ const initialState = {
 export const diarySlice = createSlice({
   name: "diary",
   initialState,
+  reducers: {
+    clearDiary: (state, action) => {
+      let currentState = state;
+      currentState = initialState;
+      return currentState;
+    }
+  },
   extraReducers: {
     [addNewDiary.fulfilled]: (state, action) => {
       state.byIds = {
@@ -121,5 +148,20 @@ export const diarySlice = createSlice({
       state.laoding = false;
       state.error = action.payload;
     },
+
+    // [addTrackToDiary.pending]: (state) => {
+    //   state.loading = true;
+    // },
+    // [addTrackToDiary.reject]: (state, action) => {
+    //   state.loading = false;
+    //   state.error = action.payload;
+    // },
+    // [fetchDiaryByDate.fulfilled]: (state, action) => {
+
+    // }
+
   },
 });
+
+const { clearDiary } = diarySlice.actions;
+export { clearDiary };

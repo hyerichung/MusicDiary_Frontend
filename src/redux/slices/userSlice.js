@@ -55,13 +55,13 @@ const initialState = {
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  // reducers: { // persist?
-  //   clearUser: (state) => {
-  //     let currentState = state;
-  //     currentState = initialState;
-  //     return currentState;
-  //   }
-  // },
+  reducers: {
+    clearUser: (state) => {
+      let currentState = state;
+      currentState = initialState;
+      return currentState;
+    },
+  },
   extraReducers: {
     [loginUser.fulfilled]: (state, action) => {
       state.accessToken = action.payload.accessToken;
@@ -105,4 +105,5 @@ export const userSlice = createSlice({
   },
 });
 
-// const { clearUser } = userSlice.actions;
+const { clearUser } = userSlice.actions;
+export { clearUser };

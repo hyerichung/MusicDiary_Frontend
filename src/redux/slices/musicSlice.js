@@ -15,7 +15,7 @@ export const musicSlice = createSlice({
     setIsPlaying: (state, action) => {
       state.isPlaying = action.payload;
     },
-    clearPlayerStatus: (state, action) => {
+    clearMusicStatus: (state, action) => {
       let currentState = state;
       currentState = initialState;
       return currentState;
@@ -32,6 +32,9 @@ export const musicSlice = createSlice({
     goToPrevTrack: (state, action) => {
       state.currentIdx = state.currentIdx - 1;
     },
+    goToFirstTrack: (state, action) => {
+      state.currentIdx = 0;
+    },
   },
 });
 
@@ -40,7 +43,8 @@ const {
   setPlayList,
   setIsPlaying,
   goToNextTrack,
-  clearPlayerStatus,
+  clearMusicStatus,
+  goToFirstTrack,
 } = musicSlice.actions;
 
 export {
@@ -48,5 +52,6 @@ export {
   setPlayList,
   setIsPlaying,
   goToNextTrack,
-  clearPlayerStatus,
+  clearMusicStatus,
+  goToFirstTrack,
 };

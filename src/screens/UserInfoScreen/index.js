@@ -1,7 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Text, View, Button } from "react-native";
-import { clearAccessToken } from "../../redux/slices/userSlice";
+import { clearAccessToken, clearUser } from "../../redux/slices/userSlice";
+import { clearDiary } from "../../redux/slices/diarySlice";
+import { clearMusicStatus } from "../../redux/slices/musicSlice";
 
 import styles from "./styles";
 
@@ -12,6 +14,9 @@ const UserInfoScreen = () => {
   const handleLogoutClick = async () => {
     try {
       await dispatch(clearAccessToken());
+      dispatch(clearUser());
+      dispatch(clearDiary());
+      dispatch(clearMusicStatus());
     } catch (err) {
       console.error("failed to clear Token with logout", err);
     }

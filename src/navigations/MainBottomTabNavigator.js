@@ -8,8 +8,12 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import PrivateDiaryListNavigator from "./PrivateDiaryListNavigator";
 import UserInfoScreen from "../screens/UserInfoScreen";
-import { setIsPlaying, goToNextTrack } from "../redux/slices/musicSlice";
-import { BOTTOM_TAB_ICON, PLAY_BUTTON_ICON } from "../constants";
+import {
+  setIsPlaying,
+  goToNextTrack,
+  goToFirstTrack,
+} from "../redux/slices/musicSlice";
+import { BOTTOM_TAB_ICON, PLAY_BUTTON_ICON, URI } from "../constants";
 
 const MainBottomTab = createBottomTabNavigator();
 
@@ -42,15 +46,19 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
     const { sound, status } = await Audio.Sound.createAsync(
       { uri: currentTrack?.preview },
       { shouldPlay: true },
-      async status => {
+      async (status) => {
         if (!status.isLoaded) {
-          if (status.error) {
-            console.error(`av error ${status.error}`);
-          }
+          // if (status.error) {
+          //   console.error(`av error ${status.error}`);
+          // }
         } else {
           if (status.didJustFinish) {
             dispatch(goToNextTrack());
             return;
+          }
+
+          if (currentIdx === playList.length - 1) {
+            dispatch(goToFirstTrack());
           }
 
           dispatch(setIsPlaying(status.isPlaying));
@@ -88,7 +96,6 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
               track name
             </Text>
             <Text numberOfLines={1} style={{ color: "black", fontSize: 13 }}>
-  
               <Text>artist name</Text>
             </Text>
           </TouchableOpacity>

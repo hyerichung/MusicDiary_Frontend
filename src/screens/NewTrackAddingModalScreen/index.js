@@ -38,10 +38,28 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
     await dispatch(setPlayList(searchList));
   }
 
+  const handlePressAddToDiaryBtn = async (item) => {
+    const trackAddedResult = await fetch(
+      `${API_SERVER_DEVELOPMENT_PORT}/api/users/${userId}/diary/${diaryId}/track/new`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ trackInfo: item }),
+      }
+    );
+
+    const newTrackId = await trackAddedResult.json();
+    return newTrackId;
+  };
+
   const fetchTracks = debounce(async (searchInput) => {
     try {
       const tempSearchResult = await fetch(
-        `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=15&${offset}`,
+        `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=3&${offset}`,
         {
           method: "GET",
           headers: {
@@ -54,21 +72,30 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
 
       const resultList = await tempSearchResult.json();
 
-      const searchTrackList = resultList?.tracks?.items.map((track, idx) => ({
-        title: track.name,
-        id: track.id,
-        uri: track.uri,
+      const result = resultList?.tracks?.items.map((list) => ({
+        title: list.name,
+        id: list.id,
+        uri: list.uri,
         preview:
-          track.preview_url ??
+          list.preview_url ??
           "https://p.scdn.co/mp3-preview/bc5f3e28ba28c76b36f409d3c3f697e597b6ff6f?cid=41014a1f3ad143a8be14a47f025c209d",
-        duration: track.duration_ms,
-        artist: track.artists[0].name,
-        albumImg: track.album.images[2],
+        duration: list.duration_ms,
+        artist: list.artists[0].name,
+        albumImg: list.album.images[2],
       }));
 
-      setSearchList(searchTrackList);
+      const genres = resultList?.artists?.items.map((list) => ({
+        artistGenres: list.genres,
+      }));
+
+      const total = result?.map((track, idx) => ({
+        ...track,
+        genres: genres[idx]?.artistGenres,
+      }));
+
+      setSearchList(total);
     } catch (err) {
-      console.warn(err);
+      console.error(err);
     }
   }, 800);
 
@@ -97,16 +124,19 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
             <>
               <TouchableOpacity onPress={() => handleSelectSong(item, index)}>
                 <Text>track</Text>
-                <Text>{item.title}</Text>
-                <Text>{item.artist}</Text>
+                <Text>{item?.title}</Text>
+                <Text>{item?.artist}</Text>
                 <Image
                   source={{ uri: item?.albumImg.url }}
                   style={{
-                    width: item.albumImg.width,
-                    height: item.albumImg.height,
+                    width: item?.albumImg.width,
+                    height: item?.albumImg.height,
                   }}
                 />
-                <Button title="add to playlist" />
+                <Button
+                  title="add to diary"
+                  onPress={() => handlePressAddToDiaryBtn(item)}
+                />
               </TouchableOpacity>
             </>
           );

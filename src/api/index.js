@@ -2,6 +2,8 @@ import { API_SERVER_PORT_DEVELOPMENT } from "@env";
 import * as AuthSession from "expo-auth-session";
 
 export async function getAuthCodeAPI() {
+  console.log(`http://${API_SERVER_PORT_DEVELOPMENT}/api/users/login/url`, "where..");
+
   const authUrl = await fetch(
     `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/url`,
     {

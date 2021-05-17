@@ -14,8 +14,8 @@ const AppNavigation = () => {
   useEffect(() => {
     const loadAccessToken = async () => {
       try {
-        await dispatch(getAccessToken());
-        // const accessToken = unwrapResult(resultAction);
+        const resultAction = await dispatch(getAccessToken());
+        const accessToken = unwrapResult(resultAction);
       } catch (err) {
       } finally {
         setIsLoading(false);
