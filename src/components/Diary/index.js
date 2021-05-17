@@ -1,22 +1,24 @@
 import React from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
-import { Audio, Video } from "expo-av";
+import { useSelector } from "react-redux";
 
-const Diary = ({ data }) => {
+const Diary = ({ data, diaryId }) => {
+  const { byIds } = useSelector((state) => state.diary);
+
   return (
     <View stlye={styles.diaryContainer}>
       <View style={styles.titleContainer}>
-        <Text>{data.location}</Text>
-        <Text># {data.hashTag}</Text>
-        <Text>{data.date}</Text>
+        <Text>{byIds[diaryId]?.location}</Text>
+        <Text># {byIds[diaryId]?.hashTag}</Text>
+        <Text>{byIds[diaryId]?.date}</Text>
       </View>
 
       <View style={styles.playListContainer}>
         <FlatList
-          numRows={data.playList.length}
+          numRows={byIds[diaryId]?.playList.length}
           style={styles.playListContainer}
-          data={data.playList}
-          keyExtractor={(item) => item._id}
+          data={byIds[diaryId]?.playList}
+          keyExtractor={(item) => String(Math.random() * 1000)}
           renderItem={({ item, idx }) => {
             return (
               <View style={styles.trackContainer}>
@@ -42,11 +44,11 @@ const styles = StyleSheet.create({
     backgroundColor: "pink",
   },
   titleContainer: {
-    height: "15%",
+    height: "10%",
     backgroundColor: "purple",
   },
   playListContainer: {
-    height: "40%",
+    height: "80%",
     borderWidth: 1,
     backgroundColor: "yellow",
   },

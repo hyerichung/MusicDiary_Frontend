@@ -2,8 +2,6 @@ import { API_SERVER_PORT_DEVELOPMENT } from "@env";
 import * as AuthSession from "expo-auth-session";
 
 export async function getAuthCodeAPI() {
-  console.log(`http://${API_SERVER_PORT_DEVELOPMENT}/api/users/login/url`, "where..");
-
   const authUrl = await fetch(
     `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/url`,
     {
@@ -110,6 +108,30 @@ export async function searchTrackAPI({
   );
 
   const { data } = await saerchedTrackResult.json();
+
+  return data;
+}
+
+export async function addTrackToDiaryAPI({
+  accessToken,
+  userId,
+  diaryId,
+  trackInfo,
+}) {
+  const trackAddedResult = await fetch(
+    `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/${diaryId}/track/new`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ trackInfo: trackInfo }),
+    }
+  );
+
+  const { data } = await trackAddedResult.json();
 
   return data;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, StatusBar, View, Text, Button } from "react-native";
+import { StyleSheet, StatusBar, Button } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 const DiaryTopTab = createMaterialTopTabNavigator();

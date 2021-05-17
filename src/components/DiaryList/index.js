@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   TouchableOpacity,
   View,
@@ -13,7 +13,7 @@ const DiaryList = ({ diaryList, onPressDiary }) => {
       <View>
         <FlatList
           data={diaryList}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => String(item._id)}
           renderItem={({ item, idx }) => {
             return (
               <TouchableOpacity

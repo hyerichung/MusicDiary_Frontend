@@ -11,13 +11,14 @@ import {
 import debounce from "lodash.debounce";
 import { useSelector, useDispatch } from "react-redux";
 import { listenMusic, setPlayList } from "../../redux/slices/musicSlice";
+import { addTrackToDiary } from "../../redux/slices/diarySlice";
 
 const NewTrackAddingModalScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
   const userId = user.userInfo.id;
-  const token = user.accessToken;
+  const accessToken = user.accessToken;
   const { data } = route.params;
   const diaryId = data;
 
@@ -34,26 +35,14 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
   }, [searchInput]);
 
   async function handleSelectSong(item, index) {
-    await dispatch(listenMusic({ item, index }));
     await dispatch(setPlayList(searchList));
+    await dispatch(listenMusic({ item, index }));
   }
 
-  const handlePressAddToDiaryBtn = async (item) => {
-    const trackAddedResult = await fetch(
-      `${API_SERVER_DEVELOPMENT_PORT}/api/users/${userId}/diary/${diaryId}/track/new`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ trackInfo: item }),
-      }
+  const handlePressAddToDiaryBtn = async (trackInfo) => {
+    await dispatch(
+      addTrackToDiary({ accessToken, userId, diaryId, trackInfo })
     );
-
-    const newTrackId = await trackAddedResult.json();
-    return newTrackId;
   };
 
   const fetchTracks = debounce(async (searchInput) => {
@@ -65,7 +54,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -133,11 +122,11 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
                     height: item?.albumImg.height,
                   }}
                 />
-                <Button
-                  title="add to diary"
-                  onPress={() => handlePressAddToDiaryBtn(item)}
-                />
               </TouchableOpacity>
+              <Button
+                title="add to diary"
+                onPress={() => handlePressAddToDiaryBtn(item)}
+              />
             </>
           );
         }}

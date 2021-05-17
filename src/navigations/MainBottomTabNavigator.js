@@ -8,11 +8,7 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import PrivateDiaryListNavigator from "./PrivateDiaryListNavigator";
 import UserInfoScreen from "../screens/UserInfoScreen";
-import {
-  setIsPlaying,
-  goToNextTrack,
-  goToFirstTrack,
-} from "../redux/slices/musicSlice";
+import { setIsPlaying, goToNextTrack } from "../redux/slices/musicSlice";
 import { BOTTOM_TAB_ICON, PLAY_BUTTON_ICON, URI } from "../constants";
 
 const MainBottomTab = createBottomTabNavigator();
@@ -27,11 +23,14 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
   const [sound, setSound] = useState(null);
 
   useEffect(() => {
-    if (sound) {
-      sound.unloadAsync();
-    }
+    async function checkMusicSound() {
+      if (sound) {
+        await sound.unloadAsync();
+      }
 
-    createSound();
+      createSound();
+    }
+    checkMusicSound();
   }, [currentIdx]);
 
   const controlMusicPlaying = async () => {
@@ -55,10 +54,6 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
           if (status.didJustFinish) {
             dispatch(goToNextTrack());
             return;
-          }
-
-          if (currentIdx === playList.length - 1) {
-            dispatch(goToFirstTrack());
           }
 
           dispatch(setIsPlaying(status.isPlaying));

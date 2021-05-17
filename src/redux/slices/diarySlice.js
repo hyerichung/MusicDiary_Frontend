@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addNewDiaryAPI, fetchDiaryByDateAPI, searchTrackAPI } from "../../api";
+import {
+  addNewDiaryAPI,
+  fetchDiaryByDateAPI,
+  searchTrackAPI,
+  addTrackToDiaryAPI,
+} from "../../api";
 import * as SecureStore from "expo-secure-store";
 import { parseISO, format } from "date-fns";
 
@@ -62,20 +67,18 @@ export const searchTrack = createAsyncThunk(
 
 export const addTrackToDiary = createAsyncThunk(
   "DIARY/ADD_TRACK_TO_DIARY",
-  async ({ userId, diaryId, searchInput }) => {
+  async ({ userId, diaryId, trackInfo }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
-      const diaryPlaylist = await addTrackToDiaryAPI({
+      const { newTrackInfo } = await addTrackToDiaryAPI({
         accessToken,
         userId,
         diaryId,
-        trackId,
+        trackInfo,
       });
 
-      console.log(diaryPlaylist, "??????????");
-
-      // return diaryPlaylist;
+      return { newTrackInfo, diaryId };
     } catch (err) {
       console.error("failed to fetch searched track");
     }
@@ -102,7 +105,11 @@ export const diarySlice = createSlice({
       let currentState = state;
       currentState = initialState;
       return currentState;
-    }
+    },
+    getPlayList: (state, action) => {
+      console.log(action.payload, "payload reducer");
+      return state.byIds[action.payload].playList;
+    },
   },
   extraReducers: {
     [addNewDiary.fulfilled]: (state, action) => {
@@ -149,19 +156,23 @@ export const diarySlice = createSlice({
       state.error = action.payload;
     },
 
-    // [addTrackToDiary.pending]: (state) => {
-    //   state.loading = true;
-    // },
-    // [addTrackToDiary.reject]: (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload;
-    // },
-    // [fetchDiaryByDate.fulfilled]: (state, action) => {
+    [addTrackToDiary.pending]: (state) => {
+      state.loading = true;
+    },
+    [addTrackToDiary.reject]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [addTrackToDiary.fulfilled]: (state, action) => {
+      console.log(action.payload.newTrackInfo, "info from heaven");
 
-    // }
-
+      state.byIds[action.payload.diaryId].playList = [
+        ...state.byIds[action.payload.diaryId].playList,
+        action.payload.newTrackInfo,
+      ];
+    },
   },
 });
 
-const { clearDiary } = diarySlice.actions;
-export { clearDiary };
+const { clearDiary, getPlayList } = diarySlice.actions;
+export { clearDiary, getPlayList };

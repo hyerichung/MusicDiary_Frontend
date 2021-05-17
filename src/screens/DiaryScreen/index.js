@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { View, Button } from "react-native";
 import Diary from "../../components/Diary";
 
@@ -23,7 +23,7 @@ const DiaryScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Diary data={data.newDiaryId ? newDiaryInfo : data} />
+      <Diary data={data.newDiaryId ? newDiaryInfo : data} diaryId={diaryId} />
       <Button title="add track" onPress={openNewTrackAddingModal} />
       <Button title="edit diary" onPress={openDiaryEditingModal} />
     </View>
