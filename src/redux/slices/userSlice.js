@@ -68,8 +68,8 @@ export const userSlice = createSlice({
   },
   extraReducers: {
     [loginUser.fulfilled]: (state, action) => {
-      state.accessToken = action.payload.accessToken;
-      state.userInfo = action.payload.userInfo;
+      state.accessToken = action.payload?.accessToken;
+      state.userInfo = action.payload?.userInfo;
       state.loading = false;
       state.error = false;
     },

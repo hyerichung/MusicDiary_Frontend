@@ -55,7 +55,7 @@ export async function getUserInfoAPI(accessToken) {
   return data;
 }
 
-export async function addNewDiaryAPI({ accessToken, diaryTitleInfo, userId }) {
+export async function addNewDiaryAPI({ accessToken, newDiaryInfo, userId }) {
   const addedDiaryInfo = await fetch(
     `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/new`,
     {
@@ -64,7 +64,7 @@ export async function addNewDiaryAPI({ accessToken, diaryTitleInfo, userId }) {
         "Content-Type": "application/json",
         authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ diaryTitleInfo }),
+      body: JSON.stringify({ newDiaryInfo }),
     }
   );
 

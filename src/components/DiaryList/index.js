@@ -22,7 +22,7 @@ const DiaryList = ({ diaryList, onPressDiary }) => {
               >
                 <View>
                   <Text>{item.title}</Text>
-                  <Text>{item.location}</Text>
+                  <Text>{item.address}</Text>
                   <Text>{item.hashTag}</Text>
                   <Text>{item.date}</Text>
                 </View>

@@ -1,8 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
-import { View, Button, TextInput, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import { getDistance } from "geolib";
+import { View, Button, Text, TextInput, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
 import { setNotificationToken } from "../../redux/slices/userSlice";
+import * as Location from "expo-location";
 
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
@@ -18,19 +20,31 @@ Notifications.setNotificationHandler({
 const HomeScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { userInfo, permissionToken } = useSelector((state) => state.user);
+  const { byIds } = useSelector((state) => state.diary);
   const userId = userInfo.id;
 
   const [shouldFetch, setShouldFetch] = useState(false);
 
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [historyDiary, setHistoryDiary] = useState({});
+
   useEffect(() => {
-    async function gettingToken() {
+    async function getToken() {
       const permissionToken = await registerForPushNotificationsAsync();
 
       dispatch(setNotificationToken(permissionToken));
     }
-
-    gettingToken();
+    getToken();
   }, []);
+
+  let tempLocationText = "wating..";
+
+  if (errorMsg) {
+    tempLocationText = errorMsg;
+  } else if (location) {
+    tempLocationText = JSON.stringify(location);
+  }
 
   async function sendNotification(permissionToken) {
     try {
@@ -92,18 +106,62 @@ const HomeScreen = ({ route, navigation }) => {
     return token;
   }
 
+  async function getToken() {
+    const permissionToken = await registerForPushNotificationsAsync();
+
+    dispatch(setNotificationToken(permissionToken));
+    return true;
+  }
+
+  async function getLocation() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+  }
+
+  function moveToRelevantDiary() {
+    navigation.navigate("PrivateDiary", {
+      screen: "Diary",
+      params: { data: findHistoryDiary() },
+    });
+  }
+
   useEffect(() => {
     if (!shouldFetch) {
       return;
     }
 
-    const getDiaryByDate = async () => {
-      await dispatch(fetchDiaryByDate({ userId }));
-      setShouldFetch(false);
-    };
-
+    getLocation();
     getDiaryByDate();
+    findHistoryDiary();
   }, [shouldFetch, dispatch]);
+
+  function findHistoryDiary() {
+    const matchedHistoryDiary = Object.values(byIds).filter((diary) => {
+      const dis = getDistance(
+        {
+          latitude: location?.coords.latitude,
+          longitude: location?.coords.longitude,
+        },
+        { latitude: diary?.geoLocation.lat, longitude: diary?.geoLocation.lng }
+      );
+
+      const distance = dis / 1000;
+
+      return distance <= 0.5;
+    })[0];
+    return matchedHistoryDiary;
+  }
+
+  const getDiaryByDate = async () => {
+    await dispatch(fetchDiaryByDate({ userId }));
+    setShouldFetch(false);
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -118,8 +176,20 @@ const HomeScreen = ({ route, navigation }) => {
       <Button title="Home.. geolocation...searching..find diary.." />
       <Button
         title="noti test"
-        onPress={() => sendNotification(permissionToken)}
+        // onPress={() => sendNotification(permissionToken)}
       />
+      <Text>{tempLocationText}</Text>
+      <View>
+        <View>
+          <Text>500m 이내에 등록한 다이어리가 있어요..</Text>
+          <TouchableOpacity onPress={moveToRelevantDiary}>
+            <View>
+              <Text>{findHistoryDiary()?.hashTag}</Text>
+              <Text>{findHistoryDiary()?.date}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };

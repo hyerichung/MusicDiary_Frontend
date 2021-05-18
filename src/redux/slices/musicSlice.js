@@ -28,12 +28,17 @@ export const musicSlice = createSlice({
     },
     goToNextTrack: (state, action) => {
       state.currentIdx = state.currentIdx + 1;
+
+      if (state.currentIdx === state.playList.length) {
+        state.currentIdx = 0;
+      }
     },
     goToPrevTrack: (state, action) => {
       state.currentIdx = state.currentIdx - 1;
-    },
-    goToFirstTrack: (state, action) => {
-      state.currentIdx = 0;
+
+      if (state.currentIdx === -1) {
+        state.currentIdx = state.playList.length - 1;
+      }
     },
   },
 });
@@ -43,6 +48,7 @@ const {
   setPlayList,
   setIsPlaying,
   goToNextTrack,
+  goToPrevTrack,
   clearMusicStatus,
   goToFirstTrack,
 } = musicSlice.actions;
@@ -52,6 +58,7 @@ export {
   setPlayList,
   setIsPlaying,
   goToNextTrack,
+  goToPrevTrack,
   clearMusicStatus,
   goToFirstTrack,
 };

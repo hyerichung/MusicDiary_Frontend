@@ -8,7 +8,11 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import PrivateDiaryListNavigator from "./PrivateDiaryListNavigator";
 import UserInfoScreen from "../screens/UserInfoScreen";
-import { setIsPlaying, goToNextTrack } from "../redux/slices/musicSlice";
+import {
+  setIsPlaying,
+  goToNextTrack,
+  goToPrevTrack,
+} from "../redux/slices/musicSlice";
 import { BOTTOM_TAB_ICON, PLAY_BUTTON_ICON, URI } from "../constants";
 
 const MainBottomTab = createBottomTabNavigator();
@@ -28,7 +32,9 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
         await sound.unloadAsync();
       }
 
-      createSound();
+      if (currentTrack?.preview) {
+        createSound();
+      }
     }
     checkMusicSound();
   }, [currentIdx]);
@@ -43,7 +49,7 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
 
   const createSound = async () => {
     const { sound, status } = await Audio.Sound.createAsync(
-      { uri: currentTrack?.preview },
+      { uri: currentTrack.preview },
       { shouldPlay: true },
       async (status) => {
         if (!status.isLoaded) {
@@ -98,11 +104,33 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <TouchableOpacity
             style={{ paddingLeft: 20 }}
+            onPress={() => dispatch(goToPrevTrack())}
+          >
+            <SimpleLineIcons
+              name={PLAY_BUTTON_ICON[isPlaying]}
+              size={5}
+              color="black"
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ paddingLeft: 20 }}
             onPress={controlMusicPlaying}
           >
             <SimpleLineIcons
               name={PLAY_BUTTON_ICON[isPlaying]}
               size={20}
+              color="black"
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ paddingLeft: 20 }}
+            onPress={() => dispatch(goToNextTrack())}
+          >
+            <SimpleLineIcons
+              name={PLAY_BUTTON_ICON[isPlaying]}
+              size={5}
               color="black"
             />
           </TouchableOpacity>

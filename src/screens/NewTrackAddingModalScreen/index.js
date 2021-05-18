@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import debounce from "lodash.debounce";
 import { useSelector, useDispatch } from "react-redux";
@@ -36,7 +37,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
 
   async function handleSelectSong(item, index) {
     await dispatch(setPlayList(searchList));
-    await dispatch(listenMusic({ item, index }));
+    await dispatch(listenMusic(index));
   }
 
   const handlePressAddToDiaryBtn = async (trackInfo) => {
@@ -134,5 +135,9 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
     </View>
   );
 };
+
+// const styles = ({ white, black, selected }) => StyleSheet.create({
+//   container: { backgroundColor: selected ? black : white }
+// })
 
 export default NewTrackAddingModalScreen;

@@ -42,7 +42,9 @@ const PrivateDiaryListScreenNavigator = () => {
               <HeaderBackButton
                 tintColor="pink"
                 label=""
-                onPress={() => navigation.popToTop()}
+                onPress={() =>
+                  navigation.navigate("DiaryTopTap", { screen: "ByDate" })
+                }
               />
             ),
           })}

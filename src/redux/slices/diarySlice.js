@@ -10,17 +10,17 @@ import { parseISO, format } from "date-fns";
 
 export const addNewDiary = createAsyncThunk(
   "DIARY/ADD_DIARY",
-  async ({ diaryTitleInfo, userId }) => {
+  async ({ newDiaryInfo, userId }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
-      const newDiaryInfo = await addNewDiaryAPI({
+      const newDiary = await addNewDiaryAPI({
         accessToken,
-        diaryTitleInfo,
+        newDiaryInfo,
         userId,
       });
 
-      return newDiaryInfo;
+      return newDiary;
     } catch (err) {
       console.error("failed to post diary", err);
     }
