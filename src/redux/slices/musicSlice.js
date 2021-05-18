@@ -24,7 +24,7 @@ export const musicSlice = createSlice({
       state.playList = action.payload;
     },
     listenMusic: (state, action) => {
-      state.currentIdx = action.payload.index;
+      state.currentIdx = action.payload;
     },
     goToNextTrack: (state, action) => {
       state.currentIdx = state.currentIdx + 1;

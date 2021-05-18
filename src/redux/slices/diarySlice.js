@@ -107,7 +107,6 @@ export const diarySlice = createSlice({
       return currentState;
     },
     getPlayList: (state, action) => {
-      console.log(action.payload, "payload reducer");
       return state.byIds[action.payload].playList;
     },
   },
@@ -133,10 +132,10 @@ export const diarySlice = createSlice({
     },
 
     [fetchDiaryByDate.fulfilled]: (state, action) => {
-      const ids = action.payload.map((diary) => diary._id);
+      const ids = action.payload?.map((diary) => diary._id);
 
       state.byIds = {
-        ...action.payload.reduce((initialObj, diaryById) => {
+        ...action.payload?.reduce((initialObj, diaryById) => {
           initialObj[diaryById._id] = {
             ...diaryById,
             date: format(parseISO(diaryById.date), "yyyy-MM-dd"),
@@ -144,7 +143,8 @@ export const diarySlice = createSlice({
           return initialObj;
         }, {}),
       };
-      state.allIds = [...ids];
+
+      state.allIds = ids;
       state.loading = false;
       state.error = false;
     },
@@ -164,8 +164,6 @@ export const diarySlice = createSlice({
       state.error = action.payload;
     },
     [addTrackToDiary.fulfilled]: (state, action) => {
-      console.log(action.payload.newTrackInfo, "info from heaven");
-
       state.byIds[action.payload.diaryId].playList = [
         ...state.byIds[action.payload.diaryId].playList,
         action.payload.newTrackInfo,

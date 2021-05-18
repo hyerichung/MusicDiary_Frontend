@@ -1,9 +1,16 @@
 import React from "react";
-import { View, StyleSheet, Text, FlatList } from "react-native";
-import { useSelector } from "react-redux";
+import { View, StyleSheet, Text, FlatList, Button } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { listenMusic, setPlayList } from "../../redux/slices/musicSlice";
 
 const Diary = ({ data, diaryId }) => {
+  const dispatch = useDispatch();
   const { byIds } = useSelector((state) => state.diary);
+
+  function handlePressMusicPlayBtn(index) {
+    dispatch(setPlayList(byIds[diaryId].playList));
+    dispatch(listenMusic(index));
+  }
 
   return (
     <View stlye={styles.diaryContainer}>
@@ -19,13 +26,17 @@ const Diary = ({ data, diaryId }) => {
           style={styles.playListContainer}
           data={byIds[diaryId]?.playList}
           keyExtractor={(item) => String(Math.random() * 1000)}
-          renderItem={({ item, idx }) => {
+          renderItem={({ item, index }) => {
             return (
               <View style={styles.trackContainer}>
                 <Text>Playlist</Text>
                 <Text>{item._id}</Text>
                 <Text>{item.title}</Text>
                 <Text>{item.artist}</Text>
+                <Button
+                  title="play"
+                  onPress={() => handlePressMusicPlayBtn(index)}
+                />
               </View>
             );
           }}

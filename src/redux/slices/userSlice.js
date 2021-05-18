@@ -40,6 +40,7 @@ export const clearAccessToken = createAsyncThunk(
 
 const initialState = {
   accessToken: null,
+  permissionToken: null,
   userInfo: {
     id: null,
     email: null,
@@ -60,6 +61,9 @@ export const userSlice = createSlice({
       let currentState = state;
       currentState = initialState;
       return currentState;
+    },
+    setNotificationToken: (state, action) => {
+      state.permissionToken = action.payload;
     },
   },
   extraReducers: {
@@ -105,5 +109,5 @@ export const userSlice = createSlice({
   },
 });
 
-const { clearUser } = userSlice.actions;
-export { clearUser };
+const { clearUser, setNotificationToken } = userSlice.actions;
+export { clearUser, setNotificationToken };
