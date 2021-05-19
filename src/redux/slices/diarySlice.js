@@ -109,6 +109,9 @@ export const diarySlice = createSlice({
     getPlayList: (state, action) => {
       return state.byIds[action.payload].playList;
     },
+    updateMatchedHistoryDiary: (state, action) => {
+      console.log(state.byIds[action.payload], action.payload, ".........")
+    },
   },
   extraReducers: {
     [addNewDiary.fulfilled]: (state, action) => {
@@ -172,5 +175,5 @@ export const diarySlice = createSlice({
   },
 });
 
-const { clearDiary, getPlayList } = diarySlice.actions;
-export { clearDiary, getPlayList };
+const { clearDiary, getPlayList, updateMatchedHistoryDiary } = diarySlice.actions;
+export { clearDiary, getPlayList, updateMatchedHistoryDiary };

@@ -10,11 +10,11 @@ import RealMainStackNavigator from "../navigations/RealMainStackNavigator";
 const Stack = createStackNavigator();
 
 const AppStackNavigator = () => {
-  const isLoggedIn = useSelector((state) => Boolean(state.user.accessToken));
+  const { accessToken, userInfo } = useSelector((state) => state.user);
 
   return (
     <Stack.Navigator mode="modal">
-      {isLoggedIn ? (
+      {accessToken ? (
         <>
           <Stack.Screen
             name="RealMain"

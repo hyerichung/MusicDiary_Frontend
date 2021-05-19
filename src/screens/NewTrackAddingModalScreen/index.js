@@ -41,9 +41,33 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
   }
 
   const handlePressAddToDiaryBtn = async (trackInfo) => {
-    await dispatch(
-      addTrackToDiary({ accessToken, userId, diaryId, trackInfo })
-    );
+    try {
+      const energyResult = await fetch(
+        `https://api.spotify.com/v1/audio-features/${trackInfo.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const { energy } = await energyResult.json();
+      const energyAddedTrackInfo = { ...trackInfo, energy };
+
+      await dispatch(
+        addTrackToDiary({
+          accessToken,
+          userId,
+          diaryId,
+          trackInfo: energyAddedTrackInfo,
+        })
+      );
+    } catch(err) {
+      console.error(err);
+    }
   };
 
   const fetchTracks = debounce(async (searchInput) => {

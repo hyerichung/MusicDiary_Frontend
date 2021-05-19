@@ -8,6 +8,7 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import PrivateDiaryListNavigator from "./PrivateDiaryListNavigator";
 import UserInfoScreen from "../screens/UserInfoScreen";
+import TotalDiaryInfoScreen from "../screens/TotalDiaryInfoScreen";
 import {
   setIsPlaying,
   goToNextTrack,
@@ -37,7 +38,7 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
       }
     }
     checkMusicSound();
-  }, [currentIdx]);
+  }, [currentIdx, playList]);
 
   const controlMusicPlaying = async () => {
     if (isPlaying) {
@@ -203,6 +204,7 @@ const MainBottomTabNavigator = () => {
         name="PrivateDiary"
         component={PrivateDiaryListNavigator}
       />
+      <MainBottomTab.Screen name="Info" component={TotalDiaryInfoScreen} />
       <MainBottomTab.Screen name="My" component={UserInfoScreen} />
     </MainBottomTab.Navigator>
   );
