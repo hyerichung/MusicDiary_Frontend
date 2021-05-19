@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
   animation: {
     position: "absolute",
     alignSelf: "center",
+    top: 45,
+    width: 270,
+    height: 270,
   },
 });
 

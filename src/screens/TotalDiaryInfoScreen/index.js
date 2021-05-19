@@ -9,8 +9,8 @@ function TotalDiaryInfoScreen() {
 
   const commitsData = [
     { date: "2017-01-02", count: 1, energy: 30 },
-    { date: "2017-01-03", count: 2, energy: 20  },
-    { date: "2017-01-04", count: 3, energy: 11},
+    { date: "2017-01-03", count: 2, energy: 20 },
+    { date: "2017-01-04", count: 3, energy: 11 },
   ];
 
   const energy = [

@@ -1161,10 +1161,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@expo-google-fonts/nobile@^0.1.0":
+"@expo-google-fonts/dm-sans@^0.1.0":
   version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@expo-google-fonts/nobile/-/nobile-0.1.0.tgz#9170885ee65324b6375e2e9b940ecc82dbcdb6c4"
-  integrity sha512-/lYTcPK02qLB6C3i+EpJszfJBvlcgUaO0WWS0rEhI3dENdg8Kw/YTRxWTGQoVSXAhU/dh5vj5OrWQffxJ0zOLg==
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/dm-sans/-/dm-sans-0.1.0.tgz#51d73331d9e2383e203193d5c09e3399f802e3ba"
+  integrity sha512-zKZeh7Mihld4Mm21eiOs3pgXE3dpiEL57Q7lJXAtok1wLtkbA3SFfr9IhwYL5CXFxje40ikkpKBLEnvGyJ191Q==
 
 "@expo/config-plugins@1.0.31", "@expo/config-plugins@^1.0.18":
   version "1.0.31"

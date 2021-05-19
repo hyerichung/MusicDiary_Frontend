@@ -116,7 +116,6 @@ const HomeScreen = ({ route, navigation }) => {
             <View>
               <Text>{byIds[historyDiary]?.hashTag}</Text>
               <Text>{byIds[historyDiary]?.date}</Text>
-
             </View>
           </TouchableOpacity>
         </View>

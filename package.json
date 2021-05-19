@@ -9,7 +9,7 @@
     "postinstall": "rndebugger-open"
   },
   "dependencies": {
-    "@expo-google-fonts/nobile": "^0.1.0",
+    "@expo-google-fonts/dm-sans": "^0.1.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.10",
     "@react-navigation/material-top-tabs": "^5.3.15",

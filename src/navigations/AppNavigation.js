@@ -4,7 +4,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { getAccessToken } from "../redux/slices/userSlice";
-import Loading from "../screens/LoadingScreen/";
+import Loading from "../screens/LoadingScreen";
 import AppStackNavigator from "../navigations/AppStackNavigator";
 
 const AppNavigation = () => {

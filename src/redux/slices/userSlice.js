@@ -4,9 +4,13 @@ import * as SecureStore from "expo-secure-store";
 
 export const loginUser = createAsyncThunk("USER/LOGIN_USER", async () => {
   try {
+    console.log("enter,...")
     const authCode = await getAuthCodeAPI();
+    console.log(authCode, "code")
     const { accessToken } = await getAccessTokenAPI(authCode);
+    console.log(accessToken, "token")
     const { userInfo } = await getUserInfoAPI(accessToken);
+    console.log(userInfo, "userinf,,")
 
     await SecureStore.setItemAsync("accessToken", accessToken);
 
