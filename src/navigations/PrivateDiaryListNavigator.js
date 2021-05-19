@@ -20,7 +20,7 @@ const PrivateDiaryListScreenNavigator = () => {
     const routeName = getFocusedRouteNameFromRoute(route);
 
     switch (routeName) {
-      case "Diary":
+      case "SingleDiary":
         return null;
     }
   }
@@ -34,7 +34,7 @@ const PrivateDiaryListScreenNavigator = () => {
           options={{ headerShown: false }}
         />
         <DiaryStack.Screen
-          name="Diary"
+          name="SingleDiary"
           component={DiaryScreen}
           options={({ route }) => ({
             headerTitle: (props) => getHeader(route, props),

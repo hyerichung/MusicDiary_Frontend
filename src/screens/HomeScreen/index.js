@@ -49,8 +49,8 @@ const HomeScreen = ({ route, navigation }) => {
   }
 
   function moveToRelevantDiary() {
-    navigation.navigate("PrivateDiary", {
-      screen: "Diary",
+    navigation.navigate("Diary", {
+      screen: "SingleDiary",
       params: { data: byIds[historyDiary] },
     });
   }

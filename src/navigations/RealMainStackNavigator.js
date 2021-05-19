@@ -13,7 +13,7 @@ const RealMainStackNavigator = () => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? "Home";
 
     switch (routeName) {
-      case "PrivateDiary":
+      case "Diary":
       case "My":
         return <Text {...props}>{routeName}</Text>;
       case "Home":

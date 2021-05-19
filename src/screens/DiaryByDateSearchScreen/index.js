@@ -13,7 +13,7 @@ const DiaryByDateSearchScreen = ({ navigation }) => {
   }
 
   function handleDiaryPressBtn(diaryInfo) {
-    navigation.navigate("Diary", { data: diaryInfo });
+    navigation.navigate("SingleDiary", { data: diaryInfo });
   }
 
   return (

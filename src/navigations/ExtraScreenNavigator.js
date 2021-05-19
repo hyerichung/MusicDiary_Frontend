@@ -13,7 +13,7 @@ const ExtraScreenNavigator = ({ navigation }) => {
     const routeName = getFocusedRouteNameFromRoute(route);
 
     switch (routeName) {
-      case "Diary":
+      case "SingleDiary":
         return null;
     }
   }
@@ -22,7 +22,7 @@ const ExtraScreenNavigator = ({ navigation }) => {
     <>
       <ExtraStack.Navigator>
         <ExtraStack.Screen
-          name="Diary"
+          name="SingleDiary"
           component={DiaryScreen}
           options={({ route }) => ({
             headerTitle: (props) => getHeader(route, props),

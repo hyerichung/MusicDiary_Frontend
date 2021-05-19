@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Audio } from "expo-av";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 import HomeScreen from "../screens/HomeScreen";
@@ -75,30 +75,43 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
       <View style={styles.divider} />
       <View style={styles.trackPlayerContainer}>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity>
-            <SimpleLineIcons
-              name="music-tone"
-              size={23}
-              color="black"
-              style={{ position: "absolute", left: 20, top: 8 }}
+          {currentTrack?.albumImg ? (
+            <Image
+              source={{ uri: currentTrack?.albumImg.url }}
+              style={{
+                width: currentTrack?.albumImg.width,
+                height: currentTrack?.albumImg.height,
+              }}
             />
-          </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={{
+                width: 64,
+                height: 64,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <SimpleLineIcons name="music-tone" size={20} color="black" />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={{
               alignItems: "center",
               justifyContent: "center",
-              marginLeft: 12,
-              width: 220,
+              width: 120,
             }}
           >
             <Text
               numberOfLines={1}
               style={{ color: "black", fontSize: 16, paddingBottom: 4 }}
             >
-              track name
+              {currentTrack?.title ? currentTrack.title : "Music Diary"}
             </Text>
             <Text numberOfLines={1} style={{ color: "black", fontSize: 13 }}>
-              <Text>artist name</Text>
+              <Text>
+                {currentTrack?.artist ? currentTrack.artist : "Choose track"}
+              </Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -107,33 +120,25 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
             style={{ paddingLeft: 20 }}
             onPress={() => dispatch(goToPrevTrack())}
           >
-            <SimpleLineIcons
-              name={PLAY_BUTTON_ICON[isPlaying]}
-              size={5}
-              color="black"
-            />
+            <SimpleLineIcons name={"control-start"} size={14} color="black" />
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{ paddingLeft: 20 }}
-            onPress={controlMusicPlaying}
+            style={{ paddingLeft: 30 }}
+            onPress={() => controlMusicPlaying()}
           >
             <SimpleLineIcons
               name={PLAY_BUTTON_ICON[isPlaying]}
-              size={20}
+              size={18}
               color="black"
             />
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{ paddingLeft: 20 }}
+            style={{ paddingLeft: 25 }}
             onPress={() => dispatch(goToNextTrack())}
           >
-            <SimpleLineIcons
-              name={PLAY_BUTTON_ICON[isPlaying]}
-              size={5}
-              color="black"
-            />
+            <SimpleLineIcons name={"control-end"} size={14} color="black" />
           </TouchableOpacity>
         </View>
       </View>
@@ -180,11 +185,8 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
               <SimpleLineIcons
                 name={BOTTOM_TAB_ICON[label]}
                 size={20}
-                color={isFocused ? "blue" : "black"}
+                color={isFocused ? "#0652DD" : "black"}
               />
-              <Text style={{ color: isFocused ? "blue" : "black" }}>
-                {label}
-              </Text>
             </TouchableOpacity>
           );
         })}
@@ -201,7 +203,7 @@ const MainBottomTabNavigator = () => {
     >
       <MainBottomTab.Screen name="Home" component={HomeScreen} />
       <MainBottomTab.Screen
-        name="PrivateDiary"
+        name="Diary"
         component={PrivateDiaryListNavigator}
       />
       <MainBottomTab.Screen name="Info" component={TotalDiaryInfoScreen} />
@@ -213,25 +215,26 @@ const MainBottomTabNavigator = () => {
 const styles = StyleSheet.create({
   container: {},
   divider: {
-    backgroundColor: "black",
-    height: 2,
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    height: 1,
     width: "100%",
   },
   trackPlayerContainer: {
     flexDirection: "row",
     width: "100%",
-    height: 55,
+    height: 64,
     backgroundColor: "white",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingRight: 16,
+    paddingRight: 35,
   },
   bottomTabBtnContainer: {
     flexDirection: "row",
-    borderTopWidth: 1,
-    borderColor: "black",
-    paddingTop: 8,
-    paddingBottom: 16,
+    borderTopWidth: 0.3,
+    borderColor: "rgba(0, 0, 0, 0.2)",
+    paddingTop: 13,
+    paddingBottom: 13,
+    backgroundColor: "white",
   },
   tabButton: {
     flex: 1,

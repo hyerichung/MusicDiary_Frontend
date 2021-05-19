@@ -6,7 +6,8 @@ export const PLAY_BUTTON_ICON = {
 
 export const BOTTOM_TAB_ICON = {
   Home: "home",
-  PrivateDiary: "notebook",
+  Diary: "notebook",
+  Info: "calendar",
   My: "user",
 };
 
