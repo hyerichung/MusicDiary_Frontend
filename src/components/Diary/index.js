@@ -15,7 +15,7 @@ const Diary = ({ data, diaryId }) => {
   return (
     <View stlye={styles.diaryContainer}>
       <View style={styles.titleContainer}>
-        <Text>{byIds[diaryId]?.location}</Text>
+        <Text>{byIds[diaryId]?.address}</Text>
         <Text># {byIds[diaryId]?.hashTag}</Text>
         <Text>{byIds[diaryId]?.date}</Text>
       </View>
@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "pink",
+    backgroundColor: "#ffffff",
   },
   titleContainer: {
     height: "10%",
-    backgroundColor: "purple",
+    backgroundColor: "#ffffff",
   },
   playListContainer: {
     height: "80%",

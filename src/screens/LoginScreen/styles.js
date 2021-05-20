@@ -6,6 +6,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  title: {
+    fontSize: 30,
+    marginBottom: 20,
+    fontWeight: "400",
+  },
   card: {
     margin: 0,
     padding: 0,
@@ -50,13 +55,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
     position: "absolute",
-    right: -87,
-    bottom: -2,
+    right: 25,
+    bottom: 29,
   },
   spotify: {
     position: "absolute",
-    right: 70,
-    bottom: -5,
+    left: 15,
+    bottom: 25,
   },
 });
 

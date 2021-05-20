@@ -1,22 +1,56 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+  Image,
+  Dimensions,
+} from "react-native";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-
 import MainBottomTabNavigator from "./MainBottomTabNavigator";
 import ExtraScreenNavigator from "./ExtraScreenNavigator";
 
 const RealMainStack = createStackNavigator();
 
 const RealMainStackNavigator = () => {
+  const HeaderStatusBar = ({ backgroundColor, ...props }) => (
+    <View style={[styles.statusBar]}>
+      <SafeAreaView>
+        <StatusBar
+          translucent={true}
+          backgroundColor={styles.backgroundColor}
+          {...props}
+        />
+      </SafeAreaView>
+    </View>
+  );
+
   function getHeader(route, props) {
     const routeName = getFocusedRouteNameFromRoute(route) ?? "Home";
 
     switch (routeName) {
-      case "Diary":
-      case "My":
-        return <Text {...props}>{routeName}</Text>;
       case "Home":
+      case "My":
+      case "Info":
+        return (
+          <View>
+            <HeaderStatusBar {...props} />
+            <View style={styles.header} {...props}>
+              <Image
+                style={styles.img}
+                source={require("../../assets/header_logo.png")}
+              />
+            </View>
+          </View>
+        );
+      case "Diary":
+        return (
+          <View>
+            <HeaderStatusBar {...props} />
+          </View>
+        );
       case "Extra":
         return null;
     }
@@ -43,5 +77,25 @@ const RealMainStackNavigator = () => {
     </>
   );
 };
+
+const STATUSBAR_HEIGHT = StatusBar.currentHeight;
+const { width: windowWidth } = Dimensions.get("window");
+
+const styles = StyleSheet.create({
+  header: {
+    height: 80,
+    flexDirection: "row",
+    alignItems: "center",
+    width: windowWidth,
+    justifyContent: "center",
+  },
+  statusBar: {
+    height: STATUSBAR_HEIGHT,
+  },
+  img: {
+    width: 55,
+    height: 55,
+  },
+});
 
 export default RealMainStackNavigator;

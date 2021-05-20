@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getDistance } from "geolib";
-import { View, Button, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
 import * as Location from "expo-location";
-import HomeDiaryAlert from "../../components/HomeDiaryAlert";
 import * as Notifications from "expo-notifications";
+import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
+import HomeDiaryAlert from "../../components/HomeDiaryAlert";
+
+import styles from "./styles";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -55,7 +57,7 @@ const HomeScreen = ({ route, navigation }) => {
 
   function findHistoryDiary(location) {
     const matchedHistoryDiary = Object.values(byIds).filter((diary) => {
-      const dis = getDistance(
+      const distance = getDistance(
         {
           latitude: location?.coords?.latitude,
           longitude: location?.coords?.longitude,
@@ -66,9 +68,9 @@ const HomeScreen = ({ route, navigation }) => {
         }
       );
 
-      const distance = dis / 1000;
+      const distanceMeter = distance / 1000;
 
-      return distance <= 0.5;
+      return distanceMeter <= 0.5;
     });
 
     setHistoryDiary(matchedHistoryDiary[0]);
@@ -92,9 +94,12 @@ const HomeScreen = ({ route, navigation }) => {
   }, [shouldFetch]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>{locationIndicationText}</Text>
-      <HomeDiaryAlert navigation={navigation} matchedHistoryDiary={historyDiary}/>
+      <HomeDiaryAlert
+        navigation={navigation}
+        matchedHistoryDiary={historyDiary}
+      />
     </View>
   );
 };

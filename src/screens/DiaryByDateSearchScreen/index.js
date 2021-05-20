@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View, Button, StyleSheet, StatusBar } from "react-native";
 import { useSelector } from "react-redux";
 import DiaryList from "../../components/DiaryList";
 import { useIsFocused } from "@react-navigation/native";
@@ -17,7 +17,7 @@ const DiaryByDateSearchScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Button title="diary by dates..default..showing relevant diary with location.." />
       <DiaryList
         diaryList={Object.values(byIds)}
@@ -26,5 +26,21 @@ const DiaryByDateSearchScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  topTabHeader: {
+    backgroundColor: "blue",
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "purple",
+    // backgroundColor: "yellow",
+    // paddingTop: StatusBar.currentHeight,
+    // height: 50,
+    // flexDirection: "row",
+    // alignItems: "center",
+  },
+});
+
 
 export default DiaryByDateSearchScreen;

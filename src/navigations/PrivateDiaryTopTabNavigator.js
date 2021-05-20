@@ -4,7 +4,6 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 const DiaryTopTab = createMaterialTopTabNavigator();
 
-import DiaryByHashTagSearchScreen from "../screens/DiaryByHashTagSearchScreen";
 import DiaryByDateSearchScreen from "../screens/DiaryByDateSearchScreen";
 
 const DiaryTopTabNavigator = ({ navigation }) => {
@@ -17,11 +16,13 @@ const DiaryTopTabNavigator = ({ navigation }) => {
   return (
     <>
       <DiaryTopTab.Navigator initialRouteName="ByDate">
-        <DiaryTopTab.Screen name="ByDate" component={DiaryByDateSearchScreen} />
-        <DiaryTopTab.Screen
-          name="Hashtag"
-          component={DiaryByHashTagSearchScreen}
-        />
+        <DiaryTopTab.Screen 
+          name="ByDate" 
+          component={DiaryByDateSearchScreen} 
+          options={({ route }) => ({
+          headerTitle: () => <Text>asdfwfasdfdasfsadfdsf</Text>,
+          header: (props) => getHeader(route, props),
+        })}/>
       </DiaryTopTab.Navigator>
       <Button title="AddNewDiary" onPress={handleOpenAddNewDiaryModal} />
     </>
