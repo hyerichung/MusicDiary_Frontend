@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Button, TouchableOpacity, View, Text } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import DiaryByDateSearchScreen from "../screens/DiaryByDateSearchScreen";
 import { SimpleLineIcons } from "@expo/vector-icons";

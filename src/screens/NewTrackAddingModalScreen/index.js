@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  Button,
   TextInput,
   FlatList,
   Image,
@@ -10,6 +9,8 @@ import {
   StyleSheet,
 } from "react-native";
 import debounce from "lodash.debounce";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { listenMusic, setPlayList } from "../../redux/slices/musicSlice";
 import { addTrackToDiary } from "../../redux/slices/diarySlice";
@@ -65,7 +66,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
           trackInfo: energyAddedTrackInfo,
         })
       );
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
   };
@@ -73,7 +74,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
   const fetchTracks = debounce(async (searchInput) => {
     try {
       const tempSearchResult = await fetch(
-        `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=3&${offset}`,
+        `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=40&${offset}`,
         {
           method: "GET",
           headers: {
@@ -118,50 +119,138 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View>
-      <Button onPress={closeModal} title="Close" />
-      <Text>Search track....</Text>
-      <TextInput
-        placeholder="serach track..."
-        blurOnSubmit
-        autoCorrect={false}
-        maxLength={30}
-        placeholderTextColor="#777"
-        value={searchInput}
-        onChangeText={(text) => handleChangeText(text)}
-      />
-      <FlatList
-        data={searchList}
-        keyExtractor={(item, index) => String(index)}
-        renderItem={({ item, index }) => {
-          return (
-            <>
-              <TouchableOpacity onPress={() => handleSelectSong(item, index)}>
-                <Text>track</Text>
-                <Text>{item?.title}</Text>
-                <Text>{item?.artist}</Text>
-                <Image
-                  source={{ uri: item?.albumImg.url }}
-                  style={{
-                    width: item?.albumImg.width,
-                    height: item?.albumImg.height,
-                  }}
-                />
-              </TouchableOpacity>
-              <Button
-                title="add to diary"
-                onPress={() => handlePressAddToDiaryBtn(item)}
-              />
-            </>
-          );
-        }}
-      />
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.closeBox}>
+        <SimpleLineIcons
+          style={styles.closeBtn}
+          name="close"
+          size={24}
+          color="black"
+          onPress={closeModal}
+        />
+      </TouchableOpacity>
+      <View style={styles.searchInputBox}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Serach track..."
+          blurOnSubmit
+          autoCorrect={false}
+          maxLength={30}
+          placeholderTextColor="#777"
+          value={searchInput}
+          onChangeText={(text) => handleChangeText(text)}
+        />
+      </View>
+      <View style={styles.listWrapper}>
+        <FlatList
+          style={styles.searchList}
+          data={searchList}
+          keyExtractor={(item, index) => String(index)}
+          renderItem={({ item, index }) => {
+            return (
+              <>
+                <View style={styles.track}>
+                  <TouchableOpacity
+                    style={styles.titleWrap}
+                    onPress={() => handleSelectSong(item, index)}
+                  >
+                    <View style={styles.imgWrap}>
+                      <Image
+                        source={{ uri: item?.albumImg.url }}
+                        style={{
+                          backgroundColor: "red",
+                          width: item?.albumImg.width,
+                          height: item?.albumImg.height,
+                        }}
+                      />
+                      <View style={styles.textWrap}>
+                        <Text style={styles.titleText}>{item?.title}</Text>
+                        <Text style={styles.artistText}>{item?.artist}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.plusBtn}
+                    onPress={() => {
+                      handlePressAddToDiaryBtn(item);
+                    }}
+                  >
+                    <AntDesign name="hearto" size={23} />
+                  </TouchableOpacity>
+                </View>
+              </>
+            );
+          }}
+        />
+      </View>
     </View>
   );
 };
 
-// const styles = ({ white, black, selected }) => StyleSheet.create({
-//   container: { backgroundColor: selected ? black : white }
-// })
+const styles = StyleSheet.create({
+  listWrapper: {
+    height: 435,
+  },
+  textWrap: {
+    width: 240,
+    marginLeft: 10,
+    flexDirection: "column",
+    marginBottom: 5,
+  },
+  plusBtn: {
+    position: "absolute",
+    right: 15,
+    marginTop: 18,
+  },
+  imgWrap: {
+    marginLeft: 10,
+    width: 300,
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  titleText: {
+    fontSize: 15,
+  },
+  artistText: {
+    fontSize: 15,
+  },
+  titleWrap: {
+    width: 40,
+  },
+  track: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    borderWidth: 0.5,
+    borderColor: "rgba(0, 0, 0, 0.2)",
+  },
+  serachList: {
+    justifyContent: "center",
+    flexDirection: "row",
+    flexGrow: 0,
+  },
+  searchInputBox: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 5,
+    marginBottom: 15,
+  },
+  searchInput: {
+    textAlign: "center",
+    borderWidth: 2,
+    borderColor: "black",
+    height: 35,
+    width: 250,
+  },
+  closeBtn: {
+    marginRight: 12,
+    marginTop: 20,
+  },
+  closeBox: {
+    height: 45,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+});
 
 export default NewTrackAddingModalScreen;

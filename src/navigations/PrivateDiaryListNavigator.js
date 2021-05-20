@@ -14,7 +14,6 @@ import {
 } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import { SimpleLineIcons } from "@expo/vector-icons";
 
 import PrivateDiaryTopTabNavigator from "./PrivateDiaryTopTabNavigator";
 import DiaryScreen from "../screens/DiaryScreen";
@@ -24,15 +23,6 @@ const DiaryStack = createStackNavigator();
 
 const PrivateDiaryListScreenNavigator = () => {
   const navigation = useNavigation();
-
-  function getHeader(route) {
-    const routeName = getFocusedRouteNameFromRoute(route);
-
-    switch (routeName) {
-      case "SingleDiary":
-        return null;
-    }
-  }
 
   return (
     <DiaryStack.Navigator>

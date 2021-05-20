@@ -14,7 +14,6 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.loginWrapper}>
-      {/* <Text style={styles.title}>LOGIN</Text> */}
       <View style={styles.card}>
         <View>
           <Text style={styles.musicDiaryText}>MUSIC DIARY</Text>
@@ -22,13 +21,8 @@ const LoginScreen = () => {
         <Text style={styles.descText}>Keep your own playlist</Text>
       </View>
       <TouchableOpacity onPress={handlePressLogin} style={styles.loginBox}>
-          <Entypo
-            style={styles.spotify}
-            name="spotify"
-            size={24}
-            color="black"
-          />
-          <Text style={styles.loginText}>LOGIN WITH SPOTIFY</Text>
+        <Entypo style={styles.spotify} name="spotify" size={24} color="black" />
+        <Text style={styles.loginText}>LOGIN WITH SPOTIFY</Text>
       </TouchableOpacity>
     </View>
   );

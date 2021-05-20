@@ -1,10 +1,9 @@
 import React from "react";
-import { Text, View, Dimensions, StatusBar, StyleSheet } from "react-native";
+import { Text, View, Dimensions, StyleSheet } from "react-native";
 import { ContributionGraph } from "react-native-chart-kit";
 
 function TotalDiaryInfoScreen() {
   const handleOnDatPress = (value) => {
-    console.log("a", value);
   };
 
   const commitsData = [

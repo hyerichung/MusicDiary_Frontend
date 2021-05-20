@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Button, StyleSheet, StatusBar } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import DiaryList from "../../components/DiaryList";
 import { useIsFocused } from "@react-navigation/native";
@@ -33,13 +33,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    // backgroundColor: "yellow",
-    // paddingTop: StatusBar.currentHeight,
-    // height: 50,
-    // flexDirection: "row",
-    // alignItems: "center",
   },
 });
-
 
 export default DiaryByDateSearchScreen;
