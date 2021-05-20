@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { getDistance } from "geolib";
 import { View, Button, Text, TextInput, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDiaryByDate, updateMatchedHistoryDiary } from "../../redux/slices/diarySlice";
-import { setNotificationToken } from "../../redux/slices/userSlice";
+import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
 import * as Location from "expo-location";
-
-import Constants from "expo-constants";
+import HomeDiaryAlert from "../../components/HomeDiaryAlert";
 import * as Notifications from "expo-notifications";
 
 Notifications.setNotificationHandler({
@@ -19,22 +17,20 @@ Notifications.setNotificationHandler({
 
 const HomeScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const { userInfo, permissionToken } = useSelector((state) => state.user);
-  const { byIds } = useSelector((state) => state.diary);
-  const userId = userInfo.id;
+  const { userInfo } = useSelector((state) => state?.user);
+  const { byIds } = useSelector((state) => state?.diary);
+  const userId = userInfo?.id;
 
   const [shouldFetch, setShouldFetch] = useState(false);
 
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [locationText, setLocationText] = useState(null);
   const [historyDiary, setHistoryDiary] = useState({});
+  const [errMessage, setErrorMsg] = useState("");
 
-  let tempLocationText = "wating..";
+  let locationIndicationText = "Searching for your current location...";
 
-  if (errorMsg) {
-    tempLocationText = errorMsg;
-  } else if (location) {
-    tempLocationText = JSON.stringify(location);
+  if (locationText) {
+    locationIndicationText = "Found Diary nearby your location!";
   }
 
   async function getLocation() {
@@ -45,14 +41,8 @@ const HomeScreen = ({ route, navigation }) => {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-  }
 
-  function moveToRelevantDiary() {
-    navigation.navigate("Diary", {
-      screen: "SingleDiary",
-      params: { data: byIds[historyDiary] },
-    });
+    getDiaryByDate(location);
   }
 
   useEffect(() => {
@@ -61,14 +51,9 @@ const HomeScreen = ({ route, navigation }) => {
     }
 
     getLocation();
-    getDiaryByDate();
-    findHistoryDiary();
+  }, [shouldFetch, byIds, dispatch]);
 
-    // return () => dispatch(updateMatchedHistoryDiary(historyDiary));
-  }, [shouldFetch, dispatch]);
-
-
-  function findHistoryDiary() {
+  function findHistoryDiary(location) {
     const matchedHistoryDiary = Object.values(byIds).filter((diary) => {
       const dis = getDistance(
         {
@@ -84,15 +69,17 @@ const HomeScreen = ({ route, navigation }) => {
       const distance = dis / 1000;
 
       return distance <= 0.5;
-    })[0];
+    });
 
-    setHistoryDiary(matchedHistoryDiary?._id);
-  };
+    setHistoryDiary(matchedHistoryDiary[0]);
 
+    return matchedHistoryDiary;
+  }
 
-  const getDiaryByDate = async () => {
+  const getDiaryByDate = async (location) => {
     await dispatch(fetchDiaryByDate({ userId }));
-    findHistoryDiary();
+
+    findHistoryDiary(location);
     setShouldFetch(false);
   };
 
@@ -106,20 +93,8 @@ const HomeScreen = ({ route, navigation }) => {
 
   return (
     <View>
-      <Button title="Home.. geolocation...searching..find diary.." />
-      <Button title="noti test" />
-      <Text>{tempLocationText}</Text>
-      <View>
-        <View>
-          <Text>500m 이내에 등록한 다이어리가 있어요..</Text>
-          <TouchableOpacity onPress={moveToRelevantDiary}>
-            <View>
-              <Text>{byIds[historyDiary]?.hashTag}</Text>
-              <Text>{byIds[historyDiary]?.date}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <Text>{locationIndicationText}</Text>
+      <HomeDiaryAlert navigation={navigation} matchedHistoryDiary={historyDiary}/>
     </View>
   );
 };

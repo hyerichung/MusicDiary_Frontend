@@ -86,12 +86,10 @@ export const addTrackToDiary = createAsyncThunk(
 );
 
 const initialState = {
-  byIds: {}, // default byDate
+  byIds: {},
   allIds: [],
   visibleDiary: {
-    byDate: [], // default
-    byLocation: [],
-    byHashTag: [],
+    byDate: [],
   },
   loading: false,
   error: null,
@@ -172,5 +170,5 @@ export const diarySlice = createSlice({
   },
 });
 
-const { clearDiary, getPlayList, updateMatchedHistoryDiary } = diarySlice.actions;
-export { clearDiary, getPlayList, updateMatchedHistoryDiary };
+const { clearDiary, getPlayList } = diarySlice.actions;
+export { clearDiary, getPlayList };

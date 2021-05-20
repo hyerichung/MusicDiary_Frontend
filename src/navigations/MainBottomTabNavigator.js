@@ -14,7 +14,7 @@ import {
   goToNextTrack,
   goToPrevTrack,
 } from "../redux/slices/musicSlice";
-import { BOTTOM_TAB_ICON, PLAY_BUTTON_ICON, URI } from "../constants";
+import { BOTTOM_TAB_ICON, PLAY_BUTTON_ICON } from "../constants";
 
 const MainBottomTab = createBottomTabNavigator();
 
@@ -54,9 +54,9 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
       { shouldPlay: true },
       async (status) => {
         if (!status.isLoaded) {
-          // if (status.error) {
-          //   console.error(`av error ${status.error}`);
-          // }
+          if (status.error) {
+            console.error(`av error ${status.error}`);
+          }
         } else {
           if (status.didJustFinish) {
             dispatch(goToNextTrack());
@@ -232,8 +232,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderTopWidth: 0.3,
     borderColor: "rgba(0, 0, 0, 0.2)",
-    paddingTop: 13,
-    paddingBottom: 13,
+    paddingTop: 14,
+    paddingBottom: 14,
     backgroundColor: "white",
   },
   tabButton: {
