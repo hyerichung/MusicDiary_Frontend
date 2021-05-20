@@ -14,8 +14,7 @@ import {
 } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-
-import { Ionicons } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 import PrivateDiaryTopTabNavigator from "./PrivateDiaryTopTabNavigator";
 import DiaryScreen from "../screens/DiaryScreen";
@@ -46,13 +45,14 @@ const PrivateDiaryListScreenNavigator = () => {
         name="SingleDiary"
         component={DiaryScreen}
         options={({ route }) => ({
-          headerTitle: (props) => getHeader(route, props),
+          headerTitle: null,
           headerLeft: (props) => (
             <HeaderBackButton
+              style={styles.backBtn}
               tintColor="pink"
-              label=""
+              label=" "
               onPress={() =>
-                navigation.navigate("DiaryTopTap", { screen: "ByDate" })
+                navigation.navigate("DiaryTopTap", { screen: "PlayList" })
               }
             />
           ),
@@ -66,5 +66,11 @@ const PrivateDiaryListScreenNavigator = () => {
     </DiaryStack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  backBtn: {
+    marginLeft: 5,
+  },
+});
 
 export default PrivateDiaryListScreenNavigator;

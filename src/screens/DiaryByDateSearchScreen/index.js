@@ -18,7 +18,6 @@ const DiaryByDateSearchScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Button title="diary by dates..default..showing relevant diary with location.." />
       <DiaryList
         diaryList={Object.values(byIds)}
         onPressDiary={handleDiaryPressBtn}
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "purple",
+    backgroundColor: "#ffffff",
     // backgroundColor: "yellow",
     // paddingTop: StatusBar.currentHeight,
     // height: 50,

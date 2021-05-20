@@ -35,7 +35,7 @@ const RealMainStackNavigator = () => {
       case "My":
       case "Info":
         return (
-          <View>
+          <View style={styles.colors}>
             <HeaderStatusBar {...props} />
             <View style={styles.header} {...props}>
               <Image
@@ -87,9 +87,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: windowWidth,
+    backgroundColor: "#ffffff",
     justifyContent: "center",
   },
   statusBar: {
+    backgroundColor: "#ffffff",
     height: STATUSBAR_HEIGHT,
   },
   img: {
