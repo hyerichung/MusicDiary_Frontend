@@ -77,7 +77,7 @@ const DiaryTopTabNavigator = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 30,
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#ffffff",

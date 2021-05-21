@@ -1,19 +1,10 @@
 import React from "react";
-import {
-  StyleSheet,
-  StatusBar,
-  View,
-  SafeAreaView,
-  Image,
-  Text,
-  Dimensions,
-} from "react-native";
+import { StyleSheet } from "react-native";
 import {
   createStackNavigator,
   HeaderBackButton,
 } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 import PrivateDiaryTopTabNavigator from "./PrivateDiaryTopTabNavigator";
 import DiaryScreen from "../screens/DiaryScreen";
@@ -39,7 +30,7 @@ const PrivateDiaryListScreenNavigator = () => {
           headerLeft: (props) => (
             <HeaderBackButton
               style={styles.backBtn}
-              tintColor="pink"
+              tintColor="black"
               label=" "
               onPress={() =>
                 navigation.navigate("DiaryTopTap", { screen: "PlayList" })

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Button } from "react-native";
+import { View, Text, Button, TouchableOpacity } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import Diary from "../../components/Diary";
 
 const DiaryScreen = ({ route, navigation }) => {
@@ -14,26 +15,49 @@ const DiaryScreen = ({ route, navigation }) => {
     navigation.navigate("addNewTrackModal", { data: diaryId });
   }
 
-  function openDiaryEditingModal() {
-    navigation.navigate("Modal", {
-      screen: "editDiaryModal",
-      params: { data: diaryId },
-    });
-  }
-
   return (
     <View style={styles.container}>
       <Diary data={data.newDiaryId ? newDiaryInfo : data} diaryId={diaryId} />
-      <Button title="add track" onPress={openNewTrackAddingModal} />
-      <Button title="edit diary" onPress={openDiaryEditingModal} />
+      <View style={styles.btnWrap}>
+        <TouchableOpacity
+          style={styles.addTrackBtn}
+          onPress={openNewTrackAddingModal}
+        >
+          <Text style={styles.addBtnText}>Add Track!</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = {
+  addTrackBtn: {
+    width: 45,
+    height: 45,
+    justifyContent: "center",
+    alignItem: "center",
+    borderWidth: 1.5,
+    borderColor: "#0652DD",
+    borderRadius: "100%",
+    backgroundColor: "#ffffff",
+  },
+  addBtnText: {
+    textAlign: "center",
+    fontSize: 12,
+    fontWeight: "700",
+    color: "black",
+  },
+  btnWrap: {
+    flexDirection: "row",
+    width: 360,
+    justifyContent: "flex-end",
+    marginTop: 10,
+  },
   container: {
-    backgroundColor: "skyblue",
+    flex: 1,
     flexDirection: "column",
+    alignItem: "center",
+    backgroundColor: "#ffffff",
   },
 };
 

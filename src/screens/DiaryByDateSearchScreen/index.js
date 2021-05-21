@@ -27,9 +27,6 @@ const DiaryByDateSearchScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  topTabHeader: {
-    backgroundColor: "blue",
-  },
   container: {
     flex: 1,
     backgroundColor: "#ffffff",

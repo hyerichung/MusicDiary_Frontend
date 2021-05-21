@@ -79,8 +79,8 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
             <Image
               source={{ uri: currentTrack?.albumImg.url }}
               style={{
-                width: currentTrack?.albumImg.width,
-                height: currentTrack?.albumImg.height,
+                width: currentTrack && 55,
+                height: currentTrack && 55,
               }}
             />
           ) : (
@@ -216,13 +216,13 @@ const styles = StyleSheet.create({
   container: {},
   divider: {
     backgroundColor: "rgba(0, 0, 0, 0.1)",
-    height: 1,
+    height: 0.6,
     width: "100%",
   },
   trackPlayerContainer: {
     flexDirection: "row",
     width: "100%",
-    height: 64,
+    height: 55.3,
     backgroundColor: "white",
     justifyContent: "space-between",
     alignItems: "center",
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderTopWidth: 0.3,
     borderColor: "rgba(0, 0, 0, 0.2)",
-    paddingTop: 14,
+    paddingTop: 12,
     paddingBottom: 14,
     backgroundColor: "white",
   },

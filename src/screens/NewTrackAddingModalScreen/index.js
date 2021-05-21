@@ -73,6 +73,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
 
   const fetchTracks = debounce(async (searchInput) => {
     try {
+      console.log(searchInput, "..")
       const tempSearchResult = await fetch(
         `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=40&${offset}`,
         {
@@ -86,6 +87,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
       );
 
       const resultList = await tempSearchResult.json();
+      console.log(resultList, "?")
 
       const result = resultList?.tracks?.items.map((list) => ({
         title: list.name,
@@ -159,8 +161,8 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
                         source={{ uri: item?.albumImg.url }}
                         style={{
                           backgroundColor: "red",
-                          width: item?.albumImg.width,
-                          height: item?.albumImg.height,
+                          width: 50,
+                          height: 50,
                         }}
                       />
                       <View style={styles.textWrap}>
@@ -176,7 +178,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
                       handlePressAddToDiaryBtn(item);
                     }}
                   >
-                    <AntDesign name="hearto" size={23} />
+                    <AntDesign name="hearto" size={18} />
                   </TouchableOpacity>
                 </View>
               </>
@@ -189,8 +191,12 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+  },
   listWrapper: {
-    height: 435,
+    height: 444,
   },
   textWrap: {
     width: 240,
@@ -204,7 +210,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
   },
   imgWrap: {
-    marginLeft: 10,
+    marginLeft: 6,
     width: 300,
     alignItems: "center",
     flexDirection: "row",
@@ -221,7 +227,9 @@ const styles = StyleSheet.create({
   track: {
     flexDirection: "row",
     alignItems: "flex-start",
-    borderWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderTopWidth: 0.5,
+    margin: 1.5,
     borderColor: "rgba(0, 0, 0, 0.2)",
   },
   serachList: {
