@@ -77,7 +77,7 @@ const MusicTabBar = ({ state, descriptors, navigation }) => {
         <View style={{ flexDirection: "row" }}>
           {currentTrack?.albumImg ? (
             <Image
-              source={{ uri: currentTrack?.albumImg.url }}
+              source={{ uri: currentTrack?.albumImg[2].url }}
               style={{
                 width: currentTrack && 55,
                 height: currentTrack && 55,

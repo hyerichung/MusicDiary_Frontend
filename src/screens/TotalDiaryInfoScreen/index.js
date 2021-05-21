@@ -1,202 +1,178 @@
-import React from "react";
-import { Text, View, Dimensions, StyleSheet, ScrollView } from "react-native";
-import { ContributionGraph } from "react-native-chart-kit";
+import React, { useState } from "react";
+import { Text, View, Dimensions, ScrollView, StyleSheet } from "react-native";
+import HeatMap from "react-native-heatmap-chart";
+import { useDispatch, useSelector } from "react-redux";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
-import HeatMap from 'react-native-heatmap-chart';
+function TotalDiaryInfoScreen({ route, navigation}) {
+  const { calendar, byIds } = useSelector((state) => state.diary);
+  const [score, setScore] = useState(null);
+  const [date, setDate] = useState(null);
 
-function TotalDiaryInfoScreen() {
+  const formattedMay = calendar.May.map((x) => {
+    const length = x.length;
 
-  const click = item => {
+    const reduced = Math.floor(
+      (x.reduce((acc, cur) => acc + cur, 0) / length) * 100
+    );
+
+    if (isNaN(reduced)) {
+      return 0;
+    }
+
+    return reduced;
+  });
+
+  const click = (item) => {
     console.log(`Value: ${item.value}`);
     console.log(`Index: ${item.index}`);
+
+    setScore(item.value);
+    setDate(item.index);
+    findDiaryId(item.index);
   };
 
-  return (
-    <ScrollView>
-      <HeatMap
+  function findDiaryId(date) {
+    const diaryId = Object.values(byIds).filter((diary) => diary.date === `2021-05-${date}`);
 
-        numberOfLines={7}
-        values={[0, 4, 6, 1, 7, 3, 0, 8, 6, 2, 0, 10, 20, 12, 0, 3, 5, 1, 0, 0, 0, 0, 0,0 ,0,3, 2, 3, 2, 3, 2, 3,1, 2, 3, 4, 5,1, 2, 33, 2, 1, 2, 3, 3, 2, 3, 4, 5, 4, 6, 4, 3, 2, 3, 4, 0, 10, 0, 17, 8, 0, 6, 0, 6, 10, 23]}
-        onBlockPress={click}
-        colors={['#EE5A24', '#9980FA', '#30a14e', '#9980FA', '#D980FA', '#ED4C67','#D980FA']}
-      />
-    </ScrollView>
-  );
-
-  const handleOnDatPress = (value) => {
-    console.log(value);
-  };
-
-  const commitsData = [
-    { date: "2021-05-21", energy: 5 },
-  ];
+    if (diaryId.length) {
+      navigation.navigate("Diary", {
+        screen: "SingleDiary",
+        params: { data: diaryId[0] },
+      });
+    }
+  }
 
   return (
-    <View style={styles.wrapper}>
-      <ContributionGraph
-        values={commitsData}
-        endDate={new Date("2021-06-31")}
-        numDays={78}
-        height={250}
-        paddingTop={0}
-        squareSize={25}
-        showOutOfRangeDays={true}
-        accessor={"energy"}
-        width={Dimensions.get("window").width}
-        chartConfig={{
-          backgroundColor: "white",
-          backgroundGradientFrom: "white",
-          backgroundGradientTo: "white",
-          color: (opacity = 1) => `rgba(95, 75, 139, ${opacity})`,
-          labelColor: (opacity = 5) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 2,
-            paddingTop: 0,
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "9",
-            stroke: "#ffa726",
-          },
-        }}
-        style={{
-          marginVertical: 8,
-          borderRadius: 4,
-          paddingTop: 30,
-        }}
-        onDayPress={handleOnDatPress}
-      />
+    <View style={styles.totalCalendar}>
+      <View style={styles.months}>
+        <Text style={styles.may}>MAY</Text>
+        <Text style={styles.jun}>JUN</Text>
+      </View>
+      <View style={styles.container}>
+        <ScrollView style={styles.mapWrap}>
+          <HeatMap
+            blocksStyle={styles.map}
+            numberOfLines={7}
+            maximumValue={"100"}
+            values={formattedMay}
+            onBlockPress={click}
+            colorsPercentage={[0, 20, 40, 60, 80, 100]}
+            colors={[
+              "#a4b0be",
+              "#5352ed",
+              "#9980FA",
+              "#D980FA",
+              "#fbc531",
+              "#ED4C67",
+            ]}
+          />
+        </ScrollView>
+        <ScrollView style={styles.mapWrap}>
+          <HeatMap
+            blocksStyle={styles.map}
+            numberOfLines={7}
+            values={[
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              ,
+            ]}
+            colorsPercentage={[0, 20, 40, 60, 80, 100]}
+            colors={[
+              "#a4b0be",
+              "#5352ed",
+              "#9980FA",
+              "#D980FA",
+              "#fbc531",
+              "#ED4C67",
+            ]}
+            onBlockPress={click}
+          />
+        </ScrollView>
+      </View>
+
+      <View style={styles.instructionWrapper}>
+        <View style={styles.instruction}>
+          <Text style={styles.instructionText}>Click squre to go to relevant diary page!</Text>
+        </View>
+      </View>
     </View>
   );
 }
 
-// // const styles = StyleSheet.create({
-
-// // });
-
-// import React, { useState, useEffect } from "react";
-// import { ScrollView, View, TouchableOpacity } from "react-native";
-
-// const HeatMapBlock = ({
-//   size,
-//   value,
-//   index,
-//   colors,
-//   colorsPercentage,
-//   maximumValue,
-//   onBlockPress,
-//   style,
-// }) => {
-//   const valuePercentage = (value / maximumValue) * 100;
-//   let color;
-
-//   for (let i = 0; i < colorsPercentage.length; i++) {
-//     if (valuePercentage >= colorsPercentage[i]) {
-//       color = colors[i];
-//     } else {
-//       break;
-//     }
-//   }
-
-//   if (!color) {
-//     return null;
-//   }
-
-//   return (
-//     <TouchableOpacity
-//       onPress={() => onBlockPress({ value, index })}
-//       style={[
-//         styles.heatMapBlock,
-//         { backgroundColor: color, width: size, height: size },
-//         style
-//       ]}
-//     />
-//   );
-// };
-
-// const HeatMapColumn = ({ children }) => (
-//   <View style={styles.heatMapColumn}>{children}</View>
-// );
-
-// const TotalDiaryInfoScreen = ({
-//   numberOfLines = 7,
-//   values = [],
-//   indexStart = 0,
-//   colors = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
-//   colorsPercentage = [0, 0.00001, 41, 60, 80],
-//   maximumValue = "relative",
-//   blocksSize = 30,
-//   onBlockPress = () => {},
-//   blocksStyle = {},
-// }) => {
-//   const [maxValue, setMaxValue] = useState(maximumValue);
-
-//   useEffect(() => {
-//     setRelativeMaxValue();
-//   }, []);
-
-//   const setRelativeMaxValue = () => {
-//     if (maxValue !== "relative") {
-//       return;
-//     }
-//     let max = 1;
-
-//     for (let i = 0; i < values.length; i++) {
-//       if (values[i] > max) {
-      
-//           max = values[i];
-
-//       }
-
-//       setMaxValue(max);
-//     }
-
-//     const generateBlocks = (atualBlock) => {
-//       const blocks = [];
-//       for (let j = 0; j < numberOfLines; j++) {
-//           blocks.push(
-//             <HeatMapBlock
-//               key={Math.random()}
-//               style={blocksStyle}
-//               size={blocksSize}
-//               index={j + atualBlock + indexStart}
-//               value={values[j + atualBlock]}
-//               colors={colors}
-//               colorsPercentage={colorsPercentage}
-//               onBlockPress={onBlockPress}
-//               maximumValue={maxValue}
-//             />
-//           );
-//         }
-//         return blocks;
-//       }
-
-//       const generateColumns = () => {
-//         const numberOfColumns = values.length / numberOfLines;
-//         const columns = [];
-//         let atualBlock = 0;
-
-//         for (let i = 0; i < numberOfColumns; i++) {
-//           columns.push(
-//             <HeatMapColumn key={Math.random()}>
-//               {generateBlocks(atualBlock)}
-//             </HeatMapColumn>
-//           );
-//           atualBlock += numberOfLines;
-//         }
-
-//         return columns;
-//       };
-
-//       return <ScrollView horizontal={true}>{generateColumns()}</ScrollView>;
-//   };
-// };
-
-// const styles = {
-//   heatMapBlock: {
-//     borderRadius: 4,
-//     margin: 2,
-//   },
-// };
+const styles = StyleSheet.create({
+  totalCalendar: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
+  },
+  instructionWrapper: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  instruction: {
+    width: 250,
+    height: 150,
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  instructionText: {
+    fontFamily: "DMSans_500Medium",
+    fontSize: 20,
+    fontWeight: "600",
+  },
+  months: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    height: 30,
+    alignItems: "center",
+    fontFamily: "DMSans_700Bold",
+  },
+  may: {
+    fontFamily: "DMSans_700Bold",
+  },
+  jun: {
+    fontFamily: "DMSans_700Bold",
+  },
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  mapWrap: {
+    marginTop: 10,
+    marginLeft: 10,
+  },
+  // map: {
+  //   marginLeft: 5,
+  // }
+});
 
 export default TotalDiaryInfoScreen;

@@ -56,7 +56,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
       );
 
       const { energy } = await energyResult.json();
-      const energyAddedTrackInfo = { ...trackInfo, energy };
+      const energyAddedTrackInfo = { ...trackInfo, energy, date: Date.now() };
 
       await dispatch(
         addTrackToDiary({
@@ -98,7 +98,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
           "https://p.scdn.co/mp3-preview/bc5f3e28ba28c76b36f409d3c3f697e597b6ff6f?cid=41014a1f3ad143a8be14a47f025c209d",
         duration: list.duration_ms,
         artist: list.artists[0].name,
-        albumImg: list.album.images[2],
+        albumImg: list.album.images,
       }));
 
       const genres = resultList?.artists?.items.map((list) => ({
@@ -158,9 +158,8 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
                   >
                     <View style={styles.imgWrap}>
                       <Image
-                        source={{ uri: item?.albumImg.url }}
+                        source={{ uri: item?.albumImg[2].url }}
                         style={{
-                          backgroundColor: "red",
                           width: 50,
                           height: 50,
                         }}

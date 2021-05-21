@@ -21,8 +21,14 @@ const Diary = ({ data, diaryId }) => {
   }
 
   const energyScore = byIds[diaryId].playList.length
-    ? Math.floor((byIds[diaryId].playList.reduce(
-      (acc, current) => acc + current.energy, 0) / byIds[diaryId].playList.length) * 100)
+    ? Math.floor(
+      (byIds[diaryId].playList.reduce(
+        (acc, current) => acc + current.energy,
+        0
+        ) /
+          byIds[diaryId].playList.length) *
+          100
+      )
     : "🤔";
 
   return (
@@ -57,7 +63,7 @@ const Diary = ({ data, diaryId }) => {
                   >
                     <View style={styles.imgWrap}>
                       <Image
-                        source={{ uri: item?.albumImg.url }}
+                        source={{ uri: item?.albumImg[2].url }}
                         style={{
                           width: 50,
                           height: 50,

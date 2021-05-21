@@ -6,7 +6,7 @@ import {
   addTrackToDiaryAPI,
 } from "../../api";
 import * as SecureStore from "expo-secure-store";
-import { parseISO, format } from "date-fns";
+import { parseISO, format, getMonth, getDay, getDate } from "date-fns";
 
 export const addNewDiary = createAsyncThunk(
   "DIARY/ADD_DIARY",
@@ -88,6 +88,7 @@ export const addTrackToDiary = createAsyncThunk(
 const initialState = {
   byIds: {},
   allIds: [],
+  calendar: { May: Array(31).fill([]), Jun: Array(30).fill([]) },
   visibleDiary: {
     byDate: [],
   },
@@ -162,6 +163,12 @@ export const diarySlice = createSlice({
       state.error = action.payload;
     },
     [addTrackToDiary.fulfilled]: (state, action) => {
+      const month = getMonth(parseISO(action.payload.newTrackInfo.date));
+      const date = getDate(parseISO(action.payload.newTrackInfo.date));
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const calendarMonth = months[month];
+
+      state.calendar[calendarMonth][date] = state.calendar[calendarMonth][date].concat([action.payload.newTrackInfo.energy]);
       state.byIds[action.payload.diaryId].playList = [
         ...state.byIds[action.payload.diaryId].playList,
         action.payload.newTrackInfo,
