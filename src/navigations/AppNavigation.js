@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
-
 import { NavigationContainer } from "@react-navigation/native";
+
 import {
   getAccessToken,
   clearUser,
@@ -12,7 +12,7 @@ import Loading from "../screens/LoadingScreen";
 import AppStackNavigator from "../navigations/AppStackNavigator";
 
 const AppNavigation = () => {
-  const [isLoading, setIsLoading] = useState(isLoading ? true : false);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,14 +35,16 @@ const AppNavigation = () => {
     loadAccessToken();
   }, [dispatch]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
-    <NavigationContainer>
-      <AppStackNavigator />
-    </NavigationContainer>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <NavigationContainer>
+          <AppStackNavigator />
+        </NavigationContainer>
+      )}
+    </>
   );
 };
 

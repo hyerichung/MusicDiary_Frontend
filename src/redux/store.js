@@ -7,16 +7,7 @@ import logger from "redux-logger";
 import { userSlice } from "./slices/userSlice";
 import { diarySlice } from "./slices/diarySlice";
 import { musicSlice } from "./slices/musicSlice";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
+import { persistStore, persistReducer } from "redux-persist";
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,

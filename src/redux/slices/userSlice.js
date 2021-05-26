@@ -9,6 +9,7 @@ export const loginUser = createAsyncThunk("USER/LOGIN_USER", async () => {
     const { userInfo } = await getUserInfoAPI(accessToken);
 
     await SecureStore.setItemAsync("accessToken", accessToken);
+    await SecureStore.setItemAsync("authCode", authCode);
 
     return { accessToken, userInfo };
   } catch (err) {
@@ -22,6 +23,14 @@ export const getAccessToken = createAsyncThunk(
     try {
       return await SecureStore.getItemAsync("accessToken");
     } catch (err) {
+      if (err.status === 401) {
+        const authCode = await SecureStore.getItemAsync("authCode");
+
+        const newAccessToken = await getAccessTokenAPI(authCode);
+        await SecureStore.setItemAsync("accessToken", newAccessToken);
+
+        return await SecureStore.getItemAsync("accessToken");
+      }
       console.error("failed to get accessToken from the secure store ", err);
     }
   }
