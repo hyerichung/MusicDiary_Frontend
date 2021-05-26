@@ -60,13 +60,17 @@ const DiaryList = ({ diaryList, onPressDiary }) => {
 
   return (
     <View style={styles.listContainer}>
-      <FlatList
-        data={formatData(diaryList, numColumns)}
-        numColumns={numColumns}
-        keyExtractor={(item) => String(item._id)}
-        contentContainerStyle={{ paddingVertical: 20 }}
-        renderItem={renderItem}
-      />
+      {diaryList.length ? (
+        <FlatList
+          data={formatData(diaryList, numColumns)}
+          numColumns={numColumns}
+          keyExtractor={(item) => String(item._id)}
+          contentContainerStyle={{ paddingVertical: 20 }}
+          renderItem={renderItem}
+        />
+      ) : (
+        <Text>no diary found</Text>
+      )}
     </View>
   );
 };

@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontFamily: "DMSans_700Bold",
-    fontSize: 34,
+    fontSize: 24,
   },
   desc: {
     fontFamily: "DMSans_700Bold_Italic",
