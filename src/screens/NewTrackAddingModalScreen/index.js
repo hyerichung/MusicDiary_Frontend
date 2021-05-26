@@ -142,46 +142,50 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
         />
       </View>
       <View style={styles.listWrapper}>
-        <FlatList
-          style={styles.searchList}
-          data={searchList}
-          keyExtractor={(item, index) => String(index)}
-          renderItem={({ item, index }) => {
-            return (
-              <>
-                <View style={styles.track}>
-                  <TouchableOpacity
-                    style={styles.titleWrap}
-                    onPress={() => handleSelectSong(item, index)}
-                  >
-                    <View style={styles.imgWrap}>
-                      <Image
-                        source={{ uri: item?.albumImg[2].url }}
-                        style={{
-                          width: 50,
-                          height: 50,
-                        }}
-                      />
-                      <View style={styles.textWrap}>
-                        <Text style={styles.titleText}>{item?.title}</Text>
-                        <Text style={styles.artistText}>{item?.artist}</Text>
+        {searchList?.length ? (
+          <FlatList
+            style={styles.searchList}
+            data={searchList}
+            keyExtractor={(item, index) => String(index)}
+            renderItem={({ item, index }) => {
+              return (
+                <Text>
+                  <View style={styles.track}>
+                    <TouchableOpacity
+                      style={styles.titleWrap}
+                      onPress={() => handleSelectSong(item, index)}
+                    >
+                      <View style={styles.imgWrap}>
+                        <Image
+                          source={{ uri: item?.albumImg[2].url }}
+                          style={{
+                            width: 50,
+                            height: 50,
+                          }}
+                        />
+                        <View style={styles.textWrap}>
+                          <Text style={styles.titleText}>{item?.title}</Text>
+                          <Text style={styles.artistText}>{item?.artist}</Text>
+                        </View>
                       </View>
-                    </View>
-                  </TouchableOpacity>
+                    </TouchableOpacity>
 
-                  <TouchableOpacity
-                    style={styles.plusBtn}
-                    onPress={() => {
-                      handlePressAddToDiaryBtn(item);
-                    }}
-                  >
-                    <AntDesign name="hearto" size={18} />
-                  </TouchableOpacity>
-                </View>
-              </>
-            );
-          }}
-        />
+                    <TouchableOpacity
+                      style={styles.plusBtn}
+                      onPress={() => {
+                        handlePressAddToDiaryBtn(item);
+                      }}
+                    >
+                      <AntDesign name="hearto" size={18} />
+                    </TouchableOpacity>
+                  </View>
+                </Text>
+              );
+            }}
+          />
+        ) : (
+          <Text style={styles.defaultSearchText}>No search Content</Text>
+        )}
       </View>
     </View>
   );
@@ -255,6 +259,10 @@ const styles = StyleSheet.create({
     height: 45,
     flexDirection: "row",
     justifyContent: "flex-end",
+  },
+  defaultSearchText: {
+    textAlign: "center",
+    marginTop: 65,
   },
 });
 
