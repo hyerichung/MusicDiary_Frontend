@@ -21,7 +21,14 @@ const Diary = ({ data, diaryId }) => {
   }
 
   const energyScore = byIds[diaryId].playList.length
-    ? Math.floor((byIds[diaryId].playList.reduce((acc, current) => acc + current.energy, 0) / byIds[diaryId].playList.length) * 100)
+    ? Math.floor(
+      (byIds[diaryId].playList.reduce(
+        (acc, current) => acc + current.energy,
+        0
+      ) /
+          byIds[diaryId].playList.length) *
+          100
+    )
     : "🤔";
 
   return (
@@ -41,38 +48,42 @@ const Diary = ({ data, diaryId }) => {
       </View>
 
       <View style={styles.playListContainer}>
-        <FlatList
-          numRows={byIds[diaryId]?.playList.length}
-          style={styles.playListContainer}
-          data={byIds[diaryId]?.playList}
-          keyExtractor={(item) => String(Math.random() * 1000)}
-          renderItem={({ item, index }) => {
-            return (
-              <View style={styles.trackContainer}>
-                <View style={styles.track}>
-                  <TouchableOpacity
-                    style={styles.trackWrap}
-                    onPress={() => handlePressMusicPlayBtn(index)}
-                  >
-                    <View style={styles.imgWrap}>
-                      <Image
-                        source={{ uri: item?.albumImg[2].url }}
-                        style={{
-                          width: 50,
-                          height: 50,
-                        }}
-                      />
-                      <View style={styles.textWrap}>
-                        <Text style={styles.titleText}>{item?.title}</Text>
-                        <Text style={styles.artistText}>{item?.artist}</Text>
+        {byIds[diaryId]?.playList.length ? (
+          <FlatList
+            numRows={byIds[diaryId]?.playList.length}
+            style={styles.playListContainer}
+            data={byIds[diaryId]?.playList}
+            keyExtractor={(item) => String(Math.random() * 1000)}
+            renderItem={({ item, index }) => {
+              return (
+                <View style={styles.trackContainer}>
+                  <View style={styles.track}>
+                    <TouchableOpacity
+                      style={styles.trackWrap}
+                      onPress={() => handlePressMusicPlayBtn(index)}
+                    >
+                      <View style={styles.imgWrap}>
+                        <Image
+                          source={{ uri: item?.albumImg[2].url }}
+                          style={{
+                            width: 50,
+                            height: 50,
+                          }}
+                        />
+                        <View style={styles.textWrap}>
+                          <Text style={styles.titleText}>{item?.title}</Text>
+                          <Text style={styles.artistText}>{item?.artist}</Text>
+                        </View>
                       </View>
-                    </View>
-                  </TouchableOpacity>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            );
-          }}
-        />
+              );
+            }}
+          />
+        ) : (
+          <Text style={styles.defaultTrackText}>no track list</Text>
+        )}
       </View>
     </View>
   );
@@ -162,6 +173,11 @@ const styles = StyleSheet.create({
   },
   trackContainer: {
     margin: 1.5,
+  },
+  defaultTrackText: {
+    textAlign: "center",
+    marginTop: 40,
+    color: "rgba(0, 0, 0, 0.6)",
   },
 });
 

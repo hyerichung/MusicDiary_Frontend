@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
+import { View, Text, TouchableOpacity } from "react-native";
 import Diary from "../../components/Diary";
 
 const DiaryScreen = ({ route, navigation }) => {
@@ -22,7 +22,7 @@ const DiaryScreen = ({ route, navigation }) => {
           style={styles.addTrackBtn}
           onPress={openNewTrackAddingModal}
         >
-          <Text style={styles.addBtnText}>Add Track!</Text>
+          <Text style={styles.addBtnText}>Search Track</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -31,13 +31,12 @@ const DiaryScreen = ({ route, navigation }) => {
 
 const styles = {
   addTrackBtn: {
-    width: 45,
+    width: 55,
     height: 45,
     justifyContent: "center",
     alignItem: "center",
     borderWidth: 1.5,
-    borderColor: "#0652DD",
-    borderRadius: "100%",
+    borderColor: "black",
     backgroundColor: "#ffffff",
   },
   addBtnText: {
