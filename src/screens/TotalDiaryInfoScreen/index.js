@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Text, View, Dimensions, ScrollView, StyleSheet } from "react-native";
 import HeatMap from "react-native-heatmap-chart";
+import { Text, View, Dimensions, ScrollView, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
-function TotalDiaryInfoScreen({ route, navigation}) {
+function TotalDiaryInfoScreen({ route, navigation }) {
   const { calendar, byIds } = useSelector((state) => state.diary);
   const [score, setScore] = useState(null);
   const [date, setDate] = useState(null);
@@ -24,21 +24,25 @@ function TotalDiaryInfoScreen({ route, navigation}) {
   });
 
   const click = (item) => {
-    console.log(`Value: ${item.value}`);
-    console.log(`Index: ${item.index}`);
-
     setScore(item.value);
     setDate(item.index);
     findDiaryId(item.index);
   };
 
   function findDiaryId(date) {
-    const diaryId = Object.values(byIds).filter((diary) => diary.date === `2021-05-${date}`);
+    let diaryDate = date;
+
+    if (diaryDate < 10) {
+      diaryDate = `0${diaryDate}`;
+    }
+    const diaryId = Object.values(byIds).filter(
+      (diary) => diary.date === `2021-05-${diaryDate}`
+    );
 
     if (diaryId.length) {
       navigation.navigate("Diary", {
         screen: "SingleDiary",
-        params: { data: diaryId[0] },
+        params: { data: diaryId[diaryId.length - 1] },
       });
     }
   }
@@ -54,17 +58,17 @@ function TotalDiaryInfoScreen({ route, navigation}) {
           <HeatMap
             blocksStyle={styles.map}
             numberOfLines={7}
-            maximumValue={"100"}
+            maximumValue={"90"}
             values={formattedMay}
             onBlockPress={click}
-            colorsPercentage={[0, 20, 40, 60, 80, 100]}
+            colorsPercentage={[0, 15, 30, 45, 70, 90]}
             colors={[
               "#a4b0be",
+              "#fbc531",
               "#5352ed",
               "#9980FA",
-              "#D980FA",
-              "#fbc531",
               "#ED4C67",
+              "#D980FA",
             ]}
           />
         </ScrollView>
@@ -73,36 +77,8 @@ function TotalDiaryInfoScreen({ route, navigation}) {
             blocksStyle={styles.map}
             numberOfLines={7}
             values={[
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              ,
+              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+              0, 0, 0, 0, 0, 0, 0,
             ]}
             colorsPercentage={[0, 20, 40, 60, 80, 100]}
             colors={[
@@ -120,7 +96,9 @@ function TotalDiaryInfoScreen({ route, navigation}) {
 
       <View style={styles.instructionWrapper}>
         <View style={styles.instruction}>
-          <Text style={styles.instructionText}>Click squre to go to relevant diary page!</Text>
+          <Text style={styles.instructionText}>
+            Click squre to go to relevant diary page!
+          </Text>
         </View>
       </View>
     </View>
@@ -170,9 +148,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
   },
-  // map: {
-  //   marginLeft: 5,
-  // }
 });
 
 export default TotalDiaryInfoScreen;

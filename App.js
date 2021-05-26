@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Provider } from "react-redux";
 import { store, persistedStore } from "./src/redux/store";

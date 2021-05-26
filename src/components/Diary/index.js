@@ -21,14 +21,7 @@ const Diary = ({ data, diaryId }) => {
   }
 
   const energyScore = byIds[diaryId].playList.length
-    ? Math.floor(
-      (byIds[diaryId].playList.reduce(
-        (acc, current) => acc + current.energy,
-        0
-        ) /
-          byIds[diaryId].playList.length) *
-          100
-      )
+    ? Math.floor((byIds[diaryId].playList.reduce((acc, current) => acc + current.energy, 0) / byIds[diaryId].playList.length) * 100)
     : "🤔";
 
   return (

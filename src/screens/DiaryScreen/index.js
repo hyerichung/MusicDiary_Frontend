@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, Text, Button, TouchableOpacity } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
 import Diary from "../../components/Diary";
 
 const DiaryScreen = ({ route, navigation }) => {
@@ -9,7 +8,7 @@ const DiaryScreen = ({ route, navigation }) => {
   const { byIds } = useSelector((state) => state.diary);
 
   const newDiaryInfo = byIds[data.newDiaryId];
-  const diaryId = data.newDiaryId ? newDiaryInfo._id : data._id;
+  const diaryId = data.newDiaryId ? newDiaryInfo?._id : data?._id;
 
   function openNewTrackAddingModal() {
     navigation.navigate("addNewTrackModal", { data: diaryId });

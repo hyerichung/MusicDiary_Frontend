@@ -9,8 +9,6 @@ const HomeDiaryAlert = ({ matchedHistoryDiary, navigation }) => {
     });
   }
 
-  console.log(matchedHistoryDiary, "diary....");
-
   return (
     <View>
       <TouchableOpacity
