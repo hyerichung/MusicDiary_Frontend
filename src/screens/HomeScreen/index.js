@@ -6,7 +6,6 @@ import * as Location from "expo-location";
 import * as Notifications from "expo-notifications";
 import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
 import HomeDiaryAlert from "../../components/HomeDiaryAlert";
-import LottieView from "lottie-react-native";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -87,18 +86,6 @@ const HomeScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.userIntroWrapper}>
-        <LottieView
-          source={require("../../../assets/animations/location_pin.json")}
-          autoPlay
-          style={{
-            height: 70,
-            width: 70,
-            padding: 0,
-            marginRight: 4,
-            marginTop: 5,
-          }}
-          loop
-        />
         <View style={styles.userInfo}>
           <Text style={styles.userName}>Hi, {userInfo.userName}</Text>
           <Text style={styles.desc}>Searching your diary within 50m...</Text>
@@ -126,38 +113,32 @@ const styles = StyleSheet.create({
     fontFamily: "DMSans_500Medium",
     width: 180,
     marginTop: 30,
-    fontWeight: "400",
+    fontWeight: "200",
     color: "rgba(0, 0, 0, 0.6)",
-  },
-  homeLocationLogo: {
-    width: 100,
-    height: 150,
-    marginTop: 60,
-    justifyContent: "center",
-    alignItems: "center",
   },
   userIntroWrapper: {
     flexDirection: "row",
-    marginTop: 20,
     marginBottom: 15,
-    width: 335,
     height: 100,
-    justifyContent: "flex-start",
+    width: 375,
+    backgroundColor: "#191919",
+    justifyContent: "center",
     borderColor: "rgba(0, 0, 0, 0.4)",
   },
   userInfo: {
-    width: 260,
+    width: 330,
     justifyContent: "center",
   },
   userName: {
     fontFamily: "DMSans_700Bold",
-    fontSize: 24,
+    fontSize: 18,
+    color: "#ffffff",
   },
   desc: {
     fontFamily: "DMSans_700Bold_Italic",
-    fontSize: 15,
-    color: "rgba(0, 0, 0, 0.8)",
-  }
+    fontSize: 13,
+    color: "#ffffff",
+  },
 });
 
 export default HomeScreen;
