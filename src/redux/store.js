@@ -9,24 +9,28 @@ import { diarySlice } from "./slices/diarySlice";
 import { musicSlice } from "./slices/musicSlice";
 import { persistStore, persistReducer } from "redux-persist";
 
-const rootReducer = combineReducers({
-  user: userSlice.reducer,
-  diary: diarySlice.reducer,
-  music: musicSlice.reducer,
-});
-
 const userPersistConfig = {
   key: "user",
   storage: AsyncStorage,
   blacklist: ["status", "error", "accessToken"],
 };
 
-const userPersistReducer = persistReducer(userPersistConfig, rootReducer);
+const musicPersistConfig = {
+  key: "music",
+  storage: AsyncStorage,
+  blacklist: ["playList"],
+};
+
+const rootReducer = combineReducers({
+  user: persistReducer(userPersistConfig, userSlice.reducer),
+  diary: diarySlice.reducer,
+  music: persistReducer(musicPersistConfig, musicSlice.reducer),
+});
 
 const middleware = [thunk, logger];
 
 const store = createStore(
-  userPersistReducer,
+  rootReducer,
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
