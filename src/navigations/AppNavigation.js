@@ -33,7 +33,7 @@ const AppNavigation = () => {
 
   return (
     <>
-      {isLoading ? (
+      { isLoading ? (
         <Loading />
       ) : (
         <NavigationContainer>

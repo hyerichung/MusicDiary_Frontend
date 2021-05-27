@@ -35,7 +35,7 @@ const AppStackNavigator = () => {
         }),
       }}
     >
-      {userInfo?.id ? (
+      { userInfo?.id ? (
         <>
           <Stack.Screen
             name="RealMain"

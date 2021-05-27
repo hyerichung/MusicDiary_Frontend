@@ -3,17 +3,8 @@ import { getDistance } from "geolib";
 import { View, Text, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Location from "expo-location";
-import * as Notifications from "expo-notifications";
 import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
 import HomeDiaryAlert from "../../components/HomeDiaryAlert";
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
 
 const HomeScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
