@@ -206,7 +206,7 @@ const MainBottomTabNavigator = () => {
         name="Diary"
         component={PrivateDiaryListNavigator}
       />
-      <MainBottomTab.Screen name="Info" component={TotalDiaryInfoScreen} />
+      <MainBottomTab.Screen name="Calendar" component={TotalDiaryInfoScreen} />
       <MainBottomTab.Screen name="My" component={UserInfoScreen} />
     </MainBottomTab.Navigator>
   );

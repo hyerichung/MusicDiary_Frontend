@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+
 import MainBottomTabNavigator from "./MainBottomTabNavigator";
 import ExtraScreenNavigator from "./ExtraScreenNavigator";
 import Header from "../components/shared/Header";
@@ -13,8 +14,8 @@ const RootStackNavigator = () => {
 
     switch (routeName) {
       case "Home":
+      case "Calendar":
       case "My":
-      case "Info":
         return <Header logo={true} />;
       case "Diary":
         return <Header logo={false} />;
