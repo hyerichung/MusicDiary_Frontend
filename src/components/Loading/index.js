@@ -4,7 +4,7 @@ import LottieView from "lottie-react-native";
 
 import styles from "./styles";
 
-const LoadingScreen = () => {
+const Loading = () => {
   return (
     <View style={styles.container}>
       <LottieView
@@ -18,4 +18,4 @@ const LoadingScreen = () => {
   );
 };
 
-export default LoadingScreen;
+export default Loading;

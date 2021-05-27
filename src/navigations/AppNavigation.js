@@ -8,7 +8,7 @@ import {
   clearUser,
   clearAccessToken,
 } from "../redux/slices/userSlice";
-import Loading from "../screens/LoadingScreen";
+import Loading from "../components/Loading";
 import AppStackNavigator from "../navigations/AppStackNavigator";
 
 const AppNavigation = () => {
@@ -20,10 +20,6 @@ const AppNavigation = () => {
       try {
         const resultAction = await dispatch(getAccessToken());
         const accessToken = unwrapResult(resultAction);
-
-        if (!accessToken) {
-          throw new Error("Invaild token in the secure store");
-        }
       } catch (err) {
         dispatch(clearUser());
         await dispatch(clearAccessToken());
