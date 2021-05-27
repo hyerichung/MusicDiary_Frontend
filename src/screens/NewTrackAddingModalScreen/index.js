@@ -73,7 +73,6 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
 
   const fetchTracks = debounce(async (searchInput) => {
     try {
-      console.log("?");
       const tempSearchResult = await fetch(
         `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=40&${offset}`,
         {
@@ -87,7 +86,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
       );
 
       const resultList = await tempSearchResult.json();
-console.log(resultList, "?..")
+
       const result = resultList?.tracks?.items.map((list) => ({
         title: list.name,
         id: list.id,
@@ -100,17 +99,7 @@ console.log(resultList, "?..")
         albumImg: list.album.images,
       }));
 
-      const genres = resultList?.artists?.items.map((list) => ({
-        artistGenres: list.genres,
-      }));
-
-      const total = result?.map((track, idx) => ({
-        ...track,
-        genres: genres[idx]?.artistGenres,
-      }));
-
-      setSearchList(total);
-      console.log(searchList, total, "list")
+      setSearchList(result);
     } catch (err) {
       console.error(err);
     }
