@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 25,
-  }
+  },
 });
 
 export default DiaryTopTabNavigator;

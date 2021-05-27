@@ -2,9 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import LoginScreen from "../screens/LoginScreen";
+import RootStackNavigator from "./RootStackNavigator";
 import ModalScreenNavigator from "../navigations/ModalScreenNavigator";
-import RealMainStackNavigator from "../navigations/RealMainStackNavigator";
+import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createStackNavigator();
 
@@ -12,27 +12,15 @@ const AppStackNavigator = () => {
   const { userInfo } = useSelector((state) => state.user);
 
   return (
-    <Stack.Navigator mode="modal">
-      { userInfo?.id ? (
+    <Stack.Navigator mode="modal" screenOptions={{ headerShown: false }}>
+      {userInfo?.id ? (
         <>
-          <Stack.Screen
-            name="RealMain"
-            options={{ headerShown: false }}
-            component={RealMainStackNavigator}
-          />
-          <Stack.Screen
-            name="Modal"
-            component={ModalScreenNavigator}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Root" component={RootStackNavigator} />
+          <Stack.Screen name="Modal" component={ModalScreenNavigator} />
         </>
       ) : (
         <>
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Login" component={LoginScreen} />
         </>
       )}
     </Stack.Navigator>
