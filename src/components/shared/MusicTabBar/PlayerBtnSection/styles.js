@@ -1,14 +1,18 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  trackPlayerContainer: {
+  playerBtnSection: {
     flexDirection: "row",
-    width: "100%",
-    height: 55.3,
-    backgroundColor: "white",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingRight: 35,
+  },
+  prevIcon: {
+    paddingLeft: 20,
+  },
+  nextIcon: {
+    paddingLeft: 25,
+  },
+  controlIcon: {
+    paddingLeft: 30,
   },
 });
 
