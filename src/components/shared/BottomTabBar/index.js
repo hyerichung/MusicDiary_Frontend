@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
+
 import { BOTTOM_TAB_ICON, BOTTOM_TAB_ICON_COLOR } from "../../../constants";
 import styles from "./styles";
 

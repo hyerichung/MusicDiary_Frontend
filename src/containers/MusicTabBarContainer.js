@@ -32,7 +32,6 @@ const MusicTabBarContainer = ({ state, descriptors, navigation }) => {
     checkMusicSound();
   }, [currentIdx, playList]);
 
-
   const handlePressContolIcon = () => {
     controlMusicPlaying();
   };
