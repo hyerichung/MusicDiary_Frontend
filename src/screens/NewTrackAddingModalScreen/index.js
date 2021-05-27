@@ -73,6 +73,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
 
   const fetchTracks = debounce(async (searchInput) => {
     try {
+      console.log("?");
       const tempSearchResult = await fetch(
         `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=40&${offset}`,
         {
@@ -86,7 +87,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
       );
 
       const resultList = await tempSearchResult.json();
-
+console.log(resultList, "?..")
       const result = resultList?.tracks?.items.map((list) => ({
         title: list.name,
         id: list.id,
@@ -109,6 +110,7 @@ const NewTrackAddingModalScreen = ({ route, navigation }) => {
       }));
 
       setSearchList(total);
+      console.log(searchList, total, "list")
     } catch (err) {
       console.error(err);
     }

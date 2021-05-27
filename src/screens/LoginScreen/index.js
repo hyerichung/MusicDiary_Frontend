@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/slices/userSlice";
-import LoginButton from "../../components/LoginButton";
+import LoginBtn from "../../components/LoginBtn";
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ const LoginScreen = () => {
     await dispatch(loginUser());
   };
 
-  return <LoginButton onPressLoginBtn={handlePressLoginBtn} />;
+  return <LoginBtn onPressLoginBtn={handlePressLoginBtn} />;
 };
 
 export default LoginScreen;

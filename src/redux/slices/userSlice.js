@@ -17,6 +17,19 @@ export const loginUser = createAsyncThunk("USER/LOGIN_USER", async () => {
   }
 });
 
+export const refreshToken = createAsyncThunk("USER/REFRESH_TOKEN", async () => {
+  try {
+    const authCode = await SecureStore.getItemAsync("authCode");
+    const newAccessToken = await getAccessTokenAPI(authCode);
+
+    await SecureStore.setItemAsync("accessToken", newAccessToken);
+
+    return await SecureStore.getItemAsync("accessToken");
+  } catch (err) {
+    console.error("failed to refresh token", err);
+  }
+});
+
 export const getAccessToken = createAsyncThunk(
   "USER/GET_ACCESSTOKEN",
   async () => {
@@ -24,13 +37,9 @@ export const getAccessToken = createAsyncThunk(
       return await SecureStore.getItemAsync("accessToken");
     } catch (err) {
       if (err.status === 401) {
-        const authCode = await SecureStore.getItemAsync("authCode");
-
-        const newAccessToken = await getAccessTokenAPI(authCode);
-        await SecureStore.setItemAsync("accessToken", newAccessToken);
-
-        return await SecureStore.getItemAsync("accessToken");
+        return await refreshToken();
       }
+
       console.error("failed to get accessToken from the secure store ", err);
     }
   }
@@ -49,7 +58,6 @@ export const clearAccessToken = createAsyncThunk(
 
 const initialState = {
   accessToken: null,
-  permissionToken: null,
   userInfo: {
     id: null,
     email: null,
@@ -67,12 +75,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     clearUser: (state) => {
-      let currentState = state;
-      currentState = initialState;
-      return currentState;
-    },
-    setNotificationToken: (state, action) => {
-      state.permissionToken = action.payload;
+      return initialState;
     },
   },
   extraReducers: {
@@ -111,12 +114,21 @@ export const userSlice = createSlice({
       state.error = action.payload;
     },
     [clearAccessToken.fulfilled]: (state) => {
-      let currentState = state;
-      currentState = initialState;
-      return currentState;
+      return initialState;
+    },
+
+    [refreshToken.fulfilled]: (state, action) => {
+      state.userInfo.accessToken = action.payload;
+    },
+    [refreshToken.pending]: (state, action) => {
+      state.laoding = true;
+    },
+    [refreshToken.fulfilled]: (state, action) => {
+      state.laoding = true;
+      state.error = action.payload;
     },
   },
 });
 
-const { clearUser, setNotificationToken } = userSlice.actions;
-export { clearUser, setNotificationToken };
+const { clearUser } = userSlice.actions;
+export { clearUser };

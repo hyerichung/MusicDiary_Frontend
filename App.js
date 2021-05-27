@@ -24,7 +24,7 @@ export default function App() {
     DMSans_500Medium,
     DMSans_500Medium_Italic,
     DMSans_700Bold,
-    DMSans_700Bold_Italic 
+    DMSans_700Bold_Italic
   });
 
   if (!fontsLoaded) {

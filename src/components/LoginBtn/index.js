@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import styles from "./styles";
 
-const LoginButton = ({ handlePressLoginBtn }) => {
+const LoginBtn = ({ onPressLoginBtn }) => {
   return (
     <View style={styles.loginWrapper}>
       <View style={styles.card}>
@@ -12,7 +12,7 @@ const LoginButton = ({ handlePressLoginBtn }) => {
         </View>
         <Text style={styles.descText}>Keep your own playlist</Text>
       </View>
-      <TouchableOpacity onPress={handlePressLoginBtn} style={styles.loginBox}>
+      <TouchableOpacity onPress={onPressLoginBtn} style={styles.loginBox}>
         <Entypo style={styles.spotify} name="spotify" size={24} color="black" />
         <Text style={styles.loginText}>LOGIN WITH SPOTIFY</Text>
       </TouchableOpacity>
@@ -20,4 +20,4 @@ const LoginButton = ({ handlePressLoginBtn }) => {
   );
 };
 
-export default LoginButton;
+export default LoginBtn;
