@@ -1,6 +1,8 @@
+import { API_GOOGLE_GEOCODING_KEY } from "@env";
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import Geocoder from "react-native-geocoding";
 import { getDistance } from "geolib";
 import * as Location from "expo-location";
 
@@ -17,6 +19,7 @@ const HomeScreen = ({ route, navigation }) => {
   const [shouldFetch, setShouldFetch] = useState(false);
   const [searching, setSearching] = useState(false);
   const [historyDiary, setHistoryDiary] = useState([]);
+  const [currentAddress, setCurrentAddress] = useState("");
   const [errMessage, setErrorMsg] = useState("");
 
   const getDiaryByDate = async (location) => {
@@ -53,6 +56,14 @@ const HomeScreen = ({ route, navigation }) => {
 
     let location = await Location.getCurrentPositionAsync({});
 
+    Geocoder.init(API_GOOGLE_GEOCODING_KEY, { language: "en" });
+
+    const reversedGeoAddress = await Geocoder.from({
+      lat: location?.coords?.latitude,
+      lng: location?.coords?.longitude,
+    });
+
+    setCurrentAddress(reversedGeoAddress.results[1].formatted_address);
     getDiaryByDate(location);
   }
 
@@ -81,15 +92,17 @@ const HomeScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <UserIntro userName={userInfo.userName} />
-      {searching ? (
-        <Text>searching...</Text>
-      ) : (
-        <HistoryDiary
-          navigation={navigation}
-          matchedHistoryDiary={historyDiary}
-        />
-      )}
+      <UserIntro userName={userInfo.userName} currentAddress={currentAddress} />
+      <View style={styles.diaryInfoBox}>
+        {searching ? (
+          <Text>searching...</Text>
+        ) : (
+          <HistoryDiary
+            navigation={navigation}
+            matchedHistoryDiary={historyDiary}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -99,7 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopWidth: 0.3,
     borderColor: "rgba(0, 0, 0, 0.3)",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f4f7fa",
     alignItems: "center",
   },
   withinText: {
@@ -113,7 +126,7 @@ const styles = StyleSheet.create({
   userIntroWrapper: {
     flexDirection: "row",
     marginBottom: 15,
-    height: 100,
+    height: 300,
     width: 375,
     backgroundColor: "#191919",
     justifyContent: "center",
@@ -132,6 +145,19 @@ const styles = StyleSheet.create({
     fontFamily: "DMSans_700Bold_Italic",
     fontSize: 13,
     color: "#ffffff",
+  },
+  currentLocationBox: {
+    backgroundColor: "yellow",
+    width: 270,
+    height: 80,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  diaryInfoBox: {
+    backgroundColor: "yellow",
+    height: 260,
+    width: "100%",
   },
 });
 
