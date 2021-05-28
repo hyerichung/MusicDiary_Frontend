@@ -7,8 +7,8 @@ const DiaryScreen = ({ route, navigation }) => {
   const { data } = route.params;
   const { byIds } = useSelector((state) => state.diary);
 
-  const newDiaryInfo = byIds[data.newDiaryId];
   const diaryId = data.newDiaryId ? newDiaryInfo?._id : data?._id;
+  const newDiaryInfo = byIds[data.newDiaryId];
 
   function openNewTrackAddingModal() {
     navigation.navigate("addNewTrackModal", { data: diaryId });

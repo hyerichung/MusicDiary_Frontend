@@ -94,6 +94,9 @@ const HomeScreen = ({ route, navigation }) => {
     <View style={styles.container}>
       <UserIntro userName={userInfo.userName} currentAddress={currentAddress} />
       <View style={styles.diaryInfoBox}>
+        <View style={styles.diaryLocationTitleBox}>
+          <Text style={styles.diaryLocationTitle}>Diary by your location</Text>
+        </View>
         {searching ? (
           <Text>searching...</Text>
         ) : (
@@ -132,6 +135,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderColor: "rgba(0, 0, 0, 0.4)",
   },
+  diaryLocationTitleBox: {
+    height: 40,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  diaryLocationTitle: {
+    marginLeft: 10,
+    fontFamily: "DMSans_700Bold",
+    fontSize: 14,
+    color: "black",
+  },
   userInfo: {
     width: 330,
     justifyContent: "center",
@@ -146,17 +160,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#ffffff",
   },
-  currentLocationBox: {
-    backgroundColor: "yellow",
-    width: 270,
-    height: 80,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   diaryInfoBox: {
-    backgroundColor: "yellow",
-    height: 260,
+    backgroundColor: "#ffffff",
+    height: 245,
     width: "100%",
   },
 });

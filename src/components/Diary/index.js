@@ -16,17 +16,17 @@ const Diary = ({ data, diaryId }) => {
   const { byIds } = useSelector((state) => state.diary);
 
   function handlePressMusicPlayBtn(index) {
-    dispatch(setPlayList(byIds[diaryId].playList));
+    dispatch(setPlayList(byIds[diaryId]?.playList));
     dispatch(listenMusic(index));
   }
 
-  const energyScore = byIds[diaryId].playList.length
+  const energyScore = byIds[diaryId]?.playList?.length
     ? Math.floor(
-      (byIds[diaryId].playList.reduce(
+      (byIds[diaryId]?.playList?.reduce(
         (acc, current) => acc + current.energy,
         0
       ) /
-          byIds[diaryId].playList.length) *
+          byIds[diaryId]?.playList?.length) *
           100
     )
     : "🤔";
@@ -48,7 +48,7 @@ const Diary = ({ data, diaryId }) => {
       </View>
 
       <View style={styles.playListContainer}>
-        {byIds[diaryId]?.playList.length ? (
+        {byIds[diaryId]?.playList?.length ? (
           <FlatList
             numRows={byIds[diaryId]?.playList.length}
             style={styles.playListContainer}

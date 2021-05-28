@@ -5,105 +5,85 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  ScrollView,
   FlatList,
 } from "react-native";
 
 const HistoryDiary = ({ matchedHistoryDiary, navigation }) => {
-  function moveToRelevantDiary() {
+  function moveToRelevantDiary(clickedDiary) {
     navigation.navigate("Diary", {
       screen: "SingleDiary",
-      params: { data: matchedHistoryDiary },
+      params: { data: clickedDiary },
     });
   }
 
   return (
-    <View>
+    <View style={styles.diaryListBox}>
       <FlatList
         data={matchedHistoryDiary}
         keyExtractor={(list, index) => String(index)}
         horizontal
         pagingEnabled
+        showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
-            <View>
-              {item?.playList?.length ? (
-                <Image
-                  source={{
-                    uri: item?.playList[0]?.albumImg[1]?.url,
-                    width: 160,
-                    height: 160,
-                    borderRadius: 2,
-                    marginTop: 10,
-                  }}
-                />
-              ) : (
-                <Image
-                  style={styles.img}
-                  source={require("../../../assets/empty.png")}
-                />
-              )}
-            </View>
+            <TouchableOpacity
+              onPress={() => moveToRelevantDiary(item)}
+              style={styles.cardBox}
+            >
+              <View style={styles.imgBox}>
+                {item?.playList?.length ? (
+                  <Image
+                    source={{
+                      uri: item?.playList[0]?.albumImg[1]?.url,
+                      width: 130,
+                      height: 135,
+                    }}
+                  />
+                ) : (
+                  <Image
+                    style={styles.img}
+                    source={require("../../../assets/empty.png")}
+                  />
+                )}
+              </View>
+
+              <View stlye={styles.diaryContainer}>
+                <View style={styles.hashTagWrapper}>
+                  <Text style={styles.hashTagText}>
+                    # {item?.hashTag ? item.hashTag : "No diary"}
+                  </Text>
+                </View>
+                <View style={styles.dateWrapper}>
+                  <Text style={styles.dateText}>
+                    {item?.date ? item.date : null}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
           );
         }}
       />
-
-      {/* <TouchableOpacity
-        style={styles.diaryWrapper}
-        onPress={moveToRelevantDiary}
-      >
-        <View style={styles.diaryImg}>
-          {matchedHistoryDiary?.playList?.length ? (
-            <Image
-              source={{
-                uri: matchedHistoryDiary?.playList[0]?.albumImg[1]?.url,
-                width: 160,
-                height: 160,
-                borderRadius: 2,
-                marginTop: 10,
-              }}
-            />
-          ) : (
-            <Image
-              style={styles.img}
-              source={require("../../../assets/empty.png")}
-            />
-          )}
-        </View>
-
-        <View stlye={styles.diaryContainer}>
-          <View style={styles.hashTagWrapper}>
-            <Text style={styles.hashTagText}>
-              #{" "}
-              {matchedHistoryDiary?.hashTag
-                ? matchedHistoryDiary.hashTag
-                : "No diary"}
-            </Text>
-          </View>
-          <View style={styles.dateWrapper}>
-            <Text style={styles.dateText}>
-              {matchedHistoryDiary?.date ? matchedHistoryDiary.date : null}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   img: {
-    width: 80,
-    height: 50,
+    width: 90,
+    height: 60,
   },
-  diaryImg: {
-    width: 160,
-    height: 160,
-    justifyContent: "center",
+  cardBox: {
+    height: 180,
+    width: 135,
+    marginLeft: 8,
+    marginRight: 5,
+  },
+  imgBox: {
+    flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 0.5,
-
-    borderColor: "rgba(0, 0, 0, 0.4)",
+    justifyContent: "center",
+    width: 135,
+    height: 135,
   },
   withinText: {
     fontSize: 20,
@@ -114,22 +94,23 @@ const styles = StyleSheet.create({
     color: "rgba(0, 0, 0, 0.6)",
   },
   hashTagWrapper: {
-    width: 150,
-    height: 35,
-    marginTop: 10,
+    width: 130,
+    marginTop: 5,
     alignItems: "center",
+    color: "black",
   },
   hashTagText: {
-    fontSize: 18,
-    width: 165,
-    marginLeft: 20,
+    fontSize: 13,
+    width: 120,
     color: "black",
     fontWeight: "600",
   },
   dateWrapper: {
-    width: 150,
+    width: 120,
     justifyContent: "center",
-    marginBottom: 0,
+    textAlign: "center",
+    marginLeft: 3,
+    marginTop: 5,
   },
   dateText: {
     fontSize: 9,
@@ -146,7 +127,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   diaryWrapper: {
-    width: 160,
+    width: 130,
     height: 230,
     borderWidth: 0.3,
     borderColor: "rgba(0, 0, 0, 0.3)",
@@ -157,7 +138,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   diaryContainer: {
-    width: 165,
+    width: 140,
     height: 50,
     borderWidth: 2,
     borderColor: "black",
