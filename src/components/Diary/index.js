@@ -43,7 +43,7 @@ const Diary = ({ data, diaryId }) => {
             <Text style={styles.hash}># {byIds[diaryId]?.hashTag}</Text>
             <Text style={styles.date}>{byIds[diaryId]?.date}</Text>
           </View>
-          <Text style={styles.location}>{byIds[diaryId]?.address}</Text>
+          <Text style={styles.location} numberOfLines={3}>{byIds[diaryId]?.address}</Text>
         </View>
       </View>
 
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   titleContainer: {
-    height: 50,
+    height: 70,
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,

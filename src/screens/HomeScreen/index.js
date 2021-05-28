@@ -5,7 +5,7 @@ import { getDistance } from "geolib";
 import * as Location from "expo-location";
 
 import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
-import HomeDiaryAlert from "../../components/HomeDiaryAlert";
+import HistoryDiary from "../../components/HistoryDiary";
 import UserIntro from "../../components/UserIntro";
 
 const HomeScreen = ({ route, navigation }) => {
@@ -15,9 +15,9 @@ const HomeScreen = ({ route, navigation }) => {
 
   const userId = userInfo?.id;
   const [shouldFetch, setShouldFetch] = useState(false);
-  const [historyDiary, setHistoryDiary] = useState({});
+  const [searching, setSearching] = useState(false);
+  const [historyDiary, setHistoryDiary] = useState([]);
   const [errMessage, setErrorMsg] = useState("");
-  const [searching, setSearching] = useState(true);
 
   const getDiaryByDate = async (location) => {
     await dispatch(fetchDiaryByDate({ userId }));
@@ -25,7 +25,6 @@ const HomeScreen = ({ route, navigation }) => {
     findHistoryDiary(location);
     setShouldFetch(false);
     setSearching(false);
-    console.log(searching, "adfasd");
   };
 
   useEffect(() => {
@@ -75,7 +74,7 @@ const HomeScreen = ({ route, navigation }) => {
       return distanceMeter <= 0.5;
     });
 
-    setHistoryDiary(matchedHistoryDiary[0]);
+    setHistoryDiary(matchedHistoryDiary);
 
     return matchedHistoryDiary;
   }
@@ -84,9 +83,9 @@ const HomeScreen = ({ route, navigation }) => {
     <View style={styles.container}>
       <UserIntro userName={userInfo.userName} />
       {searching ? (
-        <Text>searching</Text>
+        <Text>searching...</Text>
       ) : (
-        <HomeDiaryAlert
+        <HistoryDiary
           navigation={navigation}
           matchedHistoryDiary={historyDiary}
         />

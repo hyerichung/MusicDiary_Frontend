@@ -23,14 +23,15 @@ const NewDiaryAddingModalScreen = ({ route, navigation }) => {
   const [address, setAddress] = useState(null);
   const [geoLocation, setGeoLocation] = useState({ lat: "", lng: "" });
 
-  Geocoder.init(API_GOOGLE_GEOCODING_KEY, { language: "ko" });
+  Geocoder.init(API_GOOGLE_GEOCODING_KEY, { language: "en" });
 
   async function getAddress(lat, lng) {
     const reversedGeoAddress = await Geocoder.from({
       lat: lat,
       lng: lng,
     });
-    setAddress(reversedGeoAddress.results[3].formatted_address);
+
+    setAddress(reversedGeoAddress.results[1].formatted_address);
     setGeoLocation({ lat, lng });
   }
 
@@ -98,7 +99,9 @@ const NewDiaryAddingModalScreen = ({ route, navigation }) => {
               size={24}
               color="black"
             />
-            <Text style={styles.locationText}>{address}</Text>
+            <View style={styles.locationText}>
+              <Text numberOfLines={2}>{address}</Text>
+            </View>
           </View>
           <View style={styles.btnBox}>
             <TouchableOpacity style={styles.closeBtn} onPress={closeModal}>
@@ -136,7 +139,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 17,
-    borderWidth: 2,
     backgroundColor: "#0652DD",
   },
   closeText: {
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   locationIcon: {
-    marginRight: 20,
+    marginRight: 10,
   },
   modalWrapper: {
     flex: 1,
@@ -176,9 +178,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   locationText: {
-    width: 230,
-    height: 20,
-    backgroundColor: "white",
+    width: 240,
+    height: 60,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

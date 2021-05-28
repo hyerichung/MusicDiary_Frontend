@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  FlatList,
+} from "react-native";
 
-const HomeDiaryAlert = ({ matchedHistoryDiary, navigation }) => {
+const HistoryDiary = ({ matchedHistoryDiary, navigation }) => {
   function moveToRelevantDiary() {
     navigation.navigate("Diary", {
       screen: "SingleDiary",
@@ -11,7 +19,36 @@ const HomeDiaryAlert = ({ matchedHistoryDiary, navigation }) => {
 
   return (
     <View>
-      <TouchableOpacity
+      <FlatList
+        data={matchedHistoryDiary}
+        keyExtractor={(list, index) => String(index)}
+        horizontal
+        pagingEnabled
+        renderItem={({ item }) => {
+          return (
+            <View>
+              {item?.playList?.length ? (
+                <Image
+                  source={{
+                    uri: item?.playList[0]?.albumImg[1]?.url,
+                    width: 160,
+                    height: 160,
+                    borderRadius: 2,
+                    marginTop: 10,
+                  }}
+                />
+              ) : (
+                <Image
+                  style={styles.img}
+                  source={require("../../../assets/empty.png")}
+                />
+              )}
+            </View>
+          );
+        }}
+      />
+
+      {/* <TouchableOpacity
         style={styles.diaryWrapper}
         onPress={moveToRelevantDiary}
       >
@@ -49,7 +86,7 @@ const HomeDiaryAlert = ({ matchedHistoryDiary, navigation }) => {
             </Text>
           </View>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -137,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeDiaryAlert;
+export default HistoryDiary;

@@ -8,7 +8,9 @@ const UserIntro = ({ userName }) => {
     <View style={styles.userIntroWrapper}>
       <View style={styles.userInfo}>
         <Text style={styles.userName}>Hi, {userName}</Text>
-        <Text style={styles.desc}>Searching your diary within 50m...</Text>
+        <Text style={styles.desc}>
+          We are searching diary you wrote within 50m...
+        </Text>
       </View>
     </View>
   );

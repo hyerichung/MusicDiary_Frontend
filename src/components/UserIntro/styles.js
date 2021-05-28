@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     height: 100,
     width: 375,
-    backgroundColor: "#191919",
+    backgroundColor: "#1c1f28",
     justifyContent: "center",
     borderColor: "rgba(0, 0, 0, 0.4)",
   },
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   desc: {
-    fontFamily: "DMSans_700Bold_Italic",
+    fontFamily: "DMSans_500Medium",
     fontSize: 13,
     color: "#ffffff",
   },
