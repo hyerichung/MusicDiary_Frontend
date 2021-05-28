@@ -13,7 +13,7 @@ import MusicTabBar from "../components/shared/MusicTabBar";
 
 const MusicTabBarContainer = ({ state, descriptors, navigation }) => {
   const dispatch = useDispatch();
-  const { isPlaying, playList, currentIdx } = useSelector((state) => state.music);
+  const { isPlaying, playList, currentIdx } = useSelector((state) => state?.music);
 
   const currentTrack = playList[currentIdx];
   const [sound, setSound] = useState(null);

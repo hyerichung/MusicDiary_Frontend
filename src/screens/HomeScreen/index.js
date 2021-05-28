@@ -1,20 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { getDistance } from "geolib";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { getDistance } from "geolib";
 import * as Location from "expo-location";
+
 import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
 import HomeDiaryAlert from "../../components/HomeDiaryAlert";
+import UserIntro from "../../components/UserIntro";
 
 const HomeScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state?.user);
   const { byIds } = useSelector((state) => state?.diary);
-  const userId = userInfo?.id;
 
+  const userId = userInfo?.id;
   const [shouldFetch, setShouldFetch] = useState(false);
   const [historyDiary, setHistoryDiary] = useState({});
   const [errMessage, setErrorMsg] = useState("");
+  const [searching, setSearching] = useState(true);
+
+  const getDiaryByDate = async (location) => {
+    await dispatch(fetchDiaryByDate({ userId }));
+
+    findHistoryDiary(location);
+    setShouldFetch(false);
+    setSearching(false);
+    console.log(searching, "adfasd");
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setShouldFetch(true);
+      setSearching(true);
+    });
+
+    return () => unsubscribe();
+  }, [shouldFetch]);
+
+  useEffect(() => {
+    if (!shouldFetch) {
+      return;
+    }
+
+    getLocation();
+  }, [shouldFetch, byIds, dispatch]);
 
   async function getLocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -27,14 +56,6 @@ const HomeScreen = ({ route, navigation }) => {
 
     getDiaryByDate(location);
   }
-
-  useEffect(() => {
-    if (!shouldFetch) {
-      return;
-    }
-
-    getLocation();
-  }, [shouldFetch, byIds, dispatch]);
 
   function findHistoryDiary(location) {
     const matchedHistoryDiary = Object.values(byIds).filter((diary) => {
@@ -59,34 +80,17 @@ const HomeScreen = ({ route, navigation }) => {
     return matchedHistoryDiary;
   }
 
-  const getDiaryByDate = async (location) => {
-    await dispatch(fetchDiaryByDate({ userId }));
-
-    findHistoryDiary(location);
-    setShouldFetch(false);
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      setShouldFetch(true);
-    });
-
-    return () => unsubscribe();
-  }, [shouldFetch]);
-
   return (
     <View style={styles.container}>
-      <View style={styles.userIntroWrapper}>
-        <View style={styles.userInfo}>
-          <Text style={styles.userName}>Hi, {userInfo.userName}</Text>
-          <Text style={styles.desc}>Searching your diary within 50m...</Text>
-        </View>
-      </View>
-
-      <HomeDiaryAlert
-        navigation={navigation}
-        matchedHistoryDiary={historyDiary}
-      />
+      <UserIntro userName={userInfo.userName} />
+      {searching ? (
+        <Text>searching</Text>
+      ) : (
+        <HomeDiaryAlert
+          navigation={navigation}
+          matchedHistoryDiary={historyDiary}
+        />
+      )}
     </View>
   );
 };
