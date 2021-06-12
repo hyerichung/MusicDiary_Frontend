@@ -1,74 +1,32 @@
 import { API_GOOGLE_GEOCODING_KEY } from "@env";
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, Button, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Geocoder from "react-native-geocoding";
 import { getDistance } from "geolib";
 import * as Location from "expo-location";
 
 import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
-import HistoryDiary from "../../components/HistoryDiary";
-import UserIntro from "../../components/UserIntro";
+import MatchedDiaryByLocation from "../../components/MatchedDiaryByLocation";
+import HomeIntro from "../../components/HomeIntro";
 
-const HomeScreen = ({ route, navigation }) => {
+const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state?.user);
   const { byIds } = useSelector((state) => state?.diary);
 
   const userId = userInfo?.id;
-  const [shouldFetch, setShouldFetch] = useState(false);
-  const [searching, setSearching] = useState(false);
-  const [historyDiary, setHistoryDiary] = useState([]);
+
   const [currentAddress, setCurrentAddress] = useState("");
   const [errMessage, setErrorMsg] = useState("");
 
-  const getDiaryByDate = async (location) => {
-    await dispatch(fetchDiaryByDate({ userId }));
-
-    findHistoryDiary(location);
-    setShouldFetch(false);
-    setSearching(false);
-  };
-
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      setShouldFetch(true);
-      setSearching(true);
-    });
+    fetchAllDiaryByIds();
+  }, []);
 
-    return () => unsubscribe();
-  }, [shouldFetch]);
-
-  useEffect(() => {
-    if (!shouldFetch) {
-      return;
-    }
-
-    getLocation();
-  }, [shouldFetch, byIds, dispatch]);
-
-  async function getLocation() {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-
-    Geocoder.init(API_GOOGLE_GEOCODING_KEY, { language: "en" });
-
-    const reversedGeoAddress = await Geocoder.from({
-      lat: location?.coords?.latitude,
-      lng: location?.coords?.longitude,
-    });
-
-    setCurrentAddress(reversedGeoAddress.results[1].formatted_address);
-    getDiaryByDate(location);
-  }
-
-  function findHistoryDiary(location) {
-    const matchedHistoryDiary = Object.values(byIds).filter((diary) => {
+  const getMatchedDiary = async (byIds) => {
+    const location = await getLocation();
+    const matchedDiary = Object.values(byIds).filter((diary) => {
       const distance = getDistance(
         {
           latitude: location?.coords?.latitude,
@@ -85,26 +43,53 @@ const HomeScreen = ({ route, navigation }) => {
       return distanceMeter <= 0.5;
     });
 
-    setHistoryDiary(matchedHistoryDiary);
+    return matchedDiary;
+  };
 
-    return matchedHistoryDiary;
+  async function fetchAllDiaryByIds() {
+    await dispatch(fetchDiaryByDate({ userId }));
+  }
+
+  async function getLocation() {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    const location = await Location.getCurrentPositionAsync({});
+
+    Geocoder.init(API_GOOGLE_GEOCODING_KEY, { language: "en" });
+
+    const reversedGeoAddress = await Geocoder.from({
+      lat: location?.coords?.latitude,
+      lng: location?.coords?.longitude,
+    });
+
+    setCurrentAddress(reversedGeoAddress.results[1].formatted_address);
+
+    return location;
+  }
+
+  async function handleOnPressResearchingBtn() {
+    await dispatch(fetchDiaryByDate({ userId }));
   }
 
   return (
     <View style={styles.container}>
-      <UserIntro userName={userInfo.userName} currentAddress={currentAddress} />
+      <HomeIntro userName={userInfo.userName} currentAddress={currentAddress} />
       <View style={styles.diaryInfoBox}>
         <View style={styles.diaryLocationTitleBox}>
-          <Text style={styles.diaryLocationTitle}>Diary by your location</Text>
+          <Text style={styles.diaryLocationTitle}>Diary within 50m</Text>
+          <Button title="researching" onPress={handleOnPressResearchingBtn} />
         </View>
-        {searching ? (
-          <Text>searching...</Text>
-        ) : (
-          <HistoryDiary
-            navigation={navigation}
-            matchedHistoryDiary={historyDiary}
-          />
-        )}
+
+        <MatchedDiaryByLocation
+          navigation={navigation}
+          getMatchedDiary={getMatchedDiary}
+          allDiaryByIds={byIds}
+        />
       </View>
     </View>
   );

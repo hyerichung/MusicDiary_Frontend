@@ -142,7 +142,6 @@ export const diarySlice = createSlice({
           return initialObj;
         }, {}),
       };
-
       state.allIds = ids;
       state.loading = false;
       state.error = false;

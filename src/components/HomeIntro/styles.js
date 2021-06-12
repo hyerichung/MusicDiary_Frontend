@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   userIntroWrapper: {
     flexDirection: "row",
     marginBottom: 8,
-    height: 200,
+    height: 180,
     width: 375,
     backgroundColor: "#1c1f28",
     justifyContent: "center",
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.4)",
   },
   currentLocationBox: {
-    marginTop: 30,
+    marginTop: 20,
   },
   currentLocationTitle: {
     fontSize: 16,
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   addressText: {
-    fontSize: 13,
-    fontFamily: "DMSans_500Medium_Italic",
+    fontSize: 14,
+    fontFamily: "DMSans_500Medium",
     width: 300,
     fontWeight: "400",
     marginBottom: 5,
@@ -57,9 +57,10 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   desc: {
-    fontFamily: "DMSans_500Medium_Italic",
-    fontSize: 13,
+    fontFamily: "DMSans_500Medium",
+    fontSize: 14,
     color: "#ffffff",
+    marginTop: 5,
   },
 });
 

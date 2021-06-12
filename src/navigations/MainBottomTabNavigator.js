@@ -20,8 +20,16 @@ const MainBottomTabNavigator = () => {
         name="Diary"
         component={PrivateDiaryListNavigator}
       />
-      <MainBottomTab.Screen name="Calendar" component={TotalDiaryInfoScreen} />
-      <MainBottomTab.Screen name="My" component={UserInfoScreen} />
+      <MainBottomTab.Screen
+        name="Calendar"
+        component={TotalDiaryInfoScreen}
+        options={{ unmountOnBlur: true }}
+      />
+      <MainBottomTab.Screen
+        name="My"
+        component={UserInfoScreen}
+        options={{ unmountOnBlur: true }}
+      />
     </MainBottomTab.Navigator>
   );
 };

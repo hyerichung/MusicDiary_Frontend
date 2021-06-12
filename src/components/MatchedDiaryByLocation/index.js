@@ -8,7 +8,17 @@ import {
   FlatList,
 } from "react-native";
 
-const HistoryDiary = ({ matchedHistoryDiary, navigation }) => {
+const MatchedDiaryByLocation = ({ allDiaryByIds, getMatchedDiary, navigation }) => {
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const asdf = async () => {
+      setList(await getMatchedDiary(allDiaryByIds));
+    };
+
+    asdf();
+  }, [allDiaryByIds]);
+
   function moveToRelevantDiary(clickedDiary) {
     navigation.navigate("Diary", {
       screen: "SingleDiary",
@@ -19,7 +29,7 @@ const HistoryDiary = ({ matchedHistoryDiary, navigation }) => {
   return (
     <View style={styles.diaryListBox}>
       <FlatList
-        data={matchedHistoryDiary}
+        data={list}
         keyExtractor={(list, index) => String(index)}
         horizontal
         pagingEnabled
@@ -155,4 +165,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HistoryDiary;
+export default MatchedDiaryByLocation;
