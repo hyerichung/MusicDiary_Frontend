@@ -26,13 +26,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderColor: "rgba(0, 0, 0, 0.4)",
   },
+  refreshIcon: {
+    marginBottom: 10,
+    marginLeft: "20%",
+  },
+  currentLocationTitleWrapper: {
+    flexDirection: "row",
+    width: 300,
+  },
   currentLocationBox: {
     marginTop: 20,
+    flexDirection: "column",
   },
   currentLocationTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: "DMSans_700Bold",
-    width: 180,
+    width: 200,
     fontWeight: "400",
     marginBottom: 5,
     color: "#ffffff",
@@ -53,7 +62,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontFamily: "DMSans_700Bold",
-    fontSize: 18,
+    fontSize: 20,
     color: "#ffffff",
   },
   desc: {

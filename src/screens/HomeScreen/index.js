@@ -78,7 +78,11 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <HomeIntro userName={userInfo.userName} currentAddress={currentAddress} />
+      <HomeIntro
+        userName={userInfo.userName}
+        currentAddress={currentAddress}
+        onRefreshBtnPress={handleOnPressResearchingBtn}
+      />
       <View style={styles.diaryInfoBox}>
         <View style={styles.diaryLocationTitleBox}>
           <Text style={styles.diaryLocationTitle}>Diary within 50m</Text>
