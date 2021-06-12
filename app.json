@@ -3,7 +3,6 @@
     "name": "MusicDiary_Frontend",
     "slug": "MusicDiary_Frontend",
     "version": "1.0.0",
-    "orientation": "portrait",
     "scheme": "musicdiary",
     "icon": "./assets/logo.png",
     "splash": {
