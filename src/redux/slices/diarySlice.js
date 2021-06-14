@@ -90,7 +90,7 @@ const initialState = {
   allIds: [],
   calendar: { May: Array(31).fill([]), Jun: Array(30).fill([]) },
   visibleDiary: {
-    byDate: [],
+    byLocation: [],
   },
   loading: false,
   error: null,

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   userIntroWrapper: {
     flexDirection: "row",
-    marginBottom: 8,
+    marginBottom: "5%",
     height: 180,
     width: 375,
     backgroundColor: "#1c1f28",

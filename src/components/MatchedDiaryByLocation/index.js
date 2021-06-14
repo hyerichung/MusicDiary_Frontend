@@ -8,15 +8,20 @@ import {
   FlatList,
 } from "react-native";
 
-const MatchedDiaryByLocation = ({ allDiaryByIds, getMatchedDiary, navigation }) => {
-  const [list, setList] = useState([]);
+const MatchedDiaryByLocation = ({
+  allDiaryByIds,
+  findMatchedDiary,
+  navigation,
+}) => {
+  const [matchedDiaryList, setMatchedDiaryList] = useState([]);
+
+  const getMatchedDiaryList = async () => {
+    const diaryList = await findMatchedDiary(allDiaryByIds);
+    setMatchedDiaryList(diaryList);
+  };
 
   useEffect(() => {
-    const asdf = async () => {
-      setList(await getMatchedDiary(allDiaryByIds));
-    };
-
-    asdf();
+    getMatchedDiaryList();
   }, [allDiaryByIds]);
 
   function moveToRelevantDiary(clickedDiary) {
@@ -29,7 +34,7 @@ const MatchedDiaryByLocation = ({ allDiaryByIds, getMatchedDiary, navigation }) 
   return (
     <View style={styles.diaryListBox}>
       <FlatList
-        data={list}
+        data={matchedDiaryList}
         keyExtractor={(list, index) => String(index)}
         horizontal
         pagingEnabled
