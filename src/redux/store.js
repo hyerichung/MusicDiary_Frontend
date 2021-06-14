@@ -1,13 +1,21 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
-import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { userSlice } from "./slices/userSlice";
 import { diarySlice } from "./slices/diarySlice";
 import { musicSlice } from "./slices/musicSlice";
-import { persistStore, persistReducer } from "redux-persist";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 
 const userPersistConfig = {
   key: "user",
@@ -27,7 +35,14 @@ const reducer = {
   music: persistReducer(musicPersistConfig, musicSlice.reducer),
 };
 
-const middleware = [thunk, logger];
+const middleware = [
+  ...getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+  logger,
+];
 
 const store = configureStore({
   reducer,
