@@ -1,6 +1,6 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { configureStore } from "@reduxjs/toolkit";
 
 import thunk from "redux-thunk";
 import logger from "redux-logger";
@@ -21,18 +21,18 @@ const musicPersistConfig = {
   blacklist: ["playList"],
 };
 
-const rootReducer = combineReducers({
+const reducer = {
   user: persistReducer(userPersistConfig, userSlice.reducer),
   diary: diarySlice.reducer,
   music: persistReducer(musicPersistConfig, musicSlice.reducer),
-});
+};
 
 const middleware = [thunk, logger];
 
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+const store = configureStore({
+  reducer,
+  middleware,
+});
 
 const persistedStore = persistStore(store);
 
