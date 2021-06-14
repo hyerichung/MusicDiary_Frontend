@@ -47,6 +47,7 @@ const middleware = [
 const store = configureStore({
   reducer,
   middleware,
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 const persistedStore = persistStore(store);
