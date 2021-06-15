@@ -2,56 +2,61 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAuthCodeAPI, getAccessTokenAPI, getUserInfoAPI } from "../../api";
 import * as SecureStore from "expo-secure-store";
 
-export const loginUser = createAsyncThunk("USER/LOGIN_USER", async () => {
-  try {
-    const authCode = await getAuthCodeAPI();
-    const { accessToken } = await getAccessTokenAPI(authCode);
-    const { userInfo } = await getUserInfoAPI(accessToken);
+export const loginUser = createAsyncThunk(
+  "USER/LOGIN_USER",
+  async (_, { rejectWithValue }) => {
+    try {
+      const authCode = await getAuthCodeAPI();
+      const { accessToken } = await getAccessTokenAPI(authCode);
+      const { userInfo } = await getUserInfoAPI(accessToken);
 
-    await SecureStore.setItemAsync("accessToken", accessToken);
-    await SecureStore.setItemAsync("authCode", authCode);
+      await SecureStore.setItemAsync("accessToken", accessToken);
+      await SecureStore.setItemAsync("authCode", authCode);
 
-    return { accessToken, userInfo };
-  } catch (err) {
-    console.error("failed to login", err);
+      return { accessToken, userInfo };
+    } catch (err) {
+      return rejectWithValue({ message: err.message });
+    }
   }
-});
+);
 
-export const refreshToken = createAsyncThunk("USER/REFRESH_TOKEN", async () => {
-  try {
-    const authCode = await SecureStore.getItemAsync("authCode");
-    const newAccessToken = await getAccessTokenAPI(authCode);
+export const refreshToken = createAsyncThunk(
+  "USER/REFRESH_TOKEN",
+  async (_, { rejectWithValue }) => {
+    try {
+      const authCode = await SecureStore.getItemAsync("authCode");
+      const newAccessToken = await getAccessTokenAPI(authCode);
 
-    await SecureStore.setItemAsync("accessToken", newAccessToken);
+      await SecureStore.setItemAsync("accessToken", newAccessToken);
 
-    return await SecureStore.getItemAsync("accessToken");
-  } catch (err) {
-    console.error("failed to refresh token", err);
+      return await SecureStore.getItemAsync("accessToken");
+    } catch (err) {
+      return rejectWithValue({ message: err.message });
+    }
   }
-});
+);
 
 export const getAccessToken = createAsyncThunk(
   "USER/GET_ACCESSTOKEN",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       return await SecureStore.getItemAsync("accessToken");
     } catch (err) {
       if (err.status === 401) {
         return await refreshToken();
       }
-
-      console.error("failed to get accessToken from the secure store ", err);
+      return rejectWithValue({ message: err.message });
     }
   }
 );
 
 export const clearAccessToken = createAsyncThunk(
   "USER/CLEAR_ACCESSTOKEN",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       await SecureStore.deleteItemAsync("accessToken");
     } catch (err) {
-      console.error("failed to get accessToken from the secure store ", err);
+      return rejectWithValue({ message: err.message });
     }
   }
 );
@@ -62,9 +67,6 @@ const initialState = {
     id: null,
     email: null,
     userName: null,
-    privateDiaryList: [],
-    uri: null,
-    externalUrl: null,
   },
   error: null,
   loading: false,
@@ -74,7 +76,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    clearUser: (state) => {
+    clearUser: (state, action) => {
       return initialState;
     },
   },
@@ -88,33 +90,33 @@ export const userSlice = createSlice({
     [loginUser.pending]: (state) => {
       state.loading = true;
     },
-    [loginUser.reject]: (state, action) => {
+    [loginUser.rejected]: (state, action) => {
       state.laoding = false;
-      state.error = action.payload;
+      state.error = action.payload.message;
     },
 
     [getAccessToken.pending]: (state) => {
       state.laoding = true;
-    },
-    [getAccessToken.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
     },
     [getAccessToken.fulfilled]: (state, action) => {
       state.accessToken = action.payload;
       state.loading = false;
       state.error = false;
     },
+    [getAccessToken.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
 
     [clearAccessToken.pending]: (state) => {
       state.laoding = true;
     },
-    [clearAccessToken.rejected]: (state, action) => {
-      state.laoding = true;
-      state.error = action.payload;
-    },
     [clearAccessToken.fulfilled]: (state) => {
       return initialState;
+    },
+    [clearAccessToken.rejected]: (state, action) => {
+      state.laoding = true;
+      state.error = action.payload.message;
     },
 
     [refreshToken.fulfilled]: (state, action) => {
@@ -123,9 +125,9 @@ export const userSlice = createSlice({
     [refreshToken.pending]: (state, action) => {
       state.laoding = true;
     },
-    [refreshToken.fulfilled]: (state, action) => {
+    [refreshToken.rejected]: (state, action) => {
       state.laoding = true;
-      state.error = action.payload;
+      state.error = action.payload.message;
     },
   },
 });
