@@ -10,7 +10,7 @@ import { parseISO, format, getMonth, getDate } from "date-fns";
 
 export const addNewDiary = createAsyncThunk(
   "DIARY/ADD_DIARY",
-  async ({ newDiaryInfo, userId, rejectWithValue }) => {
+  async ({ newDiaryInfo, userId }, { rejectWithValue }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
@@ -22,7 +22,7 @@ export const addNewDiary = createAsyncThunk(
 
       return newDiary;
     } catch (err) {
-      console.warn(err);
+      return rejectWithValue({ message: err.message });
     }
   }
 );
@@ -47,7 +47,7 @@ export const fetchDiaryByDate = createAsyncThunk(
 
 export const searchTrack = createAsyncThunk(
   "TRACK/FETCH_SEARCH_TRACK",
-  async ({ userId, diaryId, searchInput }) => {
+  async ({ userId, diaryId, searchInput }, { rejectWithValue }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
@@ -60,14 +60,14 @@ export const searchTrack = createAsyncThunk(
 
       return tempSearchTracksResult;
     } catch (err) {
-      console.error("failed to fetch searched track");
+      return rejectWithValue({ message: err.message });
     }
   }
 );
 
 export const addTrackToDiary = createAsyncThunk(
   "DIARY/ADD_TRACK_TO_DIARY",
-  async ({ userId, diaryId, trackInfo }) => {
+  async ({ userId, diaryId, trackInfo }, { rejectWithValue }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
@@ -80,7 +80,7 @@ export const addTrackToDiary = createAsyncThunk(
 
       return { newTrackInfo, diaryId };
     } catch (err) {
-      console.error("failed to fetch searched track");
+      return rejectWithValue({ message: err.message });
     }
   }
 );
@@ -125,7 +125,7 @@ export const diarySlice = createSlice({
     [addNewDiary.pending]: (state) => {
       state.loading = true;
     },
-    [addNewDiary.reject]: (state, action) => {
+    [addNewDiary.rejected]: (state, action) => {
       state.laoding = false;
       state.error = action.payload;
     },
@@ -157,7 +157,7 @@ export const diarySlice = createSlice({
     [addTrackToDiary.pending]: (state) => {
       state.loading = true;
     },
-    [addTrackToDiary.reject]: (state, action) => {
+    [addTrackToDiary.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
