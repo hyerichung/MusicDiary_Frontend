@@ -15,9 +15,7 @@ export const musicSlice = createSlice({
       state.isPlaying = action.payload;
     },
     clearMusicStatus: (state, action) => {
-      let currentState = state;
-      currentState = initialState;
-      return currentState;
+      return initialState;
     },
     setPlayList: (state, action) => {
       state.playList = action.payload;

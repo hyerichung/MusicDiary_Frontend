@@ -101,9 +101,7 @@ export const diarySlice = createSlice({
   initialState,
   reducers: {
     clearDiary: (state, action) => {
-      let currentState = state;
-      currentState = initialState;
-      return currentState;
+      return initialState;
     },
     getPlayList: (state, action) => {
       return state.byIds[action.payload].playList;
