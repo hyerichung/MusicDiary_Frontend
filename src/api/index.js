@@ -71,7 +71,12 @@ export async function addNewDiaryAPI({ accessToken, newDiaryInfo, userId }) {
 
   const { data } = await addedDiaryInfo.json();
 
-  return data.newDiary;
+  const dateFormattedData = {
+    ...data.newDiary,
+    date: changeDateFormat(data.newDiary.date),
+  };
+
+  return dateFormattedData;
 }
 
 export async function fetchDiaryByDateAPI({ accessToken, userId }) {

@@ -110,11 +110,7 @@ export const diarySlice = createSlice({
   extraReducers: {
     [addNewDiary.fulfilled]: (state, action) => {
       state.byIds = {
-        [action.payload._id]: {
-          ...action.payload,
-          date: format(parseISO(action.payload.date), "yyyy-MM-dd"),
-        },
-        ...state.byIds,
+        [action.payload._id]: { ...action.payload, ...state.byIds },
       };
       state.allIds = [action.payload._id].concat(state.allIds);
       state.loading = false;
