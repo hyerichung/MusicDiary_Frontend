@@ -27,7 +27,6 @@ const HomeScreen = ({ navigation }) => {
   }, [dispatch, userId]);
 
   const findMatchedDiary = async (byIds) => {
-    console.log("find matching diary");
     const location = await getLocation();
     const matchedDiary = Object.values(byIds).filter((diary) => {
       const distance = getDistance(

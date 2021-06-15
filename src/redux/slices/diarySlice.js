@@ -133,10 +133,7 @@ export const diarySlice = createSlice({
 
       state.byIds = {
         ...action.payload?.reduce((initialObj, diaryById) => {
-          initialObj[diaryById._id] = {
-            ...diaryById,
-            date: format(parseISO(diaryById.date), "yyyy-MM-dd"),
-          };
+          initialObj[diaryById._id] = diaryById;
           return initialObj;
         }, {}),
       };
