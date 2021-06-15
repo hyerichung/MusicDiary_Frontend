@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
   const [errMessage, setErrorMsg] = useState("");
 
   useEffect(() => {
-    fetchAllDiaryByIds();
+    fetchAllDiary();
   }, [dispatch, userId]);
 
   const findMatchedDiary = async (byIds) => {
@@ -49,8 +49,9 @@ const HomeScreen = ({ navigation }) => {
     return matchedDiary;
   };
 
-  function fetchAllDiaryByIds() {
+  function fetchAllDiary() {
     dispatch(fetchDiaryByDate({ userId }));
+
   }
 
   async function getLocation() {
@@ -76,7 +77,7 @@ const HomeScreen = ({ navigation }) => {
   }
 
   function handleOnPressResearchingBtn() {
-    fetchAllDiaryByIds();
+    fetchAllDiary();
   }
 
   return (

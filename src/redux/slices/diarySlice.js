@@ -10,7 +10,7 @@ import { parseISO, format, getMonth, getDate } from "date-fns";
 
 export const addNewDiary = createAsyncThunk(
   "DIARY/ADD_DIARY",
-  async ({ newDiaryInfo, userId }) => {
+  async ({ newDiaryInfo, userId, rejectWithValue }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
@@ -22,14 +22,14 @@ export const addNewDiary = createAsyncThunk(
 
       return newDiary;
     } catch (err) {
-      console.error("failed to post diary", err);
+      console.warn(err);
     }
   }
 );
 
 export const fetchDiaryByDate = createAsyncThunk(
   "DIARY/FETCH_DIARY_BY_DATE",
-  async ({ userId }) => {
+  async ({ userId }, { rejectWithValue }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
@@ -40,7 +40,7 @@ export const fetchDiaryByDate = createAsyncThunk(
 
       return fetchedDiaryByDateInfo;
     } catch (err) {
-      console.error("failed to fetch diary by date");
+      return rejectWithValue({ message: err.message });
     }
   }
 );
@@ -149,9 +149,9 @@ export const diarySlice = createSlice({
     [fetchDiaryByDate.pending]: (state) => {
       state.loading = true;
     },
-    [fetchDiaryByDate.reject]: (state, action) => {
+    [fetchDiaryByDate.rejected]: (state, action) => {
       state.laoding = false;
-      state.error = action.payload;
+      state.error = action.payload.message;
     },
 
     [addTrackToDiary.pending]: (state) => {
