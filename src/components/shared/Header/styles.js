@@ -1,14 +1,13 @@
-import { StyleSheet, StatusBar, Dimensions } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
-const { width: windowWidth } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   header: {
     height: 80,
     flexDirection: "row",
     alignItems: "center",
-    width: windowWidth,
+    width: "100%",
     backgroundColor: "#ffffff",
     justifyContent: "center",
   },

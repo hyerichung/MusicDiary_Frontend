@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import HeatMap from "react-native-heatmap-chart";
-import { Text, View, Dimensions, ScrollView, StyleSheet } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { Text, View, ScrollView, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 
 function TotalDiaryInfoScreen({ route, navigation }) {
   const { calendar, byIds } = useSelector((state) => state.diary);

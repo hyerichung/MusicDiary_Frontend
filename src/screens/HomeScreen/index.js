@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Geocoder from "react-native-geocoding";
-import { getDistance } from "geolib";
+import { getDistance, getBoundsOfDistance } from "geolib";
 import * as Location from "expo-location";
 
 import { fetchDiaryByDate } from "../../redux/slices/diarySlice";
@@ -28,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
 
   const findMatchedDiary = async (byIds) => {
     const location = await getLocation();
+
     const matchedDiary = Object.values(byIds).filter((diary) => {
       const distance = getDistance(
         {
@@ -50,7 +51,6 @@ const HomeScreen = ({ navigation }) => {
 
   function fetchAllDiary() {
     dispatch(fetchDiaryByDate({ userId }));
-
   }
 
   async function getLocation() {

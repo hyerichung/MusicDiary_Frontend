@@ -88,10 +88,10 @@ export const addTrackToDiary = createAsyncThunk(
 const initialState = {
   byIds: {},
   allIds: [],
-  calendar: { May: Array(31).fill([]), Jun: Array(30).fill([]) },
   visibleDiary: {
-    byLocation: [],
+    filteredDiaryByLocation: [],
   },
+  calendar: { May: Array(31).fill([]), Jun: Array(30).fill([]) },
   loading: false,
   error: null,
 };

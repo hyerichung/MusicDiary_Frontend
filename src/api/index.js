@@ -80,6 +80,7 @@ export async function addNewDiaryAPI({ accessToken, newDiaryInfo, userId }) {
 }
 
 export async function fetchDiaryByDateAPI({ accessToken, userId }) {
+
   const fetchedDiaryByDateInfo = await fetch(
     `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/by-date`,
     {
