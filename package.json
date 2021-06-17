@@ -35,7 +35,6 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-chart-kit": "^6.11.0",
-    "react-native-debugger-open": "^0.3.25",
     "react-native-dotenv": "^2.5.5",
     "react-native-geocoding": "^0.5.0",
     "react-native-gesture-handler": "^1.10.3",
@@ -55,6 +54,8 @@
     "@babel/core": "^7.9.0",
     "@react-native-community/eslint-config": "^2.0.0",
     "eslint": "^7.26.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "react-native-debugger-open": "^0.3.25",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
     "remote-redux-devtools": "^0.5.16"
