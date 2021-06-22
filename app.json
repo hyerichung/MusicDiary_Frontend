@@ -6,7 +6,7 @@
     "scheme": "musicdiary",
     "icon": "./assets/logo.png",
     "splash": {
-      "image": "./assets/new_blue.png",
+      "image": "./assets/new_black.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },

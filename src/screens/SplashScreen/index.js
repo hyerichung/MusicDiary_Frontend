@@ -3,10 +3,9 @@ import { View, ImageBackground } from "react-native";
 import LottieView from "lottie-react-native";
 
 import styles from "./styles";
-
 import splash from "../../../assets/new_black.png";
 
-const SplashScreen = ({ handleAnimationFinish }) => {
+const SplashScreen = ({ onAppReady }) => {
   return (
     <View style={styles.container}>
       <ImageBackground source={splash} style={styles.img}>
@@ -15,8 +14,8 @@ const SplashScreen = ({ handleAnimationFinish }) => {
           autoPlay
           loop={false}
           style={styles.animation}
-          speed={0.6}
-          onAnimationFinish={handleAnimationFinish}
+          speed={1.0}
+          onAnimationFinish={onAppReady}
         />
       </ImageBackground>
     </View>

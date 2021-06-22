@@ -16,9 +16,9 @@ import {
 } from "@expo-google-fonts/dm-sans";
 
 export default function App() {
-  const [isAnimationFinished, setIsAnimationFinished] = useState(false);
+  const [isAppReady, setIsAppReady] = useState(false);
 
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     DMSans_400Regular,
     DMSans_400Regular_Italic,
     DMSans_500Medium,
@@ -31,18 +31,18 @@ export default function App() {
     return <AppLoading />;
   }
 
-  const handleAnimationFinish = () => {
-    setIsAnimationFinished(true);
+  const handleAppReady = () => {
+    setIsAppReady(true);
   };
 
   return (
     <>
-      {!isAnimationFinished ? (
-        <SplashScreen handleAnimationFinish={handleAnimationFinish} />
-      ) : (
+      {isAppReady ? (
         <Provider store={store}>
           <AppNavigation />
         </Provider>
+      ) : (
+        <SplashScreen onAppReady={handleAppReady} />
       )}
     </>
   );
