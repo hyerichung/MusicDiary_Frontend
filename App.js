@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Provider } from "react-redux";
-import { store, persistedStore } from "./src/redux/store";
+
 import AppNavigation from "./src/navigations/AppNavigation";
+import { store } from "./src/redux/store";
 import AppLoading from "expo-app-loading";
 import SplashScreen from "./src/screens/SplashScreen";
-import { PersistGate } from "redux-persist/integration/react";
 import {
   useFonts,
   DMSans_400Regular,
@@ -12,7 +12,7 @@ import {
   DMSans_500Medium,
   DMSans_500Medium_Italic,
   DMSans_700Bold,
-  DMSans_700Bold_Italic
+  DMSans_700Bold_Italic,
 } from "@expo-google-fonts/dm-sans";
 
 export default function App() {
@@ -24,7 +24,7 @@ export default function App() {
     DMSans_500Medium,
     DMSans_500Medium_Italic,
     DMSans_700Bold,
-    DMSans_700Bold_Italic
+    DMSans_700Bold_Italic,
   });
 
   if (!fontsLoaded) {
@@ -41,9 +41,7 @@ export default function App() {
         <SplashScreen handleAnimationFinish={handleAnimationFinish} />
       ) : (
         <Provider store={store}>
-          <PersistGate loading={null} persistor={persistedStore}>
-            <AppNavigation />
-          </PersistGate>
+          <AppNavigation />
         </Provider>
       )}
     </>

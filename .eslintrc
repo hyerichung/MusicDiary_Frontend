@@ -1,5 +1,6 @@
 {
   "extends": ["@react-native-community", "plugin:react-hooks/recommended"],
+  "plugins": ["react-hooks"],
   "rules": {
     "quotes": [
       "error",
@@ -13,7 +14,6 @@
     "no-plusplus": "off",
     "no-shadow": "off",
     "vars-on-top": "off",
-    "no-underscore-dangle": "off",
     "func-names": "off",
     "prefer-template": "off",
     "no-nested-ternary": "off",
@@ -31,20 +31,13 @@
     }],
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "semi": ["error", "always"],
-    "comma-dangle": ["error", {
-      "arrays": "never",
-      "functions": "never",
-      "objects": "always-multiline",
-      "imports": "always-multiline",
-      "exports": "always-multiline"
-    }],
+    "comma-dangle": ["error", "always-multiline"],
     "eol-last": ["error", "always"],
     "key-spacing": ["error", {
       "beforeColon": false,
       "afterColon": true
     }],
     "object-curly-spacing": [2, "always"],
-    "camelcase": ["error", { "properties": "always" }],
     "quote-props": 0,
     "keyword-spacing": "error",
     "no-multiple-empty-lines": "warn",
@@ -56,8 +49,7 @@
         "asyncArrow": "always"
       }
     ],
-    "react-hooks/exhaustive-deps": ["warn", {
-      "additionalHooks": "(useMyCustomHook|useMyOtherCustomHook)"
-    }]
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

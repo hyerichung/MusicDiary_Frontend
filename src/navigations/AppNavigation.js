@@ -19,7 +19,7 @@ const AppNavigation = () => {
     const loadAccessToken = async () => {
       try {
         const resultAction = await dispatch(getAccessToken());
-        unwrapResult(resultAction);
+        const token = unwrapResult(resultAction);
       } catch (err) {
         dispatch(clearUser());
         await dispatch(clearAccessToken());
