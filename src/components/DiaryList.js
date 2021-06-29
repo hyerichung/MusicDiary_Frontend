@@ -24,7 +24,9 @@ const DiaryList = ({ diaryList }) => {
           renderItem={renderItem}
         />
       ) : (
-        <Text>No diary found</Text>
+        <View style={styles.defaultDiaryListWrapper}>
+          <Text style={styles.defaultDiaryListText}>No Diaries Found 🔍</Text>
+        </View>
       )}
     </View>
   );
@@ -33,6 +35,15 @@ const DiaryList = ({ diaryList }) => {
 const styles = StyleSheet.create({
   allDiaryListWrapper: {
     flex: 1,
+  },
+  defaultDiaryListWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  defaultDiaryListText: {
+    fontSize: 18,
+    fontWeight: "500",
   },
   allDiaryListColumn: {
     flex: 1,

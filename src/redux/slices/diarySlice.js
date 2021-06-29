@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  fetchDiariesAPI,
   addNewDiaryAPI,
-  fetchDiaryByDateAPI,
   searchTrackAPI,
   addTrackToDiaryAPI,
 } from "../../api";
 import * as SecureStore from "expo-secure-store";
-import { parseISO, getMonth, getDate } from "date-fns";
+import changeDateFormat from "../../utils/changeDateFormat";
 
 export const addNewDiary = createAsyncThunk(
   "DIARY/ADD_DIARY",
@@ -27,18 +27,27 @@ export const addNewDiary = createAsyncThunk(
   }
 );
 
-export const fetchDiaryByDate = createAsyncThunk(
-  "DIARY/FETCH_DIARY_BY_DATE",
+export const fetchDiaries = createAsyncThunk(
+  "DIARY/FETCH_DIARY",
   async ({ userId }, { rejectWithValue }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
-      const fetchedDiaryByDateInfo = await fetchDiaryByDateAPI({
+      const fetchedDiaries = await fetchDiariesAPI({
         accessToken,
         userId,
       });
 
-      return fetchedDiaryByDateInfo;
+      // const dateFormattedData = fetchedDiaryByDateInfo.diaryByDate.map((diary) => {
+      //   return {
+      //     ...diary,
+      //     date: changeDateFormat(diary.date),
+      //   };
+      // });
+
+      console.log(fetchedDiaries, "33");
+
+      return fetchedDiaries;
     } catch (err) {
       return rejectWithValue({ message: err.message });
     }
@@ -88,9 +97,6 @@ export const addTrackToDiary = createAsyncThunk(
 const initialState = {
   byIds: {},
   allIds: [],
-  visibleDiary: {
-    filteredDiaryByLocation: [],
-  },
   loading: false,
   error: null,
 };
@@ -124,7 +130,8 @@ export const diarySlice = createSlice({
       state.error = action.payload.message;
     },
 
-    [fetchDiaryByDate.fulfilled]: (state, action) => {
+    [fetchDiaries.fulfilled]: (state, action) => {
+      console.log(action, "action");
       const ids = action.payload?.map((diary) => diary._id);
 
       state.byIds = {
@@ -137,10 +144,10 @@ export const diarySlice = createSlice({
       state.loading = false;
       state.error = false;
     },
-    [fetchDiaryByDate.pending]: (state) => {
+    [fetchDiaries.pending]: (state) => {
       state.loading = true;
     },
-    [fetchDiaryByDate.rejected]: (state, action) => {
+    [fetchDiaries.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
     },

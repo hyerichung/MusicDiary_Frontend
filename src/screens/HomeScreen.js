@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchDiaryByDate } from "../redux/slices/diarySlice";
+import { fetchDiaries } from "../redux/slices/diarySlice";
 import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -62,7 +62,7 @@ function HomeScreen({ navigation }) {
   };
 
   function fetchAllDiary() {
-    dispatch(fetchDiaryByDate({ userId }));
+    dispatch(fetchDiaries({ userId }));
   }
 
   async function getLocation() {

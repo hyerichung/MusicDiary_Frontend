@@ -79,9 +79,9 @@ export async function addNewDiaryAPI({ accessToken, newDiaryInfo, userId }) {
   return dateFormattedData;
 }
 
-export async function fetchDiaryByDateAPI({ accessToken, userId }) {
-  const fetchedDiaryByDateInfo = await fetch(
-    `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/by-date`,
+export async function fetchDiariesAPI({ accessToken, userId }) {
+  const fetchedDiariesInfo = await fetch(
+    `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/all`,
     {
       method: "GET",
       headers: {
@@ -91,16 +91,17 @@ export async function fetchDiaryByDateAPI({ accessToken, userId }) {
     }
   );
 
-  const { data } = await fetchedDiaryByDateInfo.json();
+  const { data } = await fetchedDiariesInfo.json();
 
-  const dateFormattedData = data.diaryByDate.map((diary) => {
-    return {
-      ...diary,
-      date: changeDateFormat(diary.date),
-    };
-  });
+  // const dateFormattedData = data.diaryByDate.map((diary) => {
+  //   return {
+  //     ...diary,
+  //     date: changeDateFormat(diary.date),
+  //   };
+  // });
+  console.log(data, "data");
 
-  return dateFormattedData;
+  return data.diaries;
 }
 
 export async function searchTrackAPI({
