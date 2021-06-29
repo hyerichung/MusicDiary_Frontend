@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import DiarySelection from "../components/DiarySelection";
 
-const DiarySelectionList = ({ diaryList }) => {
+const DiarySelectionList = ({ onDiarySelectionPress, diaryList }) => {
   return (
     <View style={styles.diarySelectionListWrapper}>
       {diaryList.length ? (
@@ -11,7 +11,9 @@ const DiarySelectionList = ({ diaryList }) => {
           keyExtractor={(list) => list._id}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => {
-            return <DiarySelection item={item} />;
+            return (
+              <DiarySelection onPress={onDiarySelectionPress} item={item} />
+            );
           }}
         />
       ) : (

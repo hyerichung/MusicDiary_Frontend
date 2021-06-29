@@ -38,13 +38,12 @@ const SingleDiary = ({
 
 const styles = StyleSheet.create({
   diaryContainer: {
-    flex: 1,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
   playListContainer: {
-    height: "60%",
+    height: "83%",
   },
   defaultTrackText: {
     textAlign: "center",

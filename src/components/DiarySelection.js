@@ -1,14 +1,16 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
-const DiarySelection = ({ item }) => {
+const DiarySelection = ({ onPress, item }) => {
   const diaryDate = item?.date;
   const diaryHashTag = item?.hashTag;
 
   return (
     <View style={styles.diarySelectionWrapper}>
-      <TouchableOpacity style={styles.diarySelectionBox}>
+      <TouchableOpacity
+        style={styles.diarySelectionBox}
+        onPress={() => onPress(item?._id)}
+      >
         <View style={styles.hashTagBox}>
           <Text style={styles.hashTag}># {diaryHashTag}</Text>
         </View>

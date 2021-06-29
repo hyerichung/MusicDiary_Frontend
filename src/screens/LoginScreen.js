@@ -14,9 +14,9 @@ const LoginScreen = () => {
     if (error) {
       showMessage({
         message: "Login Failed, Please try again",
-        type: "info",
+        type: "error",
         hideStatusBar: true,
-        backgroundColor: "#1c1f28",
+        backgroundColor: "#A32700",
       });
     }
   };

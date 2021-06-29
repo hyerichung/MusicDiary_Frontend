@@ -96,8 +96,6 @@ export const addTrackToDiary = createAsyncThunk(
         trackInfo,
       });
 
-      console.log(newTrackInfo, energy, "asdfadfasf");
-
       return { newTrackInfo, energy, diaryId };
     } catch (err) {
       return rejectWithValue({ message: err.message });

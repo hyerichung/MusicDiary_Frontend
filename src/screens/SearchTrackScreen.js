@@ -3,31 +3,13 @@ import { View, Text, StyleSheet } from "react-native";
 import { debounce } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { listenMusic, setPlayList } from "../redux/slices/musicSlice";
-import { addTrackToDiary } from "../redux/slices/diarySlice";
-import CloseButton from "../components/shared/CloseButton";
 import SearchInput from "../components/SearchTrackInput";
 import SearchTrackList from "../components/SearchTrackList";
-import { useNavigation } from "@react-navigation/native";
 
-const SearchTrackScreen = ({ route, navigation }) => {
+const SearchTrackScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const { byIds } = useSelector((state) => state.diary);
-
-  const userId = user.userInfo.id;
   const accessToken = user.accessToken;
-  // const { diary } = route.params;
-  // const diaryId = diary;
-
-  // function handleCloseButtonPress() {
-  //   // if(navigation.canGoBack()) {
-  //   // }
-  //   // navigation.navigate("DiaryList", {
-  //   //   screen: "SingleDiaryDetail",
-  //   //   params: { diary: byIds[diaryId] },
-  //   // });
-  //   navigation.goBack();
-  // }
 
   const [searchInput, setSearchInput] = useState("");
   const [searchList, setSearchList] = useState([]);
@@ -41,38 +23,8 @@ const SearchTrackScreen = ({ route, navigation }) => {
     await dispatch(listenMusic(index));
   }
 
-  const handleAddTrackToDiaryButtonPress = () => {
-    navigation.navigate("DiarySelection");
-  };
-
-  const handlePressAddToDiaryButton = async (trackInfo) => {
-    try {
-      const energyResult = await fetch(
-        `https://api.spotify.com/v1/audio-features/${trackInfo.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      const { energy } = await energyResult.json();
-      const energyAddedTrackInfo = { ...trackInfo, energy, date: Date.now() };
-
-      await dispatch(
-        addTrackToDiary({
-          accessToken,
-          userId,
-          // diaryId,
-          trackInfo: energyAddedTrackInfo,
-        })
-      );
-    } catch (err) {
-      console.error(err);
-    }
+  const handleAddTrackToDiaryButtonPress = (trackInfo) => {
+    navigation.navigate("DiarySelection", { diary: trackInfo });
   };
 
   const fetchTracks = debounce(async (searchInput) => {
