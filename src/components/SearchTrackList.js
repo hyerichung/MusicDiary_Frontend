@@ -1,9 +1,9 @@
 import React from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import Track from "./shared/Track";
-import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
-const SearchTrackList = ({ searchList, onTrackPress }) => {
+const SearchTrackList = ({ onPressAddButton, searchList, onTrackPress }) => {
   return (
     <FlatList
       style={styles.searchList}
@@ -13,7 +13,12 @@ const SearchTrackList = ({ searchList, onTrackPress }) => {
         return (
           <View>
             <Track track={item} onPress={() => onTrackPress(index)} />
-            <AntDesign style={styles.addTrackButton} name="hearto" size={18} />
+            <TouchableOpacity
+              style={styles.addTrackButton}
+              onPress={() => onPressAddButton(item)}
+            >
+              <Ionicons name="add-outline" size={20} color="black" />
+            </TouchableOpacity>
           </View>
         );
       }}
@@ -28,7 +33,7 @@ const styles = StyleSheet.create({
   },
   addTrackButton: {
     position: "absolute",
-    top: "40%",
+    top: "35%",
     right: "5%",
   },
 });

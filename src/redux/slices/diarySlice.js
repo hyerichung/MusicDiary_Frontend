@@ -7,6 +7,7 @@ import {
 } from "../../api";
 import * as SecureStore from "expo-secure-store";
 import changeDateFormat from "../../utils/changeDateFormat";
+import { groupBy } from "lodash";
 
 export const addNewDiary = createAsyncThunk(
   "DIARY/ADD_DIARY",
@@ -28,7 +29,7 @@ export const addNewDiary = createAsyncThunk(
 );
 
 export const fetchDiaries = createAsyncThunk(
-  "DIARY/FETCH_DIARY",
+  "DIARY/FETCH_DIARIES",
   async ({ userId }, { rejectWithValue }) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
@@ -38,16 +39,24 @@ export const fetchDiaries = createAsyncThunk(
         userId,
       });
 
-      // const dateFormattedData = fetchedDiaryByDateInfo.diaryByDate.map((diary) => {
-      //   return {
-      //     ...diary,
-      //     date: changeDateFormat(diary.date),
-      //   };
-      // });
+      const dateFormattedDiaries = fetchedDiaries.map((diary) => {
+        return {
+          ...diary,
+          date: changeDateFormat(diary.date),
+        };
+      });
 
-      console.log(fetchedDiaries, "33");
+      const formattedDiariesById = dateFormattedDiaries.reduce(
+        (initialObj, diaryById) => {
+          initialObj[diaryById._id] = diaryById;
+          return initialObj;
+        },
+        {}
+      );
 
-      return fetchedDiaries;
+      const formattedDiariesByDate = groupBy(dateFormattedDiaries, "date");
+
+      return { formattedDiariesById, formattedDiariesByDate };
     } catch (err) {
       return rejectWithValue({ message: err.message });
     }
@@ -80,14 +89,16 @@ export const addTrackToDiary = createAsyncThunk(
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
-      const { newTrackInfo } = await addTrackToDiaryAPI({
+      const { newTrackInfo, energy } = await addTrackToDiaryAPI({
         accessToken,
         userId,
         diaryId,
         trackInfo,
       });
 
-      return { newTrackInfo, diaryId };
+      console.log(newTrackInfo, energy, "asdfadfasf");
+
+      return { newTrackInfo, energy, diaryId };
     } catch (err) {
       return rejectWithValue({ message: err.message });
     }
@@ -96,7 +107,9 @@ export const addTrackToDiary = createAsyncThunk(
 
 const initialState = {
   byIds: {},
+  byDates: {},
   allIds: [],
+  allDates: [],
   loading: false,
   error: null,
 };
@@ -115,8 +128,8 @@ export const diarySlice = createSlice({
   extraReducers: {
     [addNewDiary.fulfilled]: (state, action) => {
       state.byIds = {
-        ...state.byIds,
         [action.payload._id]: action.payload,
+        ...state.byIds,
       };
       state.allIds = [action.payload._id].concat(state.allIds);
       state.loading = false;
@@ -129,18 +142,15 @@ export const diarySlice = createSlice({
       state.loading = false;
       state.error = action.payload.message;
     },
-
     [fetchDiaries.fulfilled]: (state, action) => {
-      console.log(action, "action");
-      const ids = action.payload?.map((diary) => diary._id);
+      const ids = Object.keys(action.payload?.formattedDiariesById);
+      const dates = Object.keys(action.payload?.formattedDiariesByDate);
 
-      state.byIds = {
-        ...action.payload?.reduce((initialObj, diaryById) => {
-          initialObj[diaryById._id] = diaryById;
-          return initialObj;
-        }, {}),
-      };
+      state.byIds = action.payload?.formattedDiariesById;
+      state.byDates = action.payload?.formattedDiariesByDate;
       state.allIds = ids;
+      state.allDates = dates;
+
       state.loading = false;
       state.error = false;
     },
@@ -164,9 +174,14 @@ export const diarySlice = createSlice({
         ...state.byIds[action.payload.diaryId].playList,
         action.payload.newTrackInfo,
       ];
+      state.byIds[action.payload.diaryId].energyScore = [
+        ...state.byIds[action.payload.diaryId].energyScore,
+        action.payload.energy,
+      ];
     },
   },
 });
 
 const { clearDiary, getPlayList } = diarySlice.actions;
+
 export { clearDiary, getPlayList };

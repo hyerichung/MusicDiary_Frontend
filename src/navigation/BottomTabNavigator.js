@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ConfiguredBottomTabBar from "../components/TabBar/ConfiguredBottomTabBar";
 import DiaryListStackNavigator from "./DiaryListStackNavigator";
 import HomeStackNavigator from "./HomeStackNavigator";
+import SearchTrackScreen from "../screens/SearchTrackScreen";
 
 import CalendarScreen from "../screens/CalendarScreen";
 import MyInfo from "../screens/MyInfoScreen";
@@ -18,6 +19,7 @@ const BottomTabNavigator = () => {
     >
       <BottomTab.Screen name="Home" component={HomeStackNavigator} />
       <BottomTab.Screen name="DiaryList" component={DiaryListStackNavigator} />
+      <BottomTab.Screen name="SearchTrack" component={SearchTrackScreen} />
       <BottomTab.Screen
         name="Calendar"
         component={CalendarScreen}

@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import debounce from "lodash.debounce";
+import { debounce } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { listenMusic, setPlayList } from "../redux/slices/musicSlice";
 import { addTrackToDiary } from "../redux/slices/diarySlice";
 import CloseButton from "../components/shared/CloseButton";
 import SearchInput from "../components/SearchTrackInput";
-import TrackList from "../components/SearchTrackList";
+import SearchTrackList from "../components/SearchTrackList";
+import { useNavigation } from "@react-navigation/native";
 
-const TrackSearchModalScreen = ({ route, navigation }) => {
+const SearchTrackScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const { byIds } = useSelector((state) => state.diary);
 
   const userId = user.userInfo.id;
   const accessToken = user.accessToken;
-  const { diary } = route.params;
-  const diaryId = diary;
+  // const { diary } = route.params;
+  // const diaryId = diary;
 
-  function handleCloseButtonPress() {
-    navigation.goBack();
-  }
+  // function handleCloseButtonPress() {
+  //   // if(navigation.canGoBack()) {
+  //   // }
+  //   // navigation.navigate("DiaryList", {
+  //   //   screen: "SingleDiaryDetail",
+  //   //   params: { diary: byIds[diaryId] },
+  //   // });
+  //   navigation.goBack();
+  // }
 
   const [searchInput, setSearchInput] = useState("");
   const [searchList, setSearchList] = useState([]);
@@ -33,7 +41,11 @@ const TrackSearchModalScreen = ({ route, navigation }) => {
     await dispatch(listenMusic(index));
   }
 
-  const handlePressAddToDiaryBtn = async (trackInfo) => {
+  const handleAddTrackToDiaryButtonPress = () => {
+    navigation.navigate("DiarySelection");
+  };
+
+  const handlePressAddToDiaryButton = async (trackInfo) => {
     try {
       const energyResult = await fetch(
         `https://api.spotify.com/v1/audio-features/${trackInfo.id}`,
@@ -54,7 +66,7 @@ const TrackSearchModalScreen = ({ route, navigation }) => {
         addTrackToDiary({
           accessToken,
           userId,
-          diaryId,
+          // diaryId,
           trackInfo: energyAddedTrackInfo,
         })
       );
@@ -103,17 +115,17 @@ const TrackSearchModalScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.searchTrackContainer}>
-      <CloseButton
-        style={styles.closeButton}
-        onPress={handleCloseButtonPress}
-      />
       <SearchInput
         onSearchInputChange={(text) => handleChangeText(text)}
         searchInput={searchInput}
       />
       <View style={styles.listWrapper}>
         {searchList?.length ? (
-          <TrackList searchList={searchList} onTrackPress={handleSelectSong} />
+          <SearchTrackList
+            onPressAddButton={handleAddTrackToDiaryButtonPress}
+            searchList={searchList}
+            onTrackPress={handleSelectSong}
+          />
         ) : (
           <Text style={styles.defaultSearchText}>No search Content</Text>
         )}
@@ -148,4 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TrackSearchModalScreen;
+export default SearchTrackScreen;

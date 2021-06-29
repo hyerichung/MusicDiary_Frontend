@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     height: "53%",
   },
   homeDiaryListBox: {
-    height: "85%",
+    height: "80%",
   },
   defaultDiaryListBox: {
     height: "85%",

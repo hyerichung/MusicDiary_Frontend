@@ -6,6 +6,7 @@ import AuthStackNavigator from "./AuthStackNavigator";
 import NewDiaryModalScreen from "../screens/NewDiaryModalScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
 import setHeaderOptions from "./headerConfig/setHeaderOptions";
+import DiarySelectionModalScreen from "../screens/DiarySelectionModalScreen";
 
 const RootStack = createStackNavigator();
 
@@ -29,6 +30,11 @@ const RootStackNavigator = () => {
           <RootStack.Screen
             name="NewDiaryModal"
             component={NewDiaryModalScreen}
+            options={setHeaderOptions("noHeader")}
+          />
+          <RootStack.Screen
+            name="DiarySelection"
+            component={DiarySelectionModalScreen}
             options={setHeaderOptions("noHeader")}
           />
         </>

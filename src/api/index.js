@@ -93,13 +93,7 @@ export async function fetchDiariesAPI({ accessToken, userId }) {
 
   const { data } = await fetchedDiariesInfo.json();
 
-  // const dateFormattedData = data.diaryByDate.map((diary) => {
-  //   return {
-  //     ...diary,
-  //     date: changeDateFormat(diary.date),
-  //   };
-  // });
-  console.log(data, "data");
+  console.log(data, "1111111111");
 
   return data.diaries;
 }
@@ -144,6 +138,8 @@ export async function addTrackToDiaryAPI({
       body: JSON.stringify({ trackInfo: trackInfo }),
     }
   );
+
+  console.log(trackAddedResult, "??");
 
   const { data } = await trackAddedResult.json();
 

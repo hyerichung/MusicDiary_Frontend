@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SingleDiaryScreen from "../screens/SingleDiaryScreen";
-import TrackSearchModalScreen from "../screens/TrackSearchScreen";
 import setHeaderOptions from "./headerConfig/setHeaderOptions";
 import DiaryListTopTabNavigator from "./DiaryListTopTabNavigator";
 
@@ -23,11 +22,6 @@ const DiaryListStackNavigator = () => {
         options={({ navigation }) =>
           setHeaderOptions("SingleDiaryDetailHeader", null, navigation)
         }
-      />
-      <DiaryListStack.Screen
-        name="TrackSearch"
-        component={TrackSearchModalScreen}
-        options={setHeaderOptions("noHeader")}
       />
     </DiaryListStack.Navigator>
   );

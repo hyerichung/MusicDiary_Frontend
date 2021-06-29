@@ -9,11 +9,12 @@ export const BOTTOM_TAB_ICON = {
   DiaryList: "notebook",
   Calendar: "calendar",
   MyInfo: "user",
+  SearchTrack: "magnifier",
 };
 
 export const BOTTOM_TAB_ICON_COLOR = {
-  Focused: "#0652DD",
-  Default: "black",
+  Focused: "#1c1f28",
+  Default: "#A1A4A7",
 };
 
 export const MUSIC_TAB_ICON = {

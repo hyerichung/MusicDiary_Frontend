@@ -1,11 +1,8 @@
-const calculateEnergyScore = (playList) => {
-  const rawScore =
-    playList?.reduce((acc, current) => acc + current.energy, 0) /
-    playList?.length;
+const calculateEnergyScore = (energyScore) => {
+  const score = energyScore.reduce((acc, cur) => acc + cur, 0);
+  const finalScore = Math.floor((score * 100) / energyScore.length);
 
-  const formattedScore = Math.floor(rawScore) * 100;
-
-  return formattedScore;
+  return finalScore;
 };
 
 export default calculateEnergyScore;
