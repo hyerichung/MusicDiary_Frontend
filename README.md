@@ -53,7 +53,8 @@
 ### ✍️ **React native와의 첫 만남**
 
 - 원래 Music Diary 기획의 첫 시작은 '웹 서비스' 였습니다. '시각화'를 기반으로 한 서비스를 기획했기 때문에 웹으로 구현하는 것이 적합하다고 생각했고, 웹을 위해 목업, 스키마, 기술 서치까지 모두 끝낸 상태에서 '위치 기반' 플레이리스트, 제가 경험해보지 못했던 기술 스택이라는 사실만을 바라보고 1주차가 끝나갈 즈음 React native로 기술 스택과 기획 모두를 변경하는 결정을 하게 되었습니다.
-- 처음 접해본 React native에선 웹과 다른 Navigator 개념을 이해하는 데 시간이 걸렸습니다. Music player의 특성 상 BottomTab 과 player가 항상 함께 존재해야 했기 때문에 별도의 tabBar를 bottomTab을 함께 고려하여 만들어야 했고, 트랙 검색, 다이어리 추가 등 모달을 쓰는 일이 잦아 모달 설정을 자유롭게 하기 위해 Navigator의 형태를 여러번 수정해야 했습니다.
+- 웹과 React native의 가장 큰 차이점은 Navigator의 life cycle, 즉 `componentWillUnmount` 가 다르게 작동한다는 점이었습니다. 기존 screen에서 새로운 screen으로 이동하면 새로운 screen에서 `componentDidMount`가 호출이 되고, 기존 screen 에서는 `componentWillUnmount` 가 자동으로 호출이 되지 않아 기존 screen은 상태를 그대로 유지시킨 채로 남아있게 되어, 이후 기존 screen으로 다시 돌아왔을 때 최신으로 재렌더링이 된 화면이 아닌 이전 screen 상태를 보게 됩니다.
+- HomeScreen은 유저의 현재 위치를 기반으로 과거 다이어리 목록을 필터링해서 가져오는 screen이었고, 방문할 때마다 유저의 위치, 다이어리 목록이 최신 상태로 재렌더링이 되길 원했기 때문에, bottomTab screen 에서는 `unmountOnBlur` 옵션을 사용하여 `componentWillUnmount`를 적용해주고, bottomTab screen 이외의 screen에서는 `useIsFocused` hook을 사용하여 재렌더링을 조절해주었습니다.
 
 ### ✍️ **React thunk, toolkit**
 
