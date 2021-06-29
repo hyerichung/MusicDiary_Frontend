@@ -7,28 +7,21 @@ import { listenMusic, setPlayList } from "../redux/slices/musicSlice";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const SingleDiaryScreen = ({ route, navigation }) => {
+const SingleDiaryScreen = ({ route }) => {
   const dispatch = useDispatch();
   const { byIds } = useSelector((state) => state.diary);
   const { diary, newDiaryId } = route.params;
-  // const navigation = useNavigation();
 
   const diaryId = newDiaryId ? newDiaryId : diary?._id;
   const { playList, date, address, hashTag } = byIds[diaryId];
 
-  const energyScore = calculateEnergyScore(byIds[diaryId].energyScore);
-  console.log(energyScore, "tq");
+  const energyScoreArr = byIds[diaryId].energyScore;
+  const energyScore = calculateEnergyScore(energyScoreArr);
+
   function handleTrackPress(index) {
     dispatch(setPlayList(byIds[diaryId]?.playList));
     dispatch(listenMusic(index));
   }
-
-  // const handleAddButtonPress = () => {
-  //   navigation.navigate("DiaryList", {
-  //     screen: "TrackSearch",
-  //     params: { diary: diaryId },
-  //   });
-  // };
 
   return (
     <View style={styles.container}>
@@ -40,13 +33,6 @@ const SingleDiaryScreen = ({ route, navigation }) => {
         address={address}
         onTrackPress={handleTrackPress}
       />
-      {/* <AntDesign
-        name="pluscircle"
-        size={33}
-        color="black"
-        style={styles.searchButton}
-        onPress={handleAddButtonPress}
-      /> */}
     </View>
   );
 };
