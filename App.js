@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Provider } from "react-redux";
+import FlashMessage from "react-native-flash-message";
 
-import AppNavigation from "./src/navigations/AppNavigation";
+import RootStackNavigator from "./src/navigation/RootStackNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 import { store } from "./src/redux/store";
 import AppLoading from "expo-app-loading";
 import SplashScreen from "./src/screens/SplashScreen";
@@ -39,7 +41,10 @@ export default function App() {
     <>
       {isAppReady ? (
         <Provider store={store}>
-          <AppNavigation />
+          <NavigationContainer>
+            <RootStackNavigator />
+            <FlashMessage position="top" />
+          </NavigationContainer>
         </Provider>
       ) : (
         <SplashScreen onAppReady={handleAppReady} />

@@ -91,7 +91,6 @@ const initialState = {
   visibleDiary: {
     filteredDiaryByLocation: [],
   },
-  calendar: { May: Array(31).fill([]), Jun: Array(30).fill([]) },
   loading: false,
   error: null,
 };
@@ -110,7 +109,8 @@ export const diarySlice = createSlice({
   extraReducers: {
     [addNewDiary.fulfilled]: (state, action) => {
       state.byIds = {
-        [action.payload._id]: { ...action.payload, ...state.byIds },
+        ...state.byIds,
+        [action.payload._id]: action.payload,
       };
       state.allIds = [action.payload._id].concat(state.allIds);
       state.loading = false;
@@ -120,7 +120,7 @@ export const diarySlice = createSlice({
       state.loading = true;
     },
     [addNewDiary.rejected]: (state, action) => {
-      state.laoding = false;
+      state.loading = false;
       state.error = action.payload.message;
     },
 
@@ -141,7 +141,7 @@ export const diarySlice = createSlice({
       state.loading = true;
     },
     [fetchDiaryByDate.rejected]: (state, action) => {
-      state.laoding = false;
+      state.loading = false;
       state.error = action.payload.message;
     },
 
@@ -153,28 +153,6 @@ export const diarySlice = createSlice({
       state.error = action.payload.message;
     },
     [addTrackToDiary.fulfilled]: (state, action) => {
-      const month = getMonth(parseISO(action.payload.newTrackInfo.date));
-      const date = getDate(parseISO(action.payload.newTrackInfo.date));
-      const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      const calendarMonth = months[month];
-
-      state.calendar[calendarMonth][date] = state.calendar[calendarMonth][
-        date
-      ].concat([action.payload.newTrackInfo.energy]);
-
       state.byIds[action.payload.diaryId].playList = [
         ...state.byIds[action.payload.diaryId].playList,
         action.payload.newTrackInfo,

@@ -91,12 +91,12 @@ export const userSlice = createSlice({
       state.loading = true;
     },
     [loginUser.rejected]: (state, action) => {
-      state.laoding = false;
+      state.loading = false;
       state.error = action.payload.message;
     },
 
     [getAccessToken.pending]: (state) => {
-      state.laoding = true;
+      state.loading = true;
     },
     [getAccessToken.fulfilled]: (state, action) => {
       state.accessToken = action.payload;
@@ -109,13 +109,13 @@ export const userSlice = createSlice({
     },
 
     [clearAccessToken.pending]: (state) => {
-      state.laoding = true;
+      state.loading = true;
     },
     [clearAccessToken.fulfilled]: (state) => {
       return initialState;
     },
     [clearAccessToken.rejected]: (state, action) => {
-      state.laoding = true;
+      state.loading = false;
       state.error = action.payload.message;
     },
 
@@ -123,10 +123,10 @@ export const userSlice = createSlice({
       state.userInfo.accessToken = action.payload;
     },
     [refreshToken.pending]: (state, action) => {
-      state.laoding = true;
+      state.loading = true;
     },
     [refreshToken.rejected]: (state, action) => {
-      state.laoding = true;
+      state.loading = false;
       state.error = action.payload.message;
     },
   },
