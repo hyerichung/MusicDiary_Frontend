@@ -41,8 +41,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   defaultDiarySelectionListText: {
+    marginBottom: "10%",
     fontSize: 18,
     fontWeight: "500",
+    color: "#ffffff",
   },
 });
 

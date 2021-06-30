@@ -11,10 +11,10 @@ const MyInfoScreen = () => {
 
   const handleLogoutClick = () => {
     try {
+      dispatch(clearUser());
       dispatch(clearDiary());
       dispatch(clearMusicStatus());
       dispatch(clearAccessToken());
-      dispatch(clearUser());
     } catch (err) {
       console.error("failed to clear Token with logout", err);
     }

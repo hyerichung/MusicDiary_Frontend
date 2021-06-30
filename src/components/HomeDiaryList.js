@@ -28,7 +28,7 @@ const HomeDiaryList = ({ findMatchedDiary, allDiaryByIds }) => {
         matchedDiaryList={matchedDiaryList}
         onViewAllButtonClick={handleViewAllButtonClick}
       />
-      {matchedDiaryList.length ? (
+      {matchedDiaryList?.length ? (
         <View style={styles.homeDiaryListBox}>
           <FlatList
             data={matchedDiaryList}

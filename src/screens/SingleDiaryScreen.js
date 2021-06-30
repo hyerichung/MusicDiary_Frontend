@@ -2,10 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View } from "react-native";
 import SingleDiary from "../components/SingleDiary";
-import calculateEnergyScore from "../utils/calculateEnergyScore";
 import { listenMusic, setPlayList } from "../redux/slices/musicSlice";
-import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
 const SingleDiaryScreen = ({ route }) => {
   const dispatch = useDispatch();
@@ -15,8 +12,7 @@ const SingleDiaryScreen = ({ route }) => {
   const diaryId = newDiaryId ? newDiaryId : diary?._id;
   const { playList, date, address, hashTag } = byIds[diaryId];
 
-  const energyScoreArr = byIds[diaryId].energyScore;
-  // const energyScore = calculateEnergyScore(energyScoreArr);
+  const energyScore = byIds[diaryId].energyScore;
 
   function handleTrackPress(index) {
     dispatch(setPlayList(byIds[diaryId]?.playList));
@@ -27,7 +23,7 @@ const SingleDiaryScreen = ({ route }) => {
     <View style={styles.container}>
       <SingleDiary
         playList={playList}
-        energyScore="0"
+        energyScore={energyScore}
         hashTag={hashTag}
         date={date}
         address={address}

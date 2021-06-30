@@ -35,8 +35,7 @@ function HomeScreen({ navigation }) {
 
   useEffect(() => {
     fetchAllDiary();
-    console.log("am i passing here");
-  }, [dispatch, userId]);
+  }, []);
 
   const findMatchedDiary = async (byIds) => {
     const location = await getLocation();

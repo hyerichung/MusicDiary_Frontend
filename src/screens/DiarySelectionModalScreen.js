@@ -39,14 +39,16 @@ const DiarySelectionModalScreen = ({ route, navigation }) => {
         }
       );
 
+      const currentEnergy = byIds[diaryId].energyScore;
       const { energy } = await energyResult.json();
-      const energyAddedTrackInfo = { ...trackInfo, energy, date: Date.now() };
+
+      const energyAddedTrackInfo = { ...trackInfo, trackEnergy: energy };
 
       await dispatch(
         addTrackToDiary({
-          accessToken,
           userId,
           diaryId,
+          currentEnergy,
           trackInfo: energyAddedTrackInfo,
         })
       );

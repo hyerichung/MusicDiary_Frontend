@@ -85,20 +85,22 @@ export const searchTrack = createAsyncThunk(
 
 export const addTrackToDiary = createAsyncThunk(
   "DIARY/ADD_TRACK_TO_DIARY",
-  async ({ userId, diaryId, trackInfo }, { rejectWithValue }) => {
+  async (
+    { userId, diaryId, currentEnergy, trackInfo },
+    { rejectWithValue }
+  ) => {
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
-      const { newTrackInfo, energyScores } = await addTrackToDiaryAPI({
+      const { newTrackInfo, energyScore } = await addTrackToDiaryAPI({
         accessToken,
         userId,
         diaryId,
+        currentEnergy,
         trackInfo,
       });
 
-      console.log(energyScores, "??");
-
-      return { newTrackInfo, energyScores, diaryId };
+      return { newTrackInfo, energyScore, diaryId };
     } catch (err) {
       return rejectWithValue({ message: err.message });
     }
@@ -170,11 +172,13 @@ export const diarySlice = createSlice({
       state.error = action.payload.message;
     },
     [addTrackToDiary.fulfilled]: (state, action) => {
-      state.byIds[action.payload.diaryId].playList = [
-        ...state.byIds[action.payload.diaryId].playList,
-        action.payload.newTrackInfo,
-      ];
-      state.byIds[action.payload.diaryId].energyScores = action.payload.energyScores;
+      state.byIds[action.payload.diaryId] = {
+        ...state.byIds[action.payload.diaryId],
+        playList: [action.payload.newTrackInfo].concat(
+          state.byIds[action.payload.diaryId].playList
+        ),
+        energyScore: action.payload.energyScore,
+      };
     },
   },
 });

@@ -93,8 +93,6 @@ export async function fetchDiariesAPI({ accessToken, userId }) {
 
   const { data } = await fetchedDiariesInfo.json();
 
-  console.log(data, "1111111111");
-
   return data.diaries;
 }
 
@@ -124,6 +122,7 @@ export async function addTrackToDiaryAPI({
   accessToken,
   userId,
   diaryId,
+  currentEnergy,
   trackInfo,
 }) {
   const trackAddedResult = await fetch(
@@ -135,11 +134,9 @@ export async function addTrackToDiaryAPI({
         Accept: "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ trackInfo: trackInfo }),
+      body: JSON.stringify({ trackInfo, currentEnergy }),
     }
   );
-
-  console.log(trackAddedResult, "??");
 
   const { data } = await trackAddedResult.json();
 
