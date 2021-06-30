@@ -105,10 +105,11 @@ const styles = StyleSheet.create({
   },
   diarySelectionBox: {
     width: "95%",
-    height: "45%",
+    height: "48%",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: "33%",
+    paddingBottom: "3%",
     backgroundColor: "#1c1f28",
   },
   diarySelectionTitle: {

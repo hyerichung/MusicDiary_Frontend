@@ -140,7 +140,7 @@ export const diarySlice = createSlice({
       };
 
       state.byDates[action.payload.newDiary.date] = state.byDates[action.payload.newDiary.date]
-        ? [ action.payload.newDiary,
+        ? [action.payload.newDiary,
             ...state.byDates[action.payload.newDiary.date],
           ]
         : [action.payload.newDiary];
@@ -192,6 +192,17 @@ export const diarySlice = createSlice({
         ),
         energyScore: action.payload.energyScore,
       };
+
+      const targetDate = state.byIds[action.payload.diaryId].date;
+
+      state.byDates[targetDate] = state.byDates[targetDate].map((diary) => {
+        if (diary._id === action.payload.diaryId) {
+          diary.playList = [action.payload.newTrackInfo, ...diary.playList];
+          diary.energyScore = action.payload.energyScore;
+        }
+
+        return diary;
+      });
     },
   },
 });

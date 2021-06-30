@@ -10,9 +10,7 @@ const SingleDiaryScreen = ({ route }) => {
   const { diary, newDiaryId } = route.params;
 
   const diaryId = newDiaryId ? newDiaryId : diary?._id;
-  const { playList, date, address, hashTag } = byIds[diaryId];
-
-  const energyScore = byIds[diaryId].energyScore;
+  const { playList, date, address, hashTag, energyScore } = byIds[diaryId];
 
   function handleTrackPress(index) {
     dispatch(setPlayList(byIds[diaryId]?.playList));

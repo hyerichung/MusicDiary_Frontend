@@ -10,7 +10,7 @@ const DiarySelectionList = ({ onDiarySelectionPress, diaryList }) => {
           data={diaryList}
           style={styles.diarySelectionListBox}
           keyExtractor={(list) => list._id}
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => {
             return (
               <DiarySelection onPress={onDiarySelectionPress} item={item} />
@@ -31,7 +31,8 @@ const DiarySelectionList = ({ onDiarySelectionPress, diaryList }) => {
 const styles = StyleSheet.create({
   diarySelectionListBox: {
     width: "88%",
-    height: "100%",
+    // height: "70%",
+    // backgroundColor: "green"
   },
   defaultDiarySelectionListBox: {
     width: "100%",
