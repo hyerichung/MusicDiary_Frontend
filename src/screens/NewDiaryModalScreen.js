@@ -64,7 +64,9 @@ const NewDiaryModalScreen = ({ route, navigation }) => {
 
     const { payload } = await dispatch(addNewDiary({ newDiaryInfo, userId }));
 
-    navigation.navigate("SingleDiaryDetail", { newDiaryId: payload._id });
+    navigation.navigate("SingleDiaryDetail", {
+      newDiaryId: payload.newDiary._id,
+    });
   }
 
   return (

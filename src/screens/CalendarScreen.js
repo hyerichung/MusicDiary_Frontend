@@ -44,6 +44,9 @@ function CalendarScreen({ navigation }) {
 
   console.log(byDates, "??");
 
+  const a = Object.values(byDates);
+  console.log(a, "a");
+
   return (
     <View style={styles.calendarWrapper}>
       <Calendar

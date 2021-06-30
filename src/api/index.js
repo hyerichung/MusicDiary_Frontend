@@ -1,6 +1,5 @@
 import { API_SERVER_PORT_DEVELOPMENT } from "@env";
 import * as AuthSession from "expo-auth-session";
-import changeDateFormat from "../utils/changeDateFormat";
 
 export async function getAuthCodeAPI() {
   const authUrl = await fetch(
@@ -71,12 +70,7 @@ export async function addNewDiaryAPI({ accessToken, newDiaryInfo, userId }) {
 
   const { data } = await addedDiaryInfo.json();
 
-  const dateFormattedData = {
-    ...data.newDiary,
-    date: changeDateFormat(data.newDiary.date),
-  };
-
-  return dateFormattedData;
+  return data.newDiary;
 }
 
 export async function fetchDiariesAPI({ accessToken, userId }) {

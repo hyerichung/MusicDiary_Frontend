@@ -21,7 +21,12 @@ export const addNewDiary = createAsyncThunk(
         userId,
       });
 
-      return newDiary;
+      const dateFormattedNewDiary = {
+        ...newDiary,
+        date: changeDateFormat(newDiary.date),
+      };
+
+      return { newDiary: dateFormattedNewDiary };
     } catch (err) {
       return rejectWithValue({ message: err.message });
     }
@@ -130,10 +135,18 @@ export const diarySlice = createSlice({
   extraReducers: {
     [addNewDiary.fulfilled]: (state, action) => {
       state.byIds = {
-        [action.payload._id]: action.payload,
+        [action.payload.newDiary._id]: action.payload.newDiary,
         ...state.byIds,
       };
-      state.allIds = [action.payload._id].concat(state.allIds);
+
+      state.byDates[action.payload.newDiary.date] = state.byDates[action.payload.newDiary.date]
+        ? [ action.payload.newDiary,
+            ...state.byDates[action.payload.newDiary.date],
+          ]
+        : [action.payload.newDiary];
+
+      state.allIds = [action.payload.newDiary._id].concat(state.allIds);
+      state.allDates = [action.payload.newDiary.date].concat(state.allDates);
       state.loading = false;
       state.error = false;
     },
