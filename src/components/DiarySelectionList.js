@@ -4,10 +4,11 @@ import DiarySelection from "../components/DiarySelection";
 
 const DiarySelectionList = ({ onDiarySelectionPress, diaryList }) => {
   return (
-    <View style={styles.diarySelectionListWrapper}>
+    <>
       {diaryList.length ? (
         <FlatList
           data={diaryList}
+          style={styles.diarySelectionListBox}
           keyExtractor={(list) => list._id}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => {
@@ -23,20 +24,14 @@ const DiarySelectionList = ({ onDiarySelectionPress, diaryList }) => {
           </Text>
         </View>
       )}
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  diarySelectionListWrapper: {
-    width: "100%",
-    height: "80%",
-    justifyContent: "center",
-  },
   diarySelectionListBox: {
+    width: "88%",
     height: "100%",
-    backgroundColor: "red",
-    marginBottom: 5,
   },
   defaultDiarySelectionListBox: {
     width: "100%",
@@ -48,7 +43,6 @@ const styles = StyleSheet.create({
   defaultDiarySelectionListText: {
     fontSize: 18,
     fontWeight: "500",
-    marginBottom: "10%",
   },
 });
 

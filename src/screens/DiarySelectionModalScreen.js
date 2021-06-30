@@ -78,7 +78,7 @@ const DiarySelectionModalScreen = ({ route, navigation }) => {
     >
       <TouchableWithoutFeedback>
         <View style={styles.diarySelectionBox}>
-          <Text style={styles.diarySelectionTitle}>💁‍♀️ Choose Diary to add</Text>
+          <Text style={styles.diarySelectionTitle}>Add to Diary</Text>
           <CloseButton
             style={styles.closeButton}
             onPress={handleOverlayPress}
@@ -103,15 +103,16 @@ const styles = StyleSheet.create({
   },
   diarySelectionBox: {
     width: "95%",
-    height: "65%",
+    height: "45%",
     alignItems: "center",
+    justifyContent: "center",
     marginBottom: "33%",
     backgroundColor: "#1c1f28",
   },
   diarySelectionTitle: {
-    marginTop: "5%",
-    marginBottom: "5%",
-    fontSize: 20,
+    marginTop: "4%",
+    marginBottom: "3%",
+    fontSize: 18,
     fontWeight: "600",
     color: "#ffffff",
   },

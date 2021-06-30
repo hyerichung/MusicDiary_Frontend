@@ -24,17 +24,17 @@ const DiarySelection = ({ onPress, item }) => {
 
 const styles = StyleSheet.create({
   diarySelectionWrapper: {
-    marginTop: 5,
-    marginBottom: 5,
+    alignItems: "center",
+    height: 45,
+    width: "100%",
+    marginTop: "2%",
+    backgroundColor: "#ffffff",
   },
   diarySelectionBox: {
-    width: "80%",
+    width: "90%",
     height: "100%",
-    flexDirection: "row",
     justifyContent: "center",
-    marginLeft: "10%",
-    borderRadius: 5,
-    backgroundColor: "#05F8CF",
+    flexDirection: "row",
   },
   hashTagBox: {
     width: "40%",

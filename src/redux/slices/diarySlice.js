@@ -89,14 +89,16 @@ export const addTrackToDiary = createAsyncThunk(
     try {
       const accessToken = await SecureStore.getItemAsync("accessToken");
 
-      const { newTrackInfo, energy } = await addTrackToDiaryAPI({
+      const { newTrackInfo, energyScores } = await addTrackToDiaryAPI({
         accessToken,
         userId,
         diaryId,
         trackInfo,
       });
 
-      return { newTrackInfo, energy, diaryId };
+      console.log(energyScores, "??");
+
+      return { newTrackInfo, energyScores, diaryId };
     } catch (err) {
       return rejectWithValue({ message: err.message });
     }
@@ -172,10 +174,7 @@ export const diarySlice = createSlice({
         ...state.byIds[action.payload.diaryId].playList,
         action.payload.newTrackInfo,
       ];
-      state.byIds[action.payload.diaryId].energyScore = [
-        ...state.byIds[action.payload.diaryId].energyScore,
-        action.payload.energy,
-      ];
+      state.byIds[action.payload.diaryId].energyScores = action.payload.energyScores;
     },
   },
 });

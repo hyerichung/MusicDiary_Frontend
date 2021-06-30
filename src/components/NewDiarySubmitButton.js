@@ -23,12 +23,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "80%",
     height: "60%",
-    backgroundColor: "#05F8CF",
-    borderRadius: 5,
+    backgroundColor: "#0652DD",
   },
   submitText: {
     fontSize: 18,
-    color: "black",
+    color: "#ffffff",
     fontWeight: "600",
   },
 });

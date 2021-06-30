@@ -16,7 +16,7 @@ const SingleDiaryScreen = ({ route }) => {
   const { playList, date, address, hashTag } = byIds[diaryId];
 
   const energyScoreArr = byIds[diaryId].energyScore;
-  const energyScore = calculateEnergyScore(energyScoreArr);
+  // const energyScore = calculateEnergyScore(energyScoreArr);
 
   function handleTrackPress(index) {
     dispatch(setPlayList(byIds[diaryId]?.playList));
@@ -27,7 +27,7 @@ const SingleDiaryScreen = ({ route }) => {
     <View style={styles.container}>
       <SingleDiary
         playList={playList}
-        energyScore={energyScore}
+        energyScore="0"
         hashTag={hashTag}
         date={date}
         address={address}
