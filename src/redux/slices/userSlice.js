@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAuthCodeAPI, getAccessTokenAPI, getUserInfoAPI } from "../../api";
 import * as SecureStore from "expo-secure-store";
+import { clearDiary } from "./diarySlice";
+import { clearMusicStatus } from "./musicSlice";
 
 export const loginUser = createAsyncThunk(
   "USER/LOGIN_USER",
@@ -50,11 +52,13 @@ export const getAccessToken = createAsyncThunk(
   }
 );
 
-export const clearAccessToken = createAsyncThunk(
-  "USER/CLEAR_ACCESSTOKEN",
-  async (_, { rejectWithValue }) => {
+export const logoutUser = createAsyncThunk(
+  "USER/LOGOUT_USER",
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       await SecureStore.deleteItemAsync("accessToken");
+      dispatch(clearDiary());
+      dispatch(clearMusicStatus());
     } catch (err) {
       return rejectWithValue({ message: err.message });
     }
@@ -75,12 +79,21 @@ const initialState = {
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    clearUser: (state, action) => {
-      return initialState;
-    },
-  },
+  reducers: {},
   extraReducers: {
+    [logoutUser.fulfilled]: (state, action) => {
+      state.accessToken = null;
+      state.userInfo = initialState.userInfo;
+      state.loading = false;
+      state.error = false;
+    },
+    [logoutUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [logoutUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
     [loginUser.fulfilled]: (state, action) => {
       state.accessToken = action.payload?.accessToken;
       state.userInfo = action.payload?.userInfo;
@@ -94,7 +107,6 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload.message;
     },
-
     [getAccessToken.pending]: (state) => {
       state.loading = true;
     },
@@ -107,18 +119,6 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload.message;
     },
-
-    [clearAccessToken.pending]: (state) => {
-      state.loading = true;
-    },
-    [clearAccessToken.fulfilled]: (state) => {
-      return initialState;
-    },
-    [clearAccessToken.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload.message;
-    },
-
     [refreshToken.fulfilled]: (state, action) => {
       state.userInfo.accessToken = action.payload;
     },

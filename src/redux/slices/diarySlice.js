@@ -140,9 +140,7 @@ export const diarySlice = createSlice({
       };
 
       state.byDates[action.payload.newDiary.date] = state.byDates[action.payload.newDiary.date]
-        ? [action.payload.newDiary,
-            ...state.byDates[action.payload.newDiary.date],
-          ]
+        ? [action.payload.newDiary, ...state.byDates[action.payload.newDiary.date]]
         : [action.payload.newDiary];
 
       state.allIds = [action.payload.newDiary._id].concat(state.allIds);

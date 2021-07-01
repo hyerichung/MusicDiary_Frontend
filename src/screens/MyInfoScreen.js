@@ -1,9 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import { clearAccessToken, clearUser } from "../redux/slices/userSlice";
-import { clearDiary } from "../redux/slices/diarySlice";
-import { clearMusicStatus } from "../redux/slices/musicSlice";
+import { logoutUser } from "../redux/slices/userSlice";
 
 const MyInfoScreen = () => {
   const dispatch = useDispatch();
@@ -11,12 +9,9 @@ const MyInfoScreen = () => {
 
   const handleLogoutClick = () => {
     try {
-      dispatch(clearUser());
-      dispatch(clearDiary());
-      dispatch(clearMusicStatus());
-      dispatch(clearAccessToken());
+      dispatch(logoutUser());
     } catch (err) {
-      console.error("failed to clear Token with logout", err);
+      console.warn("Failed to logout", err);
     }
   };
 
