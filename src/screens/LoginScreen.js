@@ -2,13 +2,14 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../redux/slices/userSlice";
 import LoginBtn from "../components/LoginButton";
+import { debounce } from "lodash";
 
 import { showMessage } from "react-native-flash-message";
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
 
-  const handlePressLoginBtn = async () => {
+  const handlePressLoginBtn = debounce(async () => {
     const { error } = await dispatch(loginUser());
 
     if (error) {
@@ -19,7 +20,7 @@ const LoginScreen = () => {
         backgroundColor: "#A32700",
       });
     }
-  };
+  }, 1000);
 
   return (
     <>

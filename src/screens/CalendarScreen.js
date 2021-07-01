@@ -56,11 +56,11 @@ function CalendarScreen() {
     energyMap[key].energyScore = final;
   }
 
-  const five = "#f20f62";
-  const four = "#d91895";
-  const two = "#0a21a6";
   const one = "#581CD4";
+  const two = "#0a21a6";
   const thr = "#1374f2";
+  const four = "#d91895";
+  const five = "#f20f62";
 
   const optionMap = {};
 

@@ -2,58 +2,69 @@ import { API_SERVER_PORT_DEVELOPMENT } from "@env";
 import * as AuthSession from "expo-auth-session";
 
 export async function getAuthCodeAPI() {
+  try {
+    const authUrl = await fetch(
+      `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/url`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  const authUrl = await fetch(
-    `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/url`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+    const { data } = await authUrl.json();
 
-  const { data } = await authUrl.json();
+    const authCodeResult = await AuthSession.startAsync({
+      authUrl: data.authUrl,
+    });
 
-  const authCodeResult = await AuthSession.startAsync({
-    authUrl: data.authUrl,
-  });
-
-  return authCodeResult.params.code;
+    return authCodeResult.params.code;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function getAccessTokenAPI(authCode) {
-  const tokenInfo = await fetch(
-    `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/token`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ authCode }),
-    }
-  );
+  try {
+    const tokenInfo = await fetch(
+      `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/token`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ authCode }),
+      }
+    );
 
-  const { data } = await tokenInfo.json();
+    const { data } = await tokenInfo.json();
 
-  return data;
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function getUserInfoAPI(accessToken) {
-  const userInfo = await fetch(
-    `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/user-info`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  try {
+    const userInfo = await fetch(
+      `${API_SERVER_PORT_DEVELOPMENT}/api/users/login/user-info`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
-  const { data } = await userInfo.json();
+    const { data } = await userInfo.json();
 
-  return data;
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function addNewDiaryAPI({ accessToken, newDiaryInfo, userId }) {
