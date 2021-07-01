@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Text, View, Button, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { clearAccessToken, clearUser } from "../redux/slices/userSlice";
 import { clearDiary } from "../redux/slices/diarySlice";
 import { clearMusicStatus } from "../redux/slices/musicSlice";
@@ -22,38 +22,49 @@ const MyInfoScreen = () => {
 
   return (
     <View style={styles.userInfoContainer}>
-      <View styles={styles.userInfoBox}>
-        <Text style={styles.name}>{userName}</Text>
+      <View style={styles.infoWrapper}>
+        <View style={styles.nameBox}>
+          <Text style={styles.name}>{userName}</Text>
+        </View>
         <Text style={styles.email}>{email}</Text>
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={handleLogoutClick}
+        >
+          <Text style={styles.logoutText}>→ Logout</Text>
+        </TouchableOpacity>
       </View>
-      <Button onPress={handleLogoutClick} title="Logout" />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  name: {
-    justifyContent: "center",
-    width: 200,
-    height: 30,
-    textAlign: "center",
-    fontSize: 20,
-  },
-  email: {
-    justifyContent: "center",
-  },
   userInfoContainer: {
-    width: 400,
-    justifyContent: "center",
-    alignItems: "center",
     flexDirection: "column",
-    height: 300,
-  },
-  userInfoBox: {
     justifyContent: "center",
     alignItems: "center",
-    width: 400,
-    height: 400,
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#ffffff",
+  },
+  infoWrapper: {
+    height: "80%",
+  },
+  nameBox: {
+    width: "60%",
+    height: "10%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  name: {
+    fontSize: 25,
+  },
+  logoutButton: {
+    height: "10%",
+    marginTop: "10%",
+  },
+  logoutText: {
+    fontSize: 20,
   },
 });
 

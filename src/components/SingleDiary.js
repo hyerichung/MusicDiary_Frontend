@@ -30,7 +30,7 @@ const SingleDiary = ({
           }}
         />
       ) : (
-        <Text style={styles.defaultTrackText}>no track list</Text>
+        <Text style={styles.defaultTrackText}>No track list</Text>
       )}
     </View>
   );
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   defaultTrackText: {
     textAlign: "center",
     marginTop: 40,
+    fontSize: 20,
     color: "rgba(0, 0, 0, 0.6)",
   },
 });

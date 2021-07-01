@@ -35,6 +35,7 @@ const DiaryList = ({ diaryList }) => {
 const styles = StyleSheet.create({
   allDiaryListWrapper: {
     flex: 1,
+    marginTop: "3%",
   },
   defaultDiaryListWrapper: {
     flex: 1,
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around",
     paddingVertical: "3%",
-    paddingHorizontal: "7%",
+    paddingHorizontal: "5%",
   },
   itemInvisible: {
     backgroundColor: "transparent",

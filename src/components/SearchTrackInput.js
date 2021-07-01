@@ -26,10 +26,11 @@ const styles = StyleSheet.create({
     width: "70%",
     marginTop: "10%",
     marginBottom: "5%",
+    borderRadius: 20,
   },
   searchInput: {
     textAlign: "center",
-    borderWidth: 2,
+    borderWidth: 1,
     height: "100%",
     width: "100%",
   },
