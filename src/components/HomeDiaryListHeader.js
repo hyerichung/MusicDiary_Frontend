@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   homeDiaryListTitleBox: {
     width: "95%",
     height: "15%",
-    marginBottom: "2%",
+    marginBottom: "1%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

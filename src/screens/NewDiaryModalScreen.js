@@ -37,7 +37,6 @@ const NewDiaryModalScreen = ({ route, navigation }) => {
   useEffect(() => {
     async function getLocation() {
       const location = await Location.getCurrentPositionAsync({});
-
       if (location) {
         getAddress(location.coords.latitude, location.coords.longitude);
       }

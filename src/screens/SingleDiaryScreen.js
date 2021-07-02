@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View } from "react-native";
 import SingleDiary from "../components/SingleDiary";
@@ -10,7 +10,14 @@ const SingleDiaryScreen = ({ route }) => {
   const { diary, newDiaryId } = route.params;
 
   const diaryId = newDiaryId ? newDiaryId : diary?._id;
-  const { playList, date, address, hashTag, energyScore } = byIds[diaryId];
+  const [diaryInfo, setDiaryInfo] = useState({});
+
+  useEffect(() => {
+    if (byIds[diaryId]) {
+      const { playList, date, address, hashTag, energyScore } = byIds[diaryId];
+      setDiaryInfo({ playList, date, address, hashTag, energyScore });
+    }
+  }, [byIds, diaryId]);
 
   function handleTrackPress(index) {
     dispatch(setPlayList(byIds[diaryId]?.playList));
@@ -20,11 +27,11 @@ const SingleDiaryScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <SingleDiary
-        playList={playList}
-        energyScore={energyScore}
-        hashTag={hashTag}
-        date={date}
-        address={address}
+        playList={diaryInfo.playList}
+        energyScore={diaryInfo.energyScore}
+        hashTag={diaryInfo.hashTag}
+        date={diaryInfo.date}
+        address={diaryInfo.address}
         onTrackPress={handleTrackPress}
       />
     </View>

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   hashTagBox: {
-    width: "40%",
+    width: "55%",
     flexDirection: "row",
     alignItems: "center",
   },

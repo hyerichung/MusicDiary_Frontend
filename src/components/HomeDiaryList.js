@@ -1,23 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import DiaryCard from "./shared/DiaryCard";
 import HomeDiaryListHeader from "./HomeDiaryListHeader";
-import { useNavigation } from "@react-navigation/native";
 
-const HomeDiaryList = ({ findMatchedDiary, allDiaryByIds }) => {
-  const navigation = useNavigation();
-
-  const [matchedDiaryList, setMatchedDiaryList] = useState([]);
-
-  const getMatchedDiaryList = async () => {
-    const diaryList = await findMatchedDiary(allDiaryByIds);
-    setMatchedDiaryList(diaryList);
-  };
-
-  useEffect(() => {
-    getMatchedDiaryList();
-  }, [allDiaryByIds]);
-
+const HomeDiaryList = ({ navigation, matchedDiaries }) => {
   const handleViewAllButtonClick = () => {
     navigation.navigate("ViewAll");
   };
@@ -25,13 +11,13 @@ const HomeDiaryList = ({ findMatchedDiary, allDiaryByIds }) => {
   return (
     <View style={styles.homeDiaryListWrapper}>
       <HomeDiaryListHeader
-        matchedDiaryList={matchedDiaryList}
+        matchedDiaryList={matchedDiaries}
         onViewAllButtonClick={handleViewAllButtonClick}
       />
-      {matchedDiaryList?.length ? (
+      {matchedDiaries?.length ? (
         <View style={styles.homeDiaryListBox}>
           <FlatList
-            data={matchedDiaryList}
+            data={matchedDiaries}
             keyExtractor={(list) => list._id}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -66,7 +52,7 @@ const styles = StyleSheet.create({
     height: "80%",
   },
   defaultDiaryListBox: {
-    height: "85%",
+    height: "80%",
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
