@@ -20,7 +20,7 @@ const LoginScreen = () => {
         backgroundColor: "#A32700",
       });
     }
-  }, 1000);
+  }, 1500);
 
   return (
     <>

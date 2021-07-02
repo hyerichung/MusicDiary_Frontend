@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Provider } from "react-redux";
+import * as SplashScreen from "expo-splash-screen";
+import AppLoading from "expo-app-loading";
 import FlashMessage from "react-native-flash-message";
 
 import RootStackNavigator from "./src/navigation/RootStackNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { store } from "./src/redux/store";
-import AppLoading from "expo-app-loading";
-import SplashScreen from "./src/screens/SplashScreen";
+import SplashAnimationScreen from "./src/screens/SplashAnimationScreen";
 import {
   useFonts,
   DMSans_400Regular,
@@ -33,7 +34,8 @@ export default function App() {
     return <AppLoading />;
   }
 
-  const handleAppReady = () => {
+  const handleAppReady = async () => {
+    await SplashScreen.hideAsync();
     setIsAppReady(true);
   };
 
@@ -47,7 +49,7 @@ export default function App() {
           </NavigationContainer>
         </Provider>
       ) : (
-        <SplashScreen onAppReady={handleAppReady} />
+        <SplashAnimationScreen onAppReady={handleAppReady} />
       )}
     </>
   );

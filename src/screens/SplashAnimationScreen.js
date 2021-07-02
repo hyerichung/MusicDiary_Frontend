@@ -4,7 +4,7 @@ import LottieView from "lottie-react-native";
 
 import splash from "../../assets/new_black.png";
 
-const SplashScreen = ({ onAppReady }) => {
+const SplashAnimationScreen = ({ onAppReady }) => {
   return (
     <View style={styles.container}>
       <ImageBackground source={splash} style={styles.img}>
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SplashScreen;
+export default SplashAnimationScreen;
