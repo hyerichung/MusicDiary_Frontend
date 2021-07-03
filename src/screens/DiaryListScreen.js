@@ -5,12 +5,11 @@ import DiaryList from "../components/DiaryList";
 
 const DiaryListScreen = ({ navigation }) => {
   const { byIds } = useSelector((state) => state.diary);
-
-  function handleSingleDiaryPress(diaryInfo) {
-    navigation.navigate("DiaryDetail", { diary: diaryInfo });
-  }
-
   const [diaryList, setDiaryList] = useState([]);
+
+  const handleSingleDiaryPress = (diaryInfo) => {
+    navigation.navigate("DiaryDetail", { diary: diaryInfo });
+  };
 
   const checkDiaryListLength = (diaryList) => {
     if (diaryList.length % 2 !== 0) {

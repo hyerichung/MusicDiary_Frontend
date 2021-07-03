@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -6,6 +6,7 @@ import { fetchDiaries } from "../redux/slices/diarySlice";
 import HomeDiaryList from "../components/HomeDiaryList";
 import HomeIntro from "../components/HomeIntro";
 import useMatchedDiary from "../hooks/useMatchedDiary";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -15,14 +16,34 @@ const HomeScreen = ({ navigation }) => {
   const userId = userInfo.id;
 
   const [shouldUpdateLocation, setShouldUpdateLocation] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const { matchedDiaries, currentAddress } = useMatchedDiary(
     shouldUpdateLocation,
     byIds
   );
 
-  useEffect(() => {
-    dispatch(fetchDiaries({ userId }));
-  }, [shouldUpdateLocation]);
+  useFocusEffect(
+    useCallback(() => {
+      let isCancelled = false;
+
+      (async function fetchdiariesByIds() {
+        try {
+          if (isCancelled) {
+            return;
+          }
+
+          await dispatch(fetchDiaries({ userId }));
+        } catch (err) {
+          setErrorMsg(err.message);
+        }
+      })();
+
+      return () => {
+        isCancelled = true;
+      };
+    }, [userId, dispatch, shouldUpdateLocation])
+  );
 
   const handleOnPressResearchingButton = useCallback(() => {
     setShouldUpdateLocation((prev) => !prev);

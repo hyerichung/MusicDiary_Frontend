@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import ImageBox from "./ImageBox";
@@ -7,14 +7,17 @@ import DiaryDescription from "./DiaryDescription";
 const DiaryCard = ({ type, item }) => {
   const navigation = useNavigation();
 
-  function moveToRelevantDiary(type, item) {
-    switch (type) {
-      case "HomeDiary":
-        return navigation.navigate("HomeDiaryDetail", { diary: item });
-      case "AllDiaryList":
-        return navigation.navigate("SingleDiaryDetail", { diary: item });
-    }
-  }
+  const moveToRelevantDiary = useCallback(
+    (type, item) => {
+      switch (type) {
+        case "HomeDiary":
+          return navigation.navigate("HomeDiaryDetail", { diary: item });
+        case "AllDiaryList":
+          return navigation.navigate("SingleDiaryDetail", { diary: item });
+      }
+    },
+    [navigation]
+  );
 
   const diaryDate = item?.date;
   const diaryHashTag = item?.hashTag;

@@ -38,10 +38,11 @@ LocaleConfig.locales.custom = {
 };
 LocaleConfig.defaultLocale = "custom";
 
-function CalendarScreen() {
+const CalendarScreen = () => {
   const { byDates } = useSelector((state) => state.diary);
 
   const energyMap = {};
+  const optionMap = {};
 
   for (let key in byDates) {
     energyMap[key] = { energyScore: 0 };
@@ -61,8 +62,6 @@ function CalendarScreen() {
   const thr = "#1374f2";
   const four = "#d91895";
   const five = "#f20f62";
-
-  const optionMap = {};
 
   const getOption = (backgroundColor, textColor) => {
     const option = {

@@ -1,72 +1,79 @@
-import { API_GOOGLE_GEOCODING_KEY } from "@env";
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   View,
   StyleSheet,
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import { useSelector, useDispatch } from "react-redux";
 import { addNewDiary } from "../redux/slices/diarySlice";
 import CloseButton from "../components/shared/CloseButton";
 import LocationBox from "../components/NewDiaryLocationBox";
 import SubmitButton from "../components/NewDiarySubmitButton";
-import Geocoder from "react-native-geocoding";
-import * as Location from "expo-location";
-import InputBar from "../components/NewDiaryInputBar";
 
-const NewDiaryModalScreen = ({ route, navigation }) => {
+import InputBar from "../components/NewDiaryInputBar";
+import useCurrentAddress from "../hooks/useCurrentAddress";
+
+const NewDiaryModalScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.userInfo.id);
 
-  const [address, setAddress] = useState(null);
-  const [geoLocation, setGeoLocation] = useState({ lat: "", lng: "" });
-
-  Geocoder.init(API_GOOGLE_GEOCODING_KEY, { language: "en" });
-
-  async function getAddress(lat, lng) {
-    const reversedGeoAddress = await Geocoder.from({
-      lat: lat,
-      lng: lng,
-    });
-
-    setAddress(reversedGeoAddress.results[1].formatted_address);
-    setGeoLocation({ lat, lng });
-  }
+  const [hashTag, setHashTagValue] = useState("");
+  const { geoLocation, currentAddress, getCurrentAddress } =
+    useCurrentAddress();
 
   useEffect(() => {
-    async function getLocation() {
-      const location = await Location.getCurrentPositionAsync({});
-      if (location) {
-        getAddress(location.coords.latitude, location.coords.longitude);
-      }
-    }
-    getLocation();
+    let isCancelled = false;
+
+    getCurrentAddress(isCancelled);
+
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
-  const [hashTag, setHashTagValue] = useState("");
+  const handleChangeText = useCallback(
+    (value) => {
+      if (hashTag.length > 15) {
+        return;
+      }
 
-  const handleChangeText = (value) => {
-    if (hashTag.length > 15) {
+      setHashTagValue(value);
+    },
+    [hashTag.length]
+  );
+
+  const handleCloseButtonPress = useCallback(() => {
+    navigation.popToTop();
+  }, [navigation]);
+
+  const handleSubmitButtonPress = useCallback(async () => {
+    const newDiaryInfo = {
+      hashTag,
+      address: currentAddress,
+      geoLocation: {
+        lat: geoLocation.coords.latitude,
+        lng: geoLocation.coords.longitude,
+      },
+    };
+
+    if (hashTag.length < 1) {
+      showMessage({
+        message: "Please type your hastag",
+        type: "error",
+        hideStatusBar: true,
+        backgroundColor: "#A32700",
+      });
+
       return;
     }
-
-    setHashTagValue(value);
-  };
-
-  function handleCloseButtonPress() {
-    navigation.goBack();
-  }
-
-  async function handleSubmitButtonPress() {
-    const newDiaryInfo = { hashTag, address, geoLocation };
-
     const { payload } = await dispatch(addNewDiary({ newDiaryInfo, userId }));
 
     navigation.navigate("SingleDiaryDetail", {
       newDiaryId: payload.newDiary._id,
     });
-  }
+  }, [currentAddress, userId, navigation, hashTag, dispatch, geoLocation]);
 
   return (
     <TouchableOpacity
@@ -80,7 +87,7 @@ const NewDiaryModalScreen = ({ route, navigation }) => {
             onPress={handleCloseButtonPress}
           />
           <InputBar onChangeText={handleChangeText} hashTag={hashTag} />
-          <LocationBox address={address} />
+          <LocationBox address={currentAddress} />
           <SubmitButton onPress={handleSubmitButtonPress} />
         </View>
       </TouchableWithoutFeedback>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View } from "react-native";
 import SingleDiary from "../components/SingleDiary";
@@ -19,10 +19,13 @@ const SingleDiaryScreen = ({ route }) => {
     }
   }, [byIds, diaryId]);
 
-  function handleTrackPress(index) {
-    dispatch(setPlayList(byIds[diaryId]?.playList));
-    dispatch(listenMusic(index));
-  }
+  const handleTrackPress = useCallback(
+    (index) => {
+      dispatch(setPlayList(byIds[diaryId]?.playList));
+      dispatch(listenMusic(index));
+    },
+    [byIds, diaryId, dispatch]
+  );
 
   return (
     <View style={styles.container}>

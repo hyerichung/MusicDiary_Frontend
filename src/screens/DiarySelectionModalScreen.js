@@ -69,7 +69,7 @@ const DiarySelectionModalScreen = ({ route, navigation }) => {
         backgroundColor: "#A32700",
       });
 
-      console.error(err);
+      console.warn(err);
     }
   };
 

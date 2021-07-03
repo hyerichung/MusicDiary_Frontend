@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { debounce } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,48 +18,57 @@ const SearchTrackScreen = ({ navigation }) => {
     fetchTracks(searchInput);
   }, [searchInput]);
 
-  async function handleSelectSong(index) {
+  const handleSelectSong = async (index) => {
     await dispatch(setPlayList(searchList));
     await dispatch(listenMusic(index));
-  }
-
-  const handleAddTrackToDiaryButtonPress = (trackInfo) => {
-    navigation.navigate("DiarySelection", { diary: trackInfo });
   };
 
-  const fetchTracks = debounce(async (searchInput) => {
-    try {
-      const tempSearchResult = await fetch(
-        `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=40`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
+  const handleAddTrackToDiaryButtonPress = useCallback(
+    (trackInfo) => {
+      navigation.navigate("DiarySelection", { diary: trackInfo });
+    },
+    [navigation]
+  );
+
+  const fetchTracks = debounce(
+    useCallback(
+      async (searchInput) => {
+        try {
+          const tempSearchResult = await fetch(
+            `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=40`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+
+          const resultList = await tempSearchResult.json();
+
+          const result = resultList?.tracks?.items.map((list) => ({
+            title: list.name,
+            id: list.id,
+            uri: list.uri,
+            preview:
+              list.preview_url ??
+              "https://p.scdn.co/mp3-preview/bc5f3e28ba28c76b36f409d3c3f697e597b6ff6f?cid=41014a1f3ad143a8be14a47f025c209d",
+            duration: list.duration_ms,
+            artist: list.artists[0].name,
+            albumImg: list.album.images,
+          }));
+
+          setSearchList(result);
+        } catch (err) {
+          console.warn(err);
         }
-      );
-
-      const resultList = await tempSearchResult.json();
-
-      const result = resultList?.tracks?.items.map((list) => ({
-        title: list.name,
-        id: list.id,
-        uri: list.uri,
-        preview:
-          list.preview_url ??
-          "https://p.scdn.co/mp3-preview/bc5f3e28ba28c76b36f409d3c3f697e597b6ff6f?cid=41014a1f3ad143a8be14a47f025c209d",
-        duration: list.duration_ms,
-        artist: list.artists[0].name,
-        albumImg: list.album.images,
-      }));
-
-      setSearchList(result);
-    } catch (err) {
-      console.error(err);
-    }
-  }, 800);
+      },
+      [accessToken]
+    ),
+    800
+  );
 
   const handleChangeText = (text) => {
     setSearchInput(text);

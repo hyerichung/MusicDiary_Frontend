@@ -1,30 +1,39 @@
-import { useState } from "react";
-import { API_GOOGLE_GEOCODING_KEY } from "@env";
+import { useState, useCallback } from "react";
 import Geocoder from "react-native-geocoding";
+import { API_GOOGLE_GEOCODING_KEY } from "@env";
 
 import useCurrentGeoLocation from "./useCurrentGeoLocation";
 
 const useCurrentAddress = () => {
   const [currentAddress, setCurrentAddress] = useState("");
+  const [geoLocation, setGeoLocation] = useState({});
   const { getCurrentGeoLocation } = useCurrentGeoLocation();
 
-  const getCurrentAddress = async () => {
-    Geocoder.init(API_GOOGLE_GEOCODING_KEY, { language: "en" });
+  const getCurrentAddress = useCallback(
+    async (isCancelled) => {
+      if (isCancelled) {
+        return;
+      }
 
-    const geoLocation = await getCurrentGeoLocation();
+      Geocoder.init(API_GOOGLE_GEOCODING_KEY, { language: "en" });
 
-    const reversedGeoAddress = await Geocoder.from({
-      lat: geoLocation?.coords?.latitude,
-      lng: geoLocation?.coords?.longitude,
-    });
+      const geoLocation = await getCurrentGeoLocation();
 
-    const currentAddress = reversedGeoAddress.results[1].formatted_address;
-    setCurrentAddress(currentAddress);
+      const reversedGeoAddress = await Geocoder.from({
+        lat: geoLocation?.coords?.latitude,
+        lng: geoLocation?.coords?.longitude,
+      });
 
-    return { currentAddress, geoLocation };
-  };
+      const currentAddress = reversedGeoAddress.results[1].formatted_address;
+      setCurrentAddress(currentAddress);
+      setGeoLocation(geoLocation);
 
-  return { currentAddress, getCurrentAddress };
+      return { currentAddress, geoLocation };
+    },
+    [getCurrentGeoLocation]
+  );
+
+  return { geoLocation, currentAddress, getCurrentAddress };
 };
 
 export default useCurrentAddress;

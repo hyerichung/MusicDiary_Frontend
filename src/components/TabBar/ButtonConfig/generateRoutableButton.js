@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import IconButton from "../BottomTabBar/IconButton";
 import LabelButton from "../DiaryListTopTabBar/LabelButton";
 
@@ -10,11 +10,11 @@ const generateRoutableButton = (state, navigation, type) => {
         const routeKey = state.routes[index].key;
         const label = route.name;
 
-        const handleLabelPress = () => {
+        const handleLabelPress = useCallback(() => {
           if (!isFocused) {
             navigation.navigate(route.name);
           }
-        };
+        }, [isFocused, route]);
 
         switch (type) {
           case "IconButton":
