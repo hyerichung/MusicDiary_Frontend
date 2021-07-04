@@ -30,7 +30,7 @@ const RootStackNavigator = () => {
           <RootStack.Screen
             name="NewDiaryModal"
             component={NewDiaryModalScreen}
-            options={{ unmountOnBlur: true, ...setHeaderOptions("noHeader") }}
+            options={{ ...setHeaderOptions("noHeader") }}
           />
           <RootStack.Screen
             name="DiarySelection"

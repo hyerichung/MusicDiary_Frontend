@@ -16,7 +16,7 @@ const setHeaderOptions = (type, route, navigation) => {
         headerLeft: () => (
           <Ionicons
             name="chevron-back"
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.popToTop()}
             size={24}
             color="black"
           />
@@ -45,7 +45,7 @@ const setHeaderOptions = (type, route, navigation) => {
         headerLeft: () => (
           <Ionicons
             name="chevron-back"
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.popToTop()}
             size={24}
             color="black"
           />

@@ -22,7 +22,7 @@ const DiarySelectionModalScreen = ({ route, navigation }) => {
   const accessToken = user.accessToken;
 
   const handleOverlayPress = () => {
-    navigation.goBack();
+    navigation.popToTop();
   };
 
   const handleDiarySelectionPress = async (diaryId) => {
@@ -60,7 +60,7 @@ const DiarySelectionModalScreen = ({ route, navigation }) => {
         backgroundColor: "#1c1f28",
       });
 
-      navigation.goBack();
+      navigation.popToTop();
     } catch (err) {
       showMessage({
         message: "Failed to add track to diary, Please try again",

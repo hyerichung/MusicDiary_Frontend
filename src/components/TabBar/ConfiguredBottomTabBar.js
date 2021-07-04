@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
+import { useFocusEffect } from "@react-navigation/native";
 
 import {
   setIsPlaying,
@@ -17,46 +18,76 @@ const ConfiguredBottomTabBar = ({ state, navigation }) => {
     (state) => state?.music
   );
 
+  const soundRef = useRef(null);
+  const idRef = useRef(null);
+
   const currentTrack = playList[currentIdx];
-  const [sound, setSound] = useState(null);
 
-  useEffect(() => {
-    async function checkMusicSound() {
-      if (sound) {
-        await sound.unloadAsync();
+  useFocusEffect(
+    useCallback(() => {
+      let isCancelled = false;
+
+      async function checkMusicSound() {
+        if (isCancelled) {
+          if (soundRef.current) {
+            await soundRef.current.pauseAsync();
+            await soundRef.current.stopAsync();
+          }
+          soundRef.current = null;
+          return;
+        }
+
+        if (soundRef?.current && idRef?.current !== currentTrack?._id) {
+          await soundRef?.current?.unloadAsync();
+        }
+
+        if (
+          !soundRef?.current?.isLoaded &&
+          currentTrack?.preview &&
+          idRef?.current !== currentTrack?._id
+        ) {
+          /*TO-DO
+            : handling duplicated song playing
+              when searchTrack clicked while soundRef.current playing
+          */
+          createSound();
+        }
       }
 
-      if (currentTrack?.preview) {
-        createSound();
-      }
+      checkMusicSound();
+
+      return () => (isCancelled = true);
+    }, [currentTrack])
+  );
+
+  const handlePressContolIcon = async () => {
+    if (isPlaying) {
+      return await soundRef.current.pauseAsync();
     }
 
-    checkMusicSound();
-  }, [currentIdx, playList]);
-
-  const handlePressContolIcon = () => {
-    controlMusicPlaying();
+    await soundRef.current.playAsync();
   };
 
   const handlePressPrevIcon = () => {
-    dispatch(goToPrevTrack);
+    dispatch(goToPrevTrack());
   };
 
   const handlePressNextIcon = () => {
-    dispatch(goToNextTrack);
+    dispatch(goToNextTrack());
   };
 
-  const createSound = async () => {
+  const createSound = useCallback(async () => {
     const { sound } = await Audio.Sound.createAsync(
       { uri: currentTrack.preview },
       { shouldPlay: true },
-      (status) => {
+      async (status) => {
         if (!status.isLoaded) {
           if (status.error) {
             console.error(`error: ${status.error}`);
           }
         } else {
           if (status.didJustFinish) {
+            await soundRef?.current?.unloadAsync();
             dispatch(goToNextTrack());
             return;
           }
@@ -66,16 +97,9 @@ const ConfiguredBottomTabBar = ({ state, navigation }) => {
       }
     );
 
-    setSound(sound);
-  };
-
-  const controlMusicPlaying = async () => {
-    if (isPlaying) {
-      return await sound.pauseAsync();
-    }
-
-    await sound.playAsync();
-  };
+    soundRef.current = sound;
+    idRef.current = currentTrack._id;
+  }, [currentTrack, dispatch]);
 
   return (
     <View>
