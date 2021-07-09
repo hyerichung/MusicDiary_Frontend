@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as Location from "expo-location";
 
 const useCurrentGeoLocation = () => {
-  const [errMessage, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [geoLocation, setGeoLocation] = useState({});
 
   const getCurrentGeoLocation = async () => {
@@ -22,7 +22,7 @@ const useCurrentGeoLocation = () => {
     return geoLocation;
   };
 
-  return { geoLocation, getCurrentGeoLocation };
+  return { geoLocation, getCurrentGeoLocation, errorMsg };
 };
 
 export default useCurrentGeoLocation;

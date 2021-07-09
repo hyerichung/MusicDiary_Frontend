@@ -1,30 +1,10 @@
-import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../redux/slices/userSlice";
-import LoginBtn from "../components/LoginButton";
-import { debounce } from "lodash";
+import React from "react";
 
-import { showMessage } from "react-native-flash-message";
+import LoginBtn from "../components/LoginButton";
+import useLogin from "../hooks/useLogin";
 
 const LoginScreen = () => {
-  const dispatch = useDispatch();
-
-  const handlePressLoginBtn = debounce(
-    useCallback(async () => {
-      const { error } = await dispatch(loginUser());
-
-      if (error) {
-        showMessage({
-          message: "Login Failed, Please try again",
-          type: "error",
-          hideStatusBar: true,
-          backgroundColor: "#A32700",
-        });
-      }
-    }, [dispatch]),
-    1500
-  );
-
+  const { handlePressLoginBtn } = useLogin();
   return (
     <>
       <LoginBtn onPressLoginBtn={handlePressLoginBtn} />

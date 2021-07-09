@@ -25,6 +25,7 @@ const useCurrentAddress = () => {
       });
 
       const currentAddress = reversedGeoAddress.results[1].formatted_address;
+
       setCurrentAddress(currentAddress);
       setGeoLocation(geoLocation);
 
