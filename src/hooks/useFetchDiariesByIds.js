@@ -1,8 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchDiaries } from "../redux/slices/diarySlice";
-import { useFocusEffect } from "@react-navigation/native";
 
 const useFetchDiariesByIds = () => {
   const dispatch = useDispatch();
@@ -19,17 +18,15 @@ const useFetchDiariesByIds = () => {
     setShouldUpdateLocation((prev) => !prev);
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      (async function fetchdiariesByIds() {
-        try {
-          await dispatch(fetchDiaries({ userId }));
-        } catch (err) {
-          setErrorMsg(err.message);
-        }
-      })();
-    }, [userId, dispatch, shouldUpdateLocation])
-  );
+  useEffect(() => {
+    (async function fetchdiariesByIds() {
+      try {
+        await dispatch(fetchDiaries({ userId }));
+      } catch (err) {
+        setErrorMsg(err.message);
+      }
+    })();
+  }, [dispatch, shouldUpdateLocation]);
 
   return {
     byIds,
