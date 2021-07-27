@@ -19,12 +19,11 @@ const useDiarySelection = (route, navigation) => {
   const handleDiarySelectionPress = async (diaryId) => {
     try {
       const currentEnergy = byIds[diaryId].energyScore;
-      const { energy } = await getTrackEnergyScoreAPI({
+      const energy = await getTrackEnergyScoreAPI({
         trackId: trackInfo.id,
       });
-
       const energyAddedTrackInfo = { ...trackInfo, trackEnergy: energy };
-      console.log(energyAddedTrackInfo, "@@@@");
+
       await dispatch(
         addTrackToDiary({
           userId,

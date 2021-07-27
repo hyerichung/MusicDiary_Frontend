@@ -21,7 +21,6 @@ const SearchTrackScreen = ({ navigation }) => {
     await dispatch(listenMusic(index));
   };
 
-
   return (
     <View style={styles.searchTrackContainer}>
       <SearchInput
