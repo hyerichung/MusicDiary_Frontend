@@ -1,20 +1,9 @@
-import React, { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import { logoutUser } from "../redux/slices/userSlice";
+import useMyInfo from "../hooks/useMyInfo";
 
 const MyInfoScreen = () => {
-  const dispatch = useDispatch();
-  const { userName, email } = useSelector((state) => state.user.userInfo);
-
-  const handleLogoutClick = useCallback(() => {
-    try {
-      dispatch(logoutUser());
-    } catch (err) {
-      console.warn("Failed to logout", err.message);
-    }
-  }, [dispatch]);
-
+  const { userName, email, handleLogoutClick } = useMyInfo();
   return (
     <View style={styles.userInfoContainer}>
       <View style={styles.infoWrapper}>
