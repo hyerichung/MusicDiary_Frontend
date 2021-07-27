@@ -121,8 +121,6 @@
     -> AuthSession.startAsync({}) 자체의 warning을 { type: "locked" } 반환값을 이용해서 제어하는 방법을 고안해야 함   
     (사가의 takeLatest가 그리워졌다..)   
      [참고] https://docs.expo.io/versions/latest/sdk/auth-session/
-- Expo-av
-  - currentTrack 재생 중일시, searchTrack의 트랙을 클릭하면 default track url과 겹친다 -> 커스텀 훅으로 로직 정리 요함
 
 ## 끝맺음
 - 이번 프로젝트를 진행하면서 예상치 못한 기술스택 전환, 정해진 기한 내에 기능을 어디까지 구현하고 완성도에 집중해야 하는가에 대한 딜레마 등 여러가지 에러 사항들이 있었는데 이런 예상치 못한 상황들을 해결해가며 어떤 상황에서든 문제를 해결해가는 과정을 배웠다고 생각합니다.
