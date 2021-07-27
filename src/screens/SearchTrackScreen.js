@@ -1,83 +1,31 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { debounce } from "lodash";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { listenMusic, setPlayList } from "../redux/slices/musicSlice";
 import SearchInput from "../components/SearchTrackInput";
 import SearchTrackList from "../components/SearchTrackList";
 
+import useSearchTrack from "../hooks/useSearchTrack";
+
 const SearchTrackScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const accessToken = user.accessToken;
-
-  const [searchInput, setSearchInput] = useState("");
-  const [searchList, setSearchList] = useState([]);
-
-  useEffect(() => {
-    fetchTracks(searchInput);
-  }, [searchInput]);
+  const {
+    searchInput,
+    handleTextChange,
+    searchList,
+    handleAddTrackToDiaryButtonPress,
+  } = useSearchTrack(navigation);
 
   const handleSelectSong = async (index) => {
     await dispatch(setPlayList(searchList));
     await dispatch(listenMusic(index));
   };
 
-  const handleAddTrackToDiaryButtonPress = useCallback(
-    (trackInfo) => {
-      navigation.navigate("DiarySelection", { diary: trackInfo });
-    },
-    [navigation]
-  );
-
-  const fetchTracks = debounce(
-    useCallback(
-      async (searchInput) => {
-        try {
-          const tempSearchResult = await fetch(
-            `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=40`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
-
-          const resultList = await tempSearchResult.json();
-
-          const result = resultList?.tracks?.items.map((list) => ({
-            title: list.name,
-            id: list.id,
-            uri: list.uri,
-            preview:
-              list.preview_url ??
-              "https://p.scdn.co/mp3-preview/bc5f3e28ba28c76b36f409d3c3f697e597b6ff6f?cid=41014a1f3ad143a8be14a47f025c209d",
-            duration: list.duration_ms,
-            artist: list.artists[0].name,
-            albumImg: list.album.images,
-          }));
-
-          setSearchList(result);
-        } catch (err) {
-          console.warn(err);
-        }
-      },
-      [accessToken]
-    ),
-    800
-  );
-
-  const handleChangeText = (text) => {
-    setSearchInput(text);
-  };
 
   return (
     <View style={styles.searchTrackContainer}>
       <SearchInput
-        onSearchInputChange={(text) => handleChangeText(text)}
+        onSearchInputChange={(text) => handleTextChange(text)}
         searchInput={searchInput}
       />
       <View style={styles.listWrapper}>

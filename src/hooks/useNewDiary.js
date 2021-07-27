@@ -1,14 +1,17 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showMessage } from "react-native-flash-message";
 
+import useCurrentAddress from "./useCurrentAddress";
 import { addNewDiary } from "../redux/slices/diarySlice";
 
-const useNewDiary = (navigation, currentAddress, geoLocation) => {
+const useNewDiary = (navigation) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.userInfo.id);
 
   const [hashTag, setHashTagValue] = useState("");
+  const { geoLocation, currentAddress, getCurrentAddress } =
+    useCurrentAddress();
 
   const handleTextChange = useCallback(
     (value) => {
@@ -20,6 +23,16 @@ const useNewDiary = (navigation, currentAddress, geoLocation) => {
     },
     [hashTag.length]
   );
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    getCurrentAddress(isCancelled);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   const handleCloseButtonPress = useCallback(() => {
     navigation.popToTop();
@@ -57,6 +70,8 @@ const useNewDiary = (navigation, currentAddress, geoLocation) => {
     hashTag,
     handleTextChange,
     handleSubmitButtonPress,
+    currentAddress,
+    getCurrentAddress,
   };
 };
 

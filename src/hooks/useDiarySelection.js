@@ -3,14 +3,12 @@ import { showMessage } from "react-native-flash-message";
 import { getTrackEnergyScoreAPI } from "../api";
 
 import { addTrackToDiary } from "../redux/slices/diarySlice";
-import { getAccessToken } from "../redux/slices/userSlice";
 
 const useDiarySelection = (route, navigation) => {
   const dispatch = useDispatch();
   const { byIds } = useSelector((state) => state.diary);
   const user = useSelector((state) => state.user);
 
-  const accessToken = getAccessToken();
   const trackInfo = route.params.diary;
   const userId = user.userInfo.id;
 
@@ -22,12 +20,11 @@ const useDiarySelection = (route, navigation) => {
     try {
       const currentEnergy = byIds[diaryId].energyScore;
       const { energy } = await getTrackEnergyScoreAPI({
-        accessToken,
         trackId: trackInfo.id,
       });
 
       const energyAddedTrackInfo = { ...trackInfo, trackEnergy: energy };
-
+      console.log(energyAddedTrackInfo, "@@@@");
       await dispatch(
         addTrackToDiary({
           userId,

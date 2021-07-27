@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
@@ -11,28 +11,15 @@ import SubmitButton from "../components/NewDiarySubmitButton";
 
 import useNewDiary from "../hooks/useNewDiary";
 import InputBar from "../components/NewDiaryInputBar";
-import useCurrentAddress from "../hooks/useCurrentAddress";
 
 const NewDiaryModalScreen = ({ navigation }) => {
-  const { geoLocation, currentAddress, getCurrentAddress } =
-    useCurrentAddress();
-
   const {
     handleCloseButtonPress,
     hashTag,
     handleTextChange,
     handleSubmitButtonPress,
-  } = useNewDiary(navigation, currentAddress, geoLocation);
-
-  useEffect(() => {
-    let isCancelled = false;
-
-    getCurrentAddress(isCancelled);
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [getCurrentAddress]);
+    currentAddress,
+  } = useNewDiary(navigation);
 
   return (
     <TouchableOpacity

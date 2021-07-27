@@ -76,6 +76,3 @@ export const userSlice = createSlice({
     },
   },
 });
-
-const { clearUser } = userSlice.actions;
-export { clearUser };

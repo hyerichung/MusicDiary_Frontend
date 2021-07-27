@@ -1,5 +1,6 @@
 import { API_SERVER_PORT_DEVELOPMENT } from "@env";
 import * as AuthSession from "expo-auth-session";
+import * as SecureStore from "expo-secure-store";
 
 export async function getAuthCodeAPI() {
   try {
@@ -102,28 +103,6 @@ export async function fetchDiariesAPI({ accessToken, userId }) {
   return data.diaries;
 }
 
-export async function searchTrackAPI({
-  accessToken,
-  userId,
-  diaryId,
-  searchInput,
-}) {
-  const saerchedTrackResult = await fetch(
-    `${API_SERVER_PORT_DEVELOPMENT}/api/users/${userId}/diary/${diaryId}/track/search?keyword="${searchInput}"`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-
-  const { data } = await saerchedTrackResult.json();
-
-  return data;
-}
-
 export async function addTrackToDiaryAPI({
   accessToken,
   userId,
@@ -147,4 +126,42 @@ export async function addTrackToDiaryAPI({
   const { data } = await trackAddedResult.json();
 
   return data;
+}
+
+export async function getTrackEnergyScoreAPI({ trackId }) {
+  const accessToken = await SecureStore.getItemAsync("accessToken");
+  const trackEnergyScore = await fetch(
+    `https://api.spotify.com/v1/audio-features/${trackId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  const { energy } = await trackEnergyScore.json();
+
+  return energy;
+}
+
+export async function searchTrackAPI({ searchInput }) {
+  const accessToken = await SecureStore.getItemAsync("accessToken");
+  const tempSearchResult = await fetch(
+    `https://api.spotify.com/v1/search?q=${searchInput}&type=track%2Cartist&limit=40`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  const resultList = await tempSearchResult.json();
+
+  return resultList;
 }
