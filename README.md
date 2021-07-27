@@ -1,13 +1,54 @@
 # MusicDiary
 당신의 하루를 플레이리스트로 표현해주세요
 
+<table>
+   <tr>
+    <td align="center" valign="top">
+      <img width="205" alt="Login" src="https://user-images.githubusercontent.com/64633218/124375154-a3dc3b80-dcdb-11eb-8603-e1fc98f2a7ab.png">
+      <p>Login Screen
+      </p>
+    </td>  
+    <td align="center" valign="top">
+      <img width="205" alt="Home" src="https://user-images.githubusercontent.com/64633218/124375180-c1a9a080-dcdb-11eb-9d28-5ee4a721ce28.png">
+      <p> Home Screen</p>
+      <p>: Filter diaries with <br/>current user location (within 50m)</p>    
+    </td>
+    <td align="center" valign="top">
+      <img width="202" alt="Detail" src="https://user-images.githubusercontent.com/64633218/124383650-8c677780-dd08-11eb-9afa-6f0b01f4dc51.png">
+      <p>Diary detail screen</p>
+      <p>: can play track on the list</p>
+    </td>
+   </tr>
+  <tr>
+    <td align="center" valign="top">
+      <img width="205" alt="AddTrack" src="https://user-images.githubusercontent.com/64633218/124383921-f9c7d800-dd09-11eb-9a7e-72b3894a180c.png">
+      <p>Search track screen</p>
+      <p>: Search track and add them to diary</p>
+    </td>
+    <td align="center" valign="top">
+      <img width="207" alt="List" src="https://user-images.githubusercontent.com/64633218/124383596-490d0900-dd08-11eb-8f08-e82c90046095.png">
+      <p> Diary List Screen</p>
+      <p> : Add new Diary <br/>based on user location</p>
+    </td>
+    <td align="center" valign="top">
+      <img width="205" alt="Calendar" src="https://user-images.githubusercontent.com/64633218/124383926-fd5b5f00-dd09-11eb-9c7e-bc4f51f259d5.png">
+      <p> Calendar Screen</p>
+      <p> : Show the relevant color on the date<br/>
+        based on calculated track energy score</p>
+    </td>
+  </tr>
+<table>
+
+: Demo video: https://drive.google.com/file/d/1cxEUwVZewbHW6DwtVArND5O6QlWS32vq/view?usp=sharing
+  
+
 ## 프로젝트 설명
 * Music Diary는 위치를 기반으로 음악 플레이리스트를 만들어 저장하고, 캘린더와 함께 플레이리스트의 에너지 수치를 시각화하여 볼 수 있는 앱 서비스 입니다.
 
 ## 프로젝트 기획 배경
-* 저는 음악을 좋아하고, 어디에 있던 음악을 틀어놓거나 듣는 습관이 있습니다.  
-어느 날 어떤 장소에서 정말 좋은 음악을 들었는데, 그 당시에는 그 음악에 대해 알고 있었지만 시간이 흐른 뒤엔 음악의 멜로디와 분위기만 생각나고 음악의 정보 디테일은 기억나지 않아 정말 아쉬웠던 기억이 있습니다.  
-현재 내가 머무르고 있는 장소나 상황에 따라 음악이 주는 임팩트가 다르다고 생각하여, 내가 머물고 있는 장소를 기반으로 한 플레이리스트를 개인적으로 기록할 수 있도록 만들고 싶었고, 추후 플레이리스트를 다시 보고 듣게 되었을 때 과거를 기억할만한 지표를 음악과 함께 넣어두고 싶었기 때문에 날짜를 기록할 수 있는 '캘린더'와 트랙의 '에너지 수치'라는 것을 함께 활용해 보았습니다.  
+* 저는 음악을 좋아하고, 어디에 있던 음악을 틀어놓거나 듣는 습관이 있습니다.
+* 어떤 장소에서 정말 좋은 음악을 들었는데, 그 당시에는 그 음악에 대해 알고 있었지만 시간이 흐른 뒤엔 음악의 멜로디와 분위기만 생각나고 음악의 정보 디테일은 기억나지 않아 정말 아쉬웠던 기억이 있습니다.  
+* 내가 머물고 있는 장소를 기반으로 한 플레이리스트를 개인적으로 기록할 수 있도록 만들고 싶었고, 추후 플레이리스트를 다시 보고 듣게 되었을 때 과거를 기억할만한 지표를 음악과 함께 넣어두고 싶었기 때문에 날짜를 기록할 수 있는 '캘린더'와 트랙의 '에너지 수치'라는 것을 함께 활용해 보았습니다.  
 
 ## 기술 스택
 
@@ -49,34 +90,39 @@
   - 스타일링
   - 테스팅 시도
 
+## Navigation
+   <img width="951" alt="Screen Shot 2021-07-27 at 4 36 25 pm" src="https://user-images.githubusercontent.com/64633218/127114998-d92664a0-7c1a-4a43-8b92-a163361d878b.png">
+   
 ## 고난
 ### ✍️ **React native와의 첫 만남**
 
 - 원래 Music Diary 기획의 첫 시작은 '웹 서비스' 였습니다. '시각화'를 기반으로 한 서비스를 기획했기 때문에 웹으로 구현하는 것이 적합하다고 생각했고, 웹을 위해 목업, 스키마, 기술 서치까지 모두 끝낸 상태에서 '위치 기반' 플레이리스트, 제가 경험해보지 못했던 기술 스택이라는 사실만을 바라보고 1주차가 끝나갈 즈음 React native로 기술 스택과 기획 모두를 변경하는 결정을 하게 되었습니다.
-- 웹과 React native의 가장 큰 차이점은 Navigator의 life cycle, 즉 `componentWillUnmount` 가 다르게 작동한다는 점이었습니다. 기존 screen에서 새로운 screen으로 이동하면 새로운 screen에서 `componentDidMount`가 호출이 되고, 기존 screen 에서는 `componentWillUnmount` 가 자동으로 호출이 되지 않아 기존 screen은 상태를 그대로 유지시킨 채로 남아있게 되어, 이후 기존 screen으로 다시 돌아왔을 때 최신으로 재렌더링이 된 화면이 아닌 이전 screen 상태를 보게 됩니다.
-- HomeScreen은 유저의 현재 위치를 기반으로 과거 다이어리 목록을 필터링해서 가져오는 screen이었고, 방문할 때마다 유저의 위치, 다이어리 목록이 최신 상태로 재렌더링이 되길 원했기 때문에, bottomTab screen 에서는 `unmountOnBlur` 옵션을 사용하여 `componentWillUnmount`를 적용해주고, bottomTab screen 이외의 screen에서는 `useIsFocused` hook을 사용하여 재렌더링을 조절해주었습니다.
+- 웹과 React native의 가장 큰 차이점은 스크린 화면이 스택처럼 쌓인다는 점, Navigator의 life cycle, 즉 `componentWillUnmount` 가 다르게 작동한다는 점이었습니다. 기존 screen에서 새로운 screen으로 이동하면 새로운 screen은 mount가 되지만, 기존 screen은 `componentWillUnmount` 가 호출이 되지 않아 여전히 mount 된 상태로 남아있기 때문에 재렌더링이나 cleanup이 필요하다면 별도의 처리 과정이 필요합니다.
+- navigator Screen에 옵션에 `unmountOnBlur` 을 적용하여 `componentWillUnmount`를 적용해주기도 하고, `useFocuseEffect`, `useCallback`을 함께 사용하여 스크린 focus 유무에 따른 비동기로직/상태 변화 등을 정리해 주었습니다.
 
 ### ✍️ **React thunk, toolkit**
-
-- 초반 HomeScreen에는 다이어리 목록 받아오기, 유저의 위치 찾기, 유저 위치에 알맞는 다이어리 필터링하여 보여주기, notification 보내기 로직이 모두 들어있었습니다. 이번 프로젝트에서 redux를 도입할 겸 사용해보지 않은 toolkit 또한 thunk와 함께 사용해보았는데, 이전에 saga를 사용했을 때 boilerplate가 너무 많은 것 같다고 생각한 것과 정반대로 이젠 그 boilerplate가 그리워지는 경험을 하게되었습니다. toolkit 또한 액션 및 리듀서의 boilerplate를 확연히 줄일 수 있어 편리하지만, 여러개의 비동기 작업을 순차적으로 진행해야 할 때 깔끔하게 제너레이터에서 비동기 작업 및 다음 액션을 동기적 순서에 따라 작성할 수 있는 사가의 장점을 비로소 느낄 수 있는 경험이었습니다.
+- HomeScreen에서 다이어리 목록 받아오기, 유저의 위치 찾기, 유저 위치에 알맞는 다이어리 필터링하여 보여주기의 비동기 작업을 한꺼번에 다루면서 redux saga가 그리워지는 경험을 하게되었습니다.  
+  - 우선 커스텀 훅으로 로직들을 분리하여 액션의 순서를 제어해보았지만, 사가를 사용했다면 조금 더 명확하게 비동기의 흐름을 정하면서 진행할 수 있지 않았을까 생각합니다.
+- 이번 프로젝트에서 redux를 도입할 겸 사용해보지 않은 toolkit 또한 thunk와 함께 사용해보았는데, 다음 항목들이 편리하다고 느꼈습니다.
+  -  createSlice와 reducers에는 action type, action creator, reducer가 Ducks 패턴 처럼 한꺼번에 들어가 있어 boilerplate가 확연히 줄어 들었다는 점
+  -  createReducer에선 immer가 자동으로 내재되어있어 state 불변성을 신경 쓸 필요가 없다는 점
 
 ### ✍️ S**potify api**
-
-- 이번 Music Diary 프로젝트의 최종 목적은 '플레이리스트를 시각화' 하는 것이었습니다. Spotify genre seeds api를 이용하여 장르 목록을 찾아보았을 땐 120여개의 장르가 있어 비슷한 장르를 임의대로 구분하여 색상을 부여해서 시각화를 하려는 계획을 가지고 있었지만, 실 데이터를 받아보니 아티스트가 custom 형식으로도 장르를 추가할 수 있었고, 하나의 트랙/아티스트의 장르가 꼭 특정 장르로 구분되어지지 않고 여러개의 광범위한 장르들로 구성되어 있는 경우가 많아 모든 트랙을 유의미하게 구분할 수 없다고 판단하여 트랙의 energy 지수를 이용해 플레이리스트를 시각화하게 되었습니다.
+- 이번 Music Diary 프로젝트의 최종 목적은 '플레이리스트를 시각화' 하는 것이었습니다.  
+- Spotify genre seeds api를 이용하여 장르 목록을 찾아보았을 땐 120여개의 장르가 있어 비슷한 장르를 임의대로 구분하여 색상을 부여해서 시각화를 하려는 계획을 가지고 있었지만, 실 데이터를 받아보니 아티스트가 custom 형식으로도 장르를 추가할 수 있었고, 하나의 트랙/아티스트의 장르가 꼭 특정 장르로 구분되어지지 않고 여러개의 광범위한 장르들로 구성되어 있는 경우가 많아 모든 트랙을 유의미하게 구분할 수 없다고 판단하여 트랙의 energy 지수를 이용해 플레이리스트를 시각화하게 되었습니다.
 - Spotify 프리미엄 유저같은 경우 api에서 주는 uri로 full 음원을 재생할 수 있다고 생각했지만, 이후 Spotify 자체 sdk를 이용한 player와 연동해서만 full 음원을 재생할 수 있다는 것을 알고 preview url을 재생시키도록 변경하였습니다. 하지만 모든 음원에 preview url이 존재하는 것은 아니였고, 이에 따라 미리 짜둔 expo-av 로직에서 음원 재생이 겹쳐 나오는 등 에러 핸들링을 하는 데 시간을 소요했습니다.
 
-### ✍️ **캘린더**
-
-- 초반에 '캘린더'와 '에너지 지수'를 이용한 시각화는 heat map calendar로 하고싶다는 생각이 있었습니다. 시각화가 목적이니 날짜를 표시해주거나, 일정을 등록하는 등의 기본적인 캘린더 역할은 크게 생각하지 않아도 된다고 생각했고, 지수에 따른 색깔을 명확하게 표현해주는 데 heat map calendar가 더 적합하다고 생각했기 때문입니다. 대표적인 heat map calendar 라이브러리가 있었지만, 제가 원하는건 색상 하나의 opacity를 조절하는 것이 아니라 색상 여러개를 지수에 따라 넣고 싶었기 때문에 라이브러리를 참고하여 새로 제작하기 시작했고, 날짜를 MongoDB에 iso 형식으로 저장하여 가져오는 부분에서 에러 핸들링을 하는 데 시간을 소요했습니다. 이후 리팩토링을 진행하면서, 상자에 있는 색깔만 보고 유저가 날짜까지 직감적으로 떠올리는 것은 무리라는 생각이 들어 캘린더 라이브러리를 사용하여 색깔을 부여하는 작업을 하였고, 필요성에 따라 기존 라이브러리를 개조해서 필요한 기능을 구현하는 경험을 해볼 수 있어서 뜻 깊었습니다.
-
-### **TO-DO & Issue**
+### **TO-DO**
 #### 1. LoginButton
-- LoginButton 클릭 -> getAuthCodeAPI()의 반환값을 받고 Spotify 로그인 링크 창이 네이티브 뷰에서 열리기 전까지 기다리지 않고 LoginButton을 다시 중복 클릭한다면, AuthSession.startAsync({})가 중복 요청 금지 warning error을 띄움   
-  -> LoginButton 중복 클릭을 방지하기 위해 버튼에 debounce 사용
-    : 중복 클릭은 방지하지만 debounce 끝나는 타이밍에 맞춰 클릭했을 시 여전히 재클릭 가능한 이슈   
-  -> AuthSession.startAsync({}) 자체의 warning을 { type: "locked" } 반환값을 이용해서 제어하는 방법을 고안해야 함   
-  [참고] https://docs.expo.io/versions/latest/sdk/auth-session/
-
+- LoginButton 클릭 시, 
+  - getAuthCodeAPI()의 반환값을 받은 다음 Spotify 로그인 링크 창이 네이티브 뷰에서 열리기 전까지 기다리지 않고 LoginButton을 다시 중복 클릭한다면, AuthSession.startAsync({})가 중복 요청 금지 warning error을 띄움   
+    -> LoginButton 중복 클릭을 방지하기 위해 버튼에 debounce 사용
+      : 중복 클릭은 방지하지만 debounce 끝나는 타이밍에 맞춰 클릭했을 시 여전히 재클릭 가능한 이슈   
+    -> AuthSession.startAsync({}) 자체의 warning을 { type: "locked" } 반환값을 이용해서 제어하는 방법을 고안해야 함   
+    (사가의 takeLatest가 그리워졌다..)   
+     [참고] https://docs.expo.io/versions/latest/sdk/auth-session/
+- Expo-av
+  - currentTrack 재생 중일시, searchTrack의 트랙을 클릭하면 default track url과 겹친다 -> 커스텀 훅으로 로직 정리 요함
 
 ## 끝맺음
 - 이번 프로젝트를 진행하면서 예상치 못한 기술스택 전환, 정해진 기한 내에 기능을 어디까지 구현하고 완성도에 집중해야 하는가에 대한 딜레마 등 여러가지 에러 사항들이 있었는데 이런 예상치 못한 상황들을 해결해가며 어떤 상황에서든 문제를 해결해가는 과정을 배웠다고 생각합니다.
